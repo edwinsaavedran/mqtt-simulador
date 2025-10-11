@@ -87,7 +87,7 @@ function publishTelemetry() {
     if (error) {
       console.error(' Error al publicar:', error);
     } else {
-      console.log(`✔️ Mensaje publicado en el tópico [${topic}]:`, message);
+      console.log(` Mensaje publicado en el tópico [${topic}]:`, message);
     }
   });
 }
