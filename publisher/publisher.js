@@ -38,10 +38,17 @@ const config = require('../config'); // Importamos nuestra configuración
 // Identificador único de nuestro dispositivo simulado
 const DEVICE_ID = 'sensor-001';
 
-// Opciones de conexión (si son necesarias, como usuario y contraseña)
+const statusTopic = config.topics.status(DEVICE_ID);
+const lastWillMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'offline' });
+
 const options = {
-  // username: 'user',
-  // password: 'password',
+  // El "testamento" de nuestro cliente
+  will: {
+    topic: statusTopic,
+    payload: lastWillMessage,
+    qos: 1,       // Aseguramos que el mensaje de 'offline' se entregue
+    retain: true, // El broker guardará este mensaje para nuevos suscriptores
+  },
 };
 
 // Construimos la URL del broker a partir de la configuración
@@ -52,6 +59,16 @@ const client = mqtt.connect(brokerUrl, options);
 // Evento que se dispara cuando el cliente se conecta exitosamente
 client.on('connect', () => {
   console.log(` Conectado al broker MQTT en ${brokerUrl}`);
+
+  const onlineMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'online' });
+  client.publish(statusTopic, onlineMessage, { qos: 1, retain: true }, (error) => {
+    if (error) {
+      console.error(' Error al publicar estado "online":', error);
+    } else {
+      console.log(` Estado 'online' publicado en [${statusTopic}]`);
+    }
+  });
+
   console.log(`Iniciando simulación para el dispositivo: ${DEVICE_ID}`);
 
   // Empezamos a publicar datos cada 5 segundos
@@ -83,11 +100,11 @@ function publishTelemetry() {
   const topic = config.topics.telemetry(DEVICE_ID);
 
   // Publicamos el mensaje
-  client.publish(topic, message, { qos: 0, retain: false }, (error) => {
+  client.publish(topic, message, { qos: 1, retain: false }, (error) => {
     if (error) {
-      console.error(' Error al publicar:', error);
+      console.error(' Error al publicar(QoS 1):', error);
     } else {
-      console.log(` Mensaje publicado en el tópico [${topic}]:`, message);
+      console.log(` Mensaje publicado en el tópico [${topic}] (QoS 1):`, message);
     }
   });
 }

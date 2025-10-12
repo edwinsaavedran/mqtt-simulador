@@ -32,9 +32,9 @@ client.on('connect', () => {
   console.log(` Suscriptor conectado al broker en ${brokerUrl}`);
   
   // Nos suscribimos al tópico específico
-  client.subscribe(topic, (err) => {
+  client.subscribe(topic, { qos: 1 }, (err) => {
     if (!err) {
-      console.log(` Suscrito exitosamente al tópico: ${topic}`);
+      console.log(` Suscrito exitosamente al tópico [${topic}] con QoS 1`);
     } else {
       console.error(` Error al suscribirse:`, err);
     }

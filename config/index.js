@@ -25,6 +25,7 @@ module.exports = {
     // Tópicos de ejemplo para los patrones de comunicación
     unicast: 'utp/SistemasDistribuidos/saavedra',
     multicast: 'utp/SistemasDistribuidos/+',
+    multicast_telemetry: 'utp/sistemas_distribuidos/grupo1/+/telemetry',
     broadcast: 'utp/SistemasDistribuidos/#',
   },
 };
