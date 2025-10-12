@@ -32,42 +32,53 @@ client.on("connect", () => {
 
 // /publisher/publisher.js
 
-const mqtt = require('mqtt');
-const config = require('../config'); // Importamos nuestra configuración
+const mqtt = require("mqtt");
+const config = require("../config"); // Importamos nuestra configuración
 
-// Identificador único de nuestro dispositivo simulado
-const DEVICE_ID = 'sensor-001';
+// Identificador único de nuestro dispositivo simulado 
+const DEVICE_ID = "sensor-001";
 
 const statusTopic = config.topics.status(DEVICE_ID);
-const lastWillMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'offline' });
+const lastWillMessage = JSON.stringify({
+  deviceId: DEVICE_ID,
+  status: "offline",
+});
 
 const options = {
   // El "testamento" de nuestro cliente
   will: {
     topic: statusTopic,
     payload: lastWillMessage,
-    qos: 1,       // Aseguramos que el mensaje de 'offline' se entregue
+    qos: 1, // Aseguramos que el mensaje de 'offline' se entregue
     retain: true, // El broker guardará este mensaje para nuevos suscriptores
   },
 };
 
-// Construimos la URL del broker a partir de la configuración
+// Construimos la URL del broker a partir de la configuraciónclear
 const brokerUrl = `mqtt://${config.broker.address}:${config.broker.port}`;
 
 const client = mqtt.connect(brokerUrl, options);
 
 // Evento que se dispara cuando el cliente se conecta exitosamente
-client.on('connect', () => {
+client.on("connect", () => {
   console.log(` Conectado al broker MQTT en ${brokerUrl}`);
 
-  const onlineMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'online' });
-  client.publish(statusTopic, onlineMessage, { qos: 1, retain: true }, (error) => {
-    if (error) {
-      console.error(' Error al publicar estado "online":', error);
-    } else {
-      console.log(` Estado 'online' publicado en [${statusTopic}]`);
-    }
+  const onlineMessage = JSON.stringify({
+    deviceId: DEVICE_ID,
+    status: "online",
   });
+  client.publish(
+    statusTopic,
+    onlineMessage,
+    { qos: 1, retain: true },
+    (error) => {
+      if (error) {
+        console.error(' Error al publicar estado "online":', error);
+      } else {
+        console.log(` Estado 'online' publicado en [${statusTopic}]`);
+      }
+    },
+  );
 
   console.log(`Iniciando simulación para el dispositivo: ${DEVICE_ID}`);
 
@@ -76,8 +87,8 @@ client.on('connect', () => {
 });
 
 // Evento que se dispara si hay un error
-client.on('error', (error) => {
-  console.error(' Error de conexión:', error);
+client.on("error", (error) => {
+  console.error(" Error de conexión:", error);
   client.end(); // Cerramos la conexión en caso de error
 });
 
@@ -89,7 +100,7 @@ function publishTelemetry() {
   const telemetryData = {
     deviceId: DEVICE_ID,
     temperatura: parseFloat((Math.random() * 10 + 15).toFixed(2)), // Temp. entre 15.00 y 25.00
-    humedad: parseFloat((Math.random() * 20 + 40).toFixed(2)),     // Humedad entre 40.00 y 60.00
+    humedad: parseFloat((Math.random() * 20 + 40).toFixed(2)), // Humedad entre 40.00 y 60.00
     timestamp: new Date().toISOString(),
   };
 
@@ -102,9 +113,12 @@ function publishTelemetry() {
   // Publicamos el mensaje
   client.publish(topic, message, { qos: 1, retain: false }, (error) => {
     if (error) {
-      console.error(' Error al publicar(QoS 1):', error);
+      console.error(" Error al publicar(QoS 1):", error);
     } else {
-      console.log(` Mensaje publicado en el tópico [${topic}] (QoS 1):`, message);
+      console.log(
+        ` Mensaje publicado en el tópico [${topic}] (QoS 1):`,
+        message,
+      );
     }
   });
 }
