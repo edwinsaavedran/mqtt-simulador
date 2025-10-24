@@ -23,3 +23,19 @@ La arquitectura sigue el patrón **Publish/Subscribe**, que desacopla los compon
 ├── node_modules/         # Dependencias del proyecto
 ├── package.json          # Metadatos y dependencias del proyecto
 └── README.md             # Esta documentación
+
+
+# Estructura Actualizada
+mqtt-simulador/
+├── config/
+│   └── index.js
+├── mosquitto/         <-- Nueva carpeta
+│   └── config/        <-- Nueva carpeta
+├── node_modules/
+├── publisher/
+├── subscriber/
+├── Dockerfile         <-- Archivo del Paso 1
+├── docker-compose.yml <-- Archivo del Paso 2
+├── package-lock.json
+├── package.json
+└── README.md

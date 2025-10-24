@@ -7,7 +7,8 @@
 module.exports = {
   // Configuración del Broker MQTT
   broker: {
-    address: 'broker.hivemq.com',
+    //address: 'broker.hivemq.com',
+    address: 'mqtt-broker',
     port: 1883,
   },
 

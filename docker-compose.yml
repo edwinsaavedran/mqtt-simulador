@@ -1,0 +1,83 @@
+# --- docker-compose.yml ---
+
+# Especifica la versión de la sintaxis de Docker Compose
+version: '3.8'
+
+# Define los servicios (contenedores) que componen la aplicación
+services:
+
+  # --- Servicio para el Broker MQTT (Mosquitto) ---
+  mqtt-broker:
+    # Usa una imagen oficial de Eclipse Mosquitto
+    image: eclipse-mosquitto:2
+    # Nombre descriptivo para el contenedor
+    container_name: mqtt-broker
+    # Mapea los puertos del contenedor a tu máquina local
+    # Puerto 1883 para MQTT estándar, 9001 para MQTT sobre WebSockets
+    ports:
+      - "1883:1883" 
+      - "9001:9001"
+    # Monta volúmenes para persistir la configuración y los datos del broker
+    # Esto asegura que la configuración y los mensajes retenidos no se pierdan al reiniciar
+    volumes:
+      - ./mosquitto/config:/mosquitto/config # Mapea la carpeta de configuración local
+      - ./mosquitto/data:/mosquitto/data     # Mapea la carpeta de datos
+      - ./mosquitto/log:/mosquitto/log       # Mapea la carpeta de logs
+    # Política de reinicio: reinicia el contenedor si se detiene, a menos que se detenga manualmente
+    restart: unless-stopped
+
+  # --- Servicio para el Publicador (Sensor simulado) ---
+  publisher:
+    # Construye la imagen usando el Dockerfile en el directorio actual (.)
+    build: .
+    container_name: publisher
+    # Define una dependencia: este servicio no iniciará hasta que 'mqtt-broker' esté listo
+    depends_on:
+      - mqtt-broker
+    # Sobrescribe el CMD por defecto del Dockerfile para ejecutar el script específico del publisher
+    command: "node publisher/publisher.js"
+    # Política de reinicio: reinicia automáticamente si el contenedor falla
+    restart: on-failure
+
+  # --- Servicio para el Suscriptor UNICAST ---
+  unicast-subscriber:
+    build: . # Usa el mismo Dockerfile que el publisher
+    container_name: unicast-subscriber
+    depends_on:
+      - mqtt-broker
+    command: "node subscriber/unicast.js" # Ejecuta el script unicast
+    restart: on-failure
+
+  # --- Servicio para el Suscriptor MULTICAST ---
+  multicast-subscriber:
+    build: .
+    container_name: multicast-subscriber
+    depends_on:
+      - mqtt-broker
+    command: "node subscriber/multicast.js" # Ejecuta el script multicast
+    restart: on-failure
+
+  # --- Servicio para el Suscriptor BROADCAST ---
+  broadcast-subscriber:
+    build: .
+    container_name: broadcast-subscriber
+    depends_on:
+      - mqtt-broker
+    command: "node subscriber/broadcast.js" # Ejecuta el script broadcast
+    restart: on-failure
+
+  # --- Servicio para el MONITOR de estado ---
+  monitor:
+    build: .
+    container_name: monitor
+    depends_on:
+      - mqtt-broker
+    command: "node subscriber/monitor.js" # Ejecuta el script monitor
+    restart: on-failure
+
+# --- (Opcional) Definición de redes ---
+# Por defecto, Docker Compose crea una red 'default' para todos los servicios,
+# permitiendo que se comuniquen usando sus nombres de servicio (ej. 'mqtt-broker').
+# Si necesitas configuraciones de red más complejas, las definirías aquí.
+# networks:
+#   mi_red_mqtt:
