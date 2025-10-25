@@ -27,25 +27,54 @@ services:
     restart: unless-stopped
 
   # --- Servicio para el Publicador (Sensor simulado) ---
-  publisher:
+  
+  #publisher:
     # Construye la imagen usando el Dockerfile en el directorio actual (.)
-    build: .
-    container_name: publisher
+  #  build: .
+  #  container_name: publisher
     # Define una dependencia: este servicio no iniciará hasta que 'mqtt-broker' esté listo
+  #  depends_on:
+  #    - mqtt-broker
+    # Sobrescribe el CMD por defecto del Dockerfile para ejecutar el script específico del publisher
+  #  command: "node publisher/publisher.js"
+    # Política de reinicio: reinicia automáticamente si el contenedor falla
+  #  restart: on-failure
+  
+
+  # --- CAMBIO: Renombrado a publisher-1 ---
+  publisher-1:
+    build: .
+    # --- CAMBIO: Nombre del contenedor ---
+    container_name: publisher-1
     depends_on:
       - mqtt-broker
-    # Sobrescribe el CMD por defecto del Dockerfile para ejecutar el script específico del publisher
     command: "node publisher/publisher.js"
-    # Política de reinicio: reinicia automáticamente si el contenedor falla
+    # --- NUEVO: Variables de entorno ---
+    environment:
+      - DEVICE_ID=sensor-001
     restart: on-failure
 
-  # --- Servicio para el Suscriptor UNICAST ---
+  # --- NUEVO: Servicio para el segundo Publisher ---
+  publisher-2:
+    build: . # Reutiliza la misma imagen que publisher-1
+    container_name: publisher-2
+    depends_on:
+      - mqtt-broker
+    command: "node publisher/publisher.js" # Ejecuta el mismo script
+    environment:
+      - DEVICE_ID=sensor-002 # ¡Le pasamos un ID diferente!
+    restart: on-failure
+
+  # --- Servicio para el Suscriptor UNICAST(Se adiciona un cambio para la escucha de un solo sensor) ---
   unicast-subscriber:
     build: . # Usa el mismo Dockerfile que el publisher
     container_name: unicast-subscriber
     depends_on:
       - mqtt-broker
     command: "node subscriber/unicast.js" # Ejecuta el script unicast
+    # --- NUEVO (Opcional): Escucharemos solo al sensor-001 ---
+    environment:
+      - DEVICE_ID=sensor-001
     restart: on-failure
 
   # --- Servicio para el Suscriptor MULTICAST ---
