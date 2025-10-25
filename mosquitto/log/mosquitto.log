@@ -113,3 +113,12 @@
 1761376017: New client connected from ::ffff:192.168.65.1:34637 as web_monitor_7417a9 (p2, c1, k60).
 1761376030: Client web_monitor_7417a9 closed its connection.
 1761376038: New client connected from ::ffff:192.168.65.1:39068 as web_monitor_fc2d9c (p2, c1, k60).
+1761376672: Client mqttjs_815fcb97 closed its connection.
+1761376672: Client publisher_sensor-002_56fc9e closed its connection.
+1761376672: Client mqttjs_af5c40d1 closed its connection.
+1761376672: Client unicast_sensor-001_4aed0a closed its connection.
+1761376672: Client mqttjs_aa8066d5 closed its connection.
+1761376672: Client publisher_sensor-001_709d8f closed its connection.
+1761376673: mosquitto version 2.0.22 terminating
+1761376673: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761376673: Client web_monitor_fc2d9c closed its connection.
