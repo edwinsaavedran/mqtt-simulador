@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor MQTT - Sistemas Distribuidos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Centro de Mando MQTT</h1>
+        <div id="connection-status">Estado: Desconectado</div>
+    </header>
+
+    <main>
+        <section id="device-status-section">
+            <h2>Estado de Dispositivos</h2>
+            <div id="device-list">
+                </div>
+        </section>
+
+        <hr>
+
+        <section id="telemetry-section">
+            <h2>Telemetría en Tiempo Real</h2>
+            <div id="sensor-cards">
+                </div>
+        </section>
+        
+        <hr>
+
+        <section id="log-section">
+            <h2>Registro de Eventos</h2>
+            <pre id="message-log"></pre>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

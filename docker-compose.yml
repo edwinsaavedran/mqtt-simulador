@@ -104,6 +104,23 @@ services:
     command: "node subscriber/monitor.js" # Ejecuta el script monitor
     restart: on-failure
 
+# --- NUEVO: Servicio para el Monitor Web (Frontend) ---
+  web-monitor:
+    # Usamos una imagen ligera de Nginx
+    image: nginx:1.25-alpine 
+    container_name: web-monitor
+    # Mapea el puerto 80 del contenedor Nginx al puerto 8080 de tu máquina
+    ports:
+      - "8080:80"
+    # Monta el contenido de nuestra carpeta ./web-monitor
+    # en el directorio donde Nginx sirve los archivos por defecto
+    volumes:
+      - ./web-monitor:/usr/share/nginx/html:ro # :ro significa solo lectura
+    # Depende del broker solo para asegurar un orden de inicio, aunque no se conecta directamente
+    depends_on:
+      - mqtt-broker
+    restart: unless-stopped
+
 # --- (Opcional) Definición de redes ---
 # Por defecto, Docker Compose crea una red 'default' para todos los servicios,
 # permitiendo que se comuniquen usando sus nombres de servicio (ej. 'mqtt-broker').
