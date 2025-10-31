@@ -26,6 +26,24 @@ services:
     # Política de reinicio: reinicia el contenedor si se detiene, a menos que se detenga manualmente
     restart: unless-stopped
 
+  # --- NUEVO: Servicio para InfluxDB ---
+  influxdb:
+    image: influxdb:2.7 # Para el caso, usaremos una versión específica de InfluxDB v2 
+    container_name: influxdb
+    ports:
+      - "8086:8086" # Puerto estándar de la API de InfluxDB 
+    volumes:
+      - influxdb_data:/var/lib/influxdb2 # Volumen para persistir los datos de InfluxDB
+    environment:
+      # --- Configuración inicial de InfluxDB ---
+      - DOCKER_INFLUXDB_INIT_MODE=setup # Modo de inicialización
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin # Usuario inicial. No usar 'admin' en producción.
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password123 # Contraseña segura (Recordar que es solo para el caso, en Producción, no realizar dicha ello!)
+      - DOCKER_INFLUXDB_INIT_ORG=utp # Nombre de la organización
+      - DOCKER_INFLUXDB_INIT_BUCKET=sensors # Nombre del bucket (base de datos)
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mySuperSecretToken123! # Token de API (¡cambiar en producción!)
+    restart: unless-stopped
+
   # --- Servicio para el Publicador (Sensor simulado) ---
   
   #publisher:
@@ -65,6 +83,22 @@ services:
       - DEVICE_ID=sensor-002 # ¡Le pasamos un ID diferente!
     restart: on-failure
 
+  # --- NUEVO: Servicio para el Suscriptor de Persistencia ---
+  persistence-subscriber:
+    build: . # Reutiliza la misma imagen Node.js
+    container_name: persistence-subscriber
+    depends_on: # Define dependencias y el orden de inicio
+      - mqtt-broker # Debe esperar al broker
+      - influxdb    # ¡Debe esperar también a la base de datos!
+    command: "node subscriber/persistence-subscriber.js" # Script que crearemos para persistir datos
+    environment:
+      # Pasamos la configuración de InfluxDB como variables de entorno
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=mySuperSecretToken123! # El mismo token que definimos arriba
+      - INFLUXDB_ORG=utp
+      - INFLUXDB_BUCKET=sensors
+    restart: on-failure
+  
   # --- Servicio para el Suscriptor UNICAST(Se adiciona un cambio para la escucha de un solo sensor) ---
   unicast-subscriber:
     build: . # Usa el mismo Dockerfile que el publisher
@@ -121,9 +155,13 @@ services:
       - mqtt-broker
     restart: unless-stopped
 
+# --- Definición de volúmenes persistentes ---
+volumes:
+  influxdb_data:
+
 # --- (Opcional) Definición de redes ---
-# Por defecto, Docker Compose crea una red 'default' para todos los servicios,
+# Por defecto, Docker Compose crea una red 'default' para todos los servicios
 # permitiendo que se comuniquen usando sus nombres de servicio (ej. 'mqtt-broker').
-# Si necesitas configuraciones de red más complejas, las definirías aquí.
+# Si necesitas configuraciones de red más complejas, se recomienda definirías aquí.
 # networks:
 #   mi_red_mqtt:
