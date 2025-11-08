@@ -44,6 +44,14 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mySuperSecretToken123! # Token de API (¡cambiar en producción!)
     restart: unless-stopped
 
+  time-server:
+    build: . # Reutiliza la misma imagen Node.js
+    container_name: time-server
+    depends_on:
+      - mqtt-broker # Depende del broker para funcionar
+    command: "node time-server/time-server.js" # Ejecuta el nuevo script del servidor de tiempo
+    restart: on-failure
+
   # --- Servicio para el Publicador (Sensor simulado) ---
   
   #publisher:
@@ -70,6 +78,8 @@ services:
     # --- NUEVO: Variables de entorno ---
     environment:
       - DEVICE_ID=sensor-001
+      - CLOCK_DRIFT_RATE=500 # Simula un reloj que se atrasa 0.5 segundos cada minuto
+      - PROCESS_ID=0
     restart: on-failure
 
   # --- NUEVO: Servicio para el segundo Publisher ---
@@ -81,6 +91,8 @@ services:
     command: "node publisher/publisher.js" # Ejecuta el mismo script
     environment:
       - DEVICE_ID=sensor-002 # ¡Le pasamos un ID diferente!
+      - CLOCK_DRIFT_RATE=-500 # Simula un reloj que se atrasa 0.5 segundos cada minuto
+      - PROCESS_ID=1
     restart: on-failure
 
   # --- NUEVO: Servicio para el Suscriptor de Persistencia ---
@@ -97,6 +109,7 @@ services:
       - INFLUXDB_TOKEN=mySuperSecretToken123! # El mismo token que definimos arriba
       - INFLUXDB_ORG=utp
       - INFLUXDB_BUCKET=sensors
+      - PROCESS_ID=2
     restart: on-failure
   
   # --- Servicio para el Suscriptor UNICAST(Se adiciona un cambio para la escucha de un solo sensor) ---

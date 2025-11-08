@@ -12,7 +12,7 @@ header {
     padding: 1rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 header h1 {
@@ -20,15 +20,39 @@ header h1 {
     font-size: 1.5rem;
 }
 
+#browser-time {
+    font-size: 0.8rem;
+    color: #eee;
+    text-align: right;
+    margin-bottom: 4px;
+}
+
 #connection-status {
     font-weight: bold;
     padding: 0.3rem 0.6rem;
     border-radius: 4px;
     background-color: #dc3545; /* Rojo inicial */
+    text-align: right;
 }
 
 #connection-status.connected {
     background-color: #28a745; /* Verde si conectado */
+}
+
+#monitor-clock {
+    font-size: 0.9rem;
+    color: #ffc107; /* Amarillo para destacarlo */
+    text-align: right;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+#monitor-vector-clock {
+    font-size: 0.8rem;
+    color: #17a2b8; /* Cyan */
+    text-align: right;
+    margin-bottom: 4px;
+    font-weight: bold;
 }
 
 main {
@@ -99,6 +123,18 @@ h2 {
 .sensor-card p {
     margin: 0.3rem 0;
     font-size: 0.9rem;
+}
+
+.sensor-card p.delta {
+    font-weight: bold;
+}
+
+.sensor-card p.delta-positive {
+    color: #dc3545; /* Rojo para deriva positiva (futuro) */
+}
+
+.sensor-card p.delta-negative {
+    color: #007bff; /* Azul para deriva negativa (pasado) */
 }
 
 #message-log {

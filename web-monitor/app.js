@@ -15,10 +15,36 @@ const connectionStatusEl = document.getElementById('connection-status');
 const deviceListEl = document.getElementById('device-list');
 const sensorCardsEl = document.getElementById('sensor-cards');
 const messageLogEl = document.getElementById('message-log');
+const browserTimeEl = document.getElementById('browser-time');
+const monitorClockEl = document.getElementById('monitor-clock');
+const monitorVectorClockEl = document.getElementById('monitor-vector-clock');
+
+// --- Mostrar Hora del Navegador ---
+function updateBrowserTime() {
+    const now = new Date();
+    browserTimeEl.textContent = `Hora del Navegador: ${now.toLocaleTimeString()}`;
+}
+//setInterval(updateBrowserTime, 1000);
 
 // --- Estado de la Aplicación ---
 let client;
 const devices = {}; // Almacenará el estado y datos de cada dispositivo
+// Reloj Lógico de Lamport para el Monitor
+let lamportClock = 0;
+
+// --- Configuración Reloj Vectorial del Monitor ---
+/**
+ * Definimos 4 procesos:
+ * P_0: publisher-1
+ * P_1: publisher-2
+ * P_2: persistence-subscriber
+ * P_3: web-monitor (nosotros)
+ */
+const VECTOR_PROCESS_COUNT_MONITOR = 4;
+const PROCESS_ID_MONITOR = 3; // Nosotros somos el proceso 3
+let vectorClock = new Array(VECTOR_PROCESS_COUNT_MONITOR).fill(0);
+// Almacenará el último vector recibido para comparaciones
+let lastReceivedVector = null;
 
 // --- Funciones de Logging ---
 function logMessage(message) {
@@ -26,6 +52,15 @@ function logMessage(message) {
     messageLogEl.innerHTML += `[${timestamp}] ${message}\n`;
     // Auto-scroll hacia abajo
     messageLogEl.scrollTop = messageLogEl.scrollHeight; 
+}
+
+// --- NUEVO: Función para actualizar el reloj del monitor ---
+function updateMonitorClock() {
+    monitorClockEl.textContent = `Reloj Lógico (Monitor): ${lamportClock}`;
+}
+
+function updateMonitorVectorClock() {
+    monitorVectorClockEl.textContent = `Reloj Vectorial: [${vectorClock.join(',')}]`;
 }
 
 // --- Funciones de Actualización del DOM ---
@@ -79,15 +114,66 @@ function updateSensorCard(deviceId) {
     
     const deviceData = devices[deviceId];
     const statusClass = deviceData.status === 'online' ? 'online' : 'offline';
+
+    let time = 'N/A';
+    let timeCorregido = 'N/A';
+    let timeSimulado = 'N/A';
+    let offset = 'N/A';
+    let delta = 'N/A';
+    let deltaClass = '';
+
+    if (deviceData.telemetry.timestamp) {
+        const sensorTime = new Date(deviceData.telemetry.timestamp);
+        time = sensorTime.toLocaleTimeString();
+
+        const sensorTimeCorrected = new Date(deviceData.telemetry.timestamp);
+        const browserTime = new Date();
+        timeCorregido = sensorTimeCorrected.toLocaleTimeString('en-GB', { hour12: false });
+        
+        // Calculamos la diferencia en segundos
+        //const deltaSeconds = (sensorTime.getTime() - browserTime.getTime()) / 1000;
+
+        const deltaSeconds = (sensorTimeCorrected.getTime() - browserTime.getTime()) / 1000;
+        delta = `${deltaSeconds.toFixed(1)} s`;
+        if (deltaSeconds > 1.5) { // Damos un margen de 1.5s
+            deltaClass = 'delta-positive';
+        } else if (deltaSeconds < -1.5) {
+            deltaClass = 'delta-negative';
+        }
+
+        // delta = `${deltaSeconds.toFixed(1)} s`;
+        // if (deltaSeconds > 1) {
+        //     deltaClass = 'delta-positive'; // El sensor está en el "futuro"
+        // } else if (deltaSeconds < -1) {
+        //     deltaClass = 'delta-negative'; // El sensor está en el "pasado"
+        // }
+    }
+
+    if (deviceData.telemetry.timestamp_simulado) {
+        timeSimulado = new Date(deviceData.telemetry.timestamp_simulado).toLocaleTimeString('en-GB', { hour12: false });
+    }
+    
+    if (deviceData.telemetry.clock_offset) {
+        offset = `${deviceData.telemetry.clock_offset} ms`;
+    }
+
     const temp = deviceData.telemetry.temperatura !== undefined ? `${deviceData.telemetry.temperatura} °C` : 'N/A';
     const hum = deviceData.telemetry.humedad !== undefined ? `${deviceData.telemetry.humedad} %` : 'N/A';
-    const time = deviceData.telemetry.timestamp ? new Date(deviceData.telemetry.timestamp).toLocaleTimeString() : 'N/A';
+    const lamport_ts = deviceData.telemetry.lamport_ts !== undefined ? deviceData.telemetry.lamport_ts : 'N/A';
+
+    const vector_clock = deviceData.telemetry.vector_clock ? 
+        `[${deviceData.telemetry.vector_clock.join(',')}]` : 'N/A';
 
     cardEl.innerHTML = `
         <h3>${deviceId} <span class="status-indicator ${statusClass}">${deviceData.status.toUpperCase()}</span></h3>
         <p>Temperatura: <strong>${temp}</strong></p>
         <p>Humedad: <strong>${hum}</strong></p>
-        <p>Última act.: ${time}</p>
+        <p>T. Corregido: <strong>${timeCorregido}</strong></p>
+        <p>T. Simulado: <span class="${deltaClass}">${timeSimulado}</span></p>
+        <p>Offset Aplicado: <strong>${offset}</strong></p>
+        <p class="delta ${deltaClass}">Delta (Corregido - Navegador): <strong>${delta}</strong></p>
+        <p>Lamport TS (Sensor): <strong>${lamport_ts}</strong></p>
+        <p>Vector (Sensor): <strong>${vector_clock}</strong></p>
     `;
 }
 
@@ -121,9 +207,15 @@ function connectToMqtt() {
     });
 
     client.on('message', (topic, message) => {
+        // --- REGLA 1 (VECTORIAL): Evento interno ---
+        // Incrementamos nuestro propio reloj (P_3)
+        vectorClock[PROCESS_ID_MONITOR]++;
+        // Incrementamos el reloj del monitor por el evento de "recibir"
+        lamportClock++;
+
         const messageString = message.toString();
-        logMessage(`Mensaje recibido en [${topic}]: ${messageString}`);
-        
+        logMessage(`Mensaje recibido en [${topic}] (Reloj Monitor: ${lamportClock})`);
+
         try {
             const data = JSON.parse(messageString);
             const deviceId = data.deviceId;
@@ -131,6 +223,30 @@ function connectToMqtt() {
             if (!deviceId) {
                 logMessage("Mensaje recibido sin deviceId, ignorando.");
                 return;
+            }
+
+            // --- (LAMPORT): Parte 2 (Fusión) ---
+            const receivedLamportTS = data.lamport_ts || 0;
+            lamportClock = Math.max(lamportClock, receivedLamportTS);
+            updateMonitorClock();
+
+            const receivedVectorClock = data.vector_clock;
+            if (receivedVectorClock && Array.isArray(receivedVectorClock)) {
+                // Rellenamos el vector recibido si es más corto (ej. P_0 no sabe de P_3)
+                while (receivedVectorClock.length < VECTOR_PROCESS_COUNT_MONITOR) {
+                    receivedVectorClock.push(0);
+                }
+                
+                // Fusionamos
+                for (let i = 0; i < VECTOR_PROCESS_COUNT_MONITOR; i++) {
+                    vectorClock[i] = Math.max(vectorClock[i], receivedVectorClock[i]);
+                }
+                updateMonitorVectorClock();
+                logMessage(`[VECTOR] Fusión: [${receivedVectorClock.join(',')}] -> [${vectorClock.join(',')}]`);
+
+                // --- NUEVO: Detección de Concurrencia ---
+                checkConcurrency(receivedVectorClock);
+                lastReceivedVector = receivedVectorClock; // Guardamos para la próxima comparación
             }
 
             // Inicializar si es la primera vez que vemos este deviceId
@@ -142,10 +258,9 @@ function connectToMqtt() {
                 updateDeviceStatus(deviceId, data.status);
             } else if (topic.includes('/telemetry')) {
                 devices[deviceId].telemetry = data; // Guardar últimos datos
-                updateSensorCard(deviceId); // Actualizar la tarjeta con nuevos datos
-                // Asegurarse de que el estado en la lista también se actualice si vemos telemetría
+                updateSensorCard(deviceId); 
                 if (devices[deviceId].status === 'desconocido' || devices[deviceId].status === 'offline') {
-                    updateDeviceStatus(deviceId, 'online'); // Asumimos online si envía telemetría
+                    updateDeviceStatus(deviceId, 'online');
                 }
             }
         } catch (e) {
@@ -176,5 +291,42 @@ function connectToMqtt() {
     });
 }
 
-// --- Iniciar Conexión ---
+// --- NUEVO: Función para comparar relojes vectoriales ---
+/**
+ * Compara dos relojes vectoriales (A y B)
+ * @returns 'A_BEFORE_B', 'B_BEFORE_A', 'CONCURRENT'
+ */
+function compareVectorClocks(vA, vB) {
+    let a_lt_b = false;
+    let b_lt_a = false;
+    for (let i = 0; i < vA.length; i++) {
+        if (vA[i] < vB[i]) {
+            a_lt_b = true;
+        } else if (vA[i] > vB[i]) {
+            b_lt_a = true;
+        }
+    }
+    if (a_lt_b && !b_lt_a) return 'A_BEFORE_B';
+    if (b_lt_a && !a_lt_b) return 'B_BEFORE_A';
+    return 'CONCURRENT';
+}
+
+function checkConcurrency(newVector) {
+    if (lastReceivedVector) {
+        const relation = compareVectorClocks(lastReceivedVector, newVector);
+        if (relation === 'CONCURRENT') {
+            logMessage(`[CONCURRENCIA] Evento [${newVector.join(',')}] es CONCURRENTE con [${lastReceivedVector.join(',')}]`);
+        } else {
+             logMessage(`[ORDEN] Evento [${lastReceivedVector.join(',')}] sucedió ${relation.replace('_', ' ')} [${newVector.join(',')}]`);
+        }
+    } else {
+        logMessage(`[VECTOR] Primer evento recibido [${newVector.join(',')}]`);
+    }
+}
+
+// --- Iniciar Conexión y Reloj ---
 connectToMqtt();
+updateBrowserTime();
+setInterval(updateBrowserTime, 1000);
+updateMonitorClock();
+updateMonitorVectorClock(); // Inicializar reloj vectorial en UI

@@ -9,9 +9,13 @@
 <body>
     <header>
         <h1>Centro de Mando MQTT</h1>
-        <div id="connection-status">Estado: Desconectado</div>
+        <div>
+            <div id="browser-time"></div>
+            <div id="monitor-clock">Reloj Lógico (Monitor): 0</div>
+            <div id="monitor-vector-clock">Reloj Vectorial: [0,0,0,0]</div> 
+            <div id="connection-status">Estado: Desconectado</div>
+        </div>
     </header>
-
     <main>
         <section id="device-status-section">
             <h2>Estado de Dispositivos</h2>

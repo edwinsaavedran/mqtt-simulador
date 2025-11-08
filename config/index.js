@@ -22,6 +22,12 @@ module.exports = {
 
     // Tópico para el estado de un dispositivo (online/offline)
     status: (deviceId) => `utp/sistemas_distribuidos/grupo1/${deviceId}/status`,
+
+    /** Tópico general donde los clientes solicitan la hora */
+    time_request: 'utp/sistemas_distribuidos/grupo1/time/request',
+
+    // Tópico específico donde el servidor responde con la hora solicitada
+    time_response: (deviceId) => `utp/sistemas_distribuidos/grupo1/time/response/${deviceId}`,
     
     // Tópicos de ejemplo para los patrones de comunicación
     unicast: 'utp/SistemasDistribuidos/saavedra',
