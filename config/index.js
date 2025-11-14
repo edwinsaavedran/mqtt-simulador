@@ -7,7 +7,6 @@
 module.exports = {
   // Configuración del Broker MQTT
   broker: {
-    //address: 'broker.hivemq.com',
     address: 'mqtt-broker',
     port: 1883,
   },
@@ -22,17 +21,25 @@ module.exports = {
 
     // Tópico para el estado de un dispositivo (online/offline)
     status: (deviceId) => `utp/sistemas_distribuidos/grupo1/${deviceId}/status`,
-
+    
+    // --- Tópicos para Sincronización de Reloj (Cristian) ---
     /** Tópico general donde los clientes solicitan la hora */
     time_request: 'utp/sistemas_distribuidos/grupo1/time/request',
-
-    // Tópico específico donde el servidor responde con la hora solicitada
-    time_response: (deviceId) => `utp/sistemas_distribuidos/grupo1/time/response/${deviceId}`,
     
-    // Tópicos de ejemplo para los patrones de comunicación
-    unicast: 'utp/SistemasDistribuidos/saavedra',
-    multicast: 'utp/SistemasDistribuidos/+',
-    multicast_telemetry: 'utp/sistemas_distribuidos/grupo1/+/telemetry',
-    broadcast: 'utp/SistemasDistribuidos/#',
+    /** Tópico base para las respuestas del servidor de tiempo. */
+    time_response: (deviceId) => `utp/sistemas_distribuidos/grupo1/time/response/${deviceId}`,
+
+    // --- TÓPICOS PARA EXCLUSIÓN MUTUA ---
+    /** Tópico para solicitar el acceso al recurso (publisher -> coordinator) */
+    mutex_request: 'utp/sistemas_distribuidos/grupo1/mutex/request',
+    
+    /** Tópico para liberar el recurso (publisher -> coordinator) */
+    mutex_release: 'utp/sistemas_distribuidos/grupo1/mutex/release',
+    
+    /** Tópico para otorgar el permiso (coordinator -> publisher) */
+    mutex_grant: (deviceId) => `utp/sistemas_distribuidos/grupo1/mutex/grant/${deviceId}`,
+    
+    /** Tópico para que el coordinador publique el estado actual del recurso (coordinator -> web-monitor) */
+    mutex_status: 'utp/sistemas_distribuidos/grupo1/mutex/status',
   },
 };

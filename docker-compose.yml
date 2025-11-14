@@ -1,180 +1,148 @@
-# --- docker-compose.yml ---
+# /docker-compose.yml
 
-# Especifica la versión de la sintaxis de Docker Compose
-version: '3.8'
+# La directiva 'version' es obsoleta en las versiones modernas de Compose
+# version: '3.8'
 
-# Define los servicios (contenedores) que componen la aplicación
 services:
-
   # --- Servicio para el Broker MQTT (Mosquitto) ---
   mqtt-broker:
-    # Usa una imagen oficial de Eclipse Mosquitto
     image: eclipse-mosquitto:2
-    # Nombre descriptivo para el contenedor
     container_name: mqtt-broker
-    # Mapea los puertos del contenedor a tu máquina local
-    # Puerto 1883 para MQTT estándar, 9001 para MQTT sobre WebSockets
     ports:
       - "1883:1883" 
       - "9001:9001"
-    # Monta volúmenes para persistir la configuración y los datos del broker
-    # Esto asegura que la configuración y los mensajes retenidos no se pierdan al reiniciar
     volumes:
-      - ./mosquitto/config:/mosquitto/config # Mapea la carpeta de configuración local
-      - ./mosquitto/data:/mosquitto/data     # Mapea la carpeta de datos
-      - ./mosquitto/log:/mosquitto/log       # Mapea la carpeta de logs
-    # Política de reinicio: reinicia el contenedor si se detiene, a menos que se detenga manualmente
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
     restart: unless-stopped
 
-  # --- NUEVO: Servicio para InfluxDB ---
+  # --- Servicio para InfluxDB ---
   influxdb:
-    image: influxdb:2.7 # Para el caso, usaremos una versión específica de InfluxDB v2 
+    image: influxdb:2.7
     container_name: influxdb
     ports:
-      - "8086:8086" # Puerto estándar de la API de InfluxDB 
+      - "8086:8086"
     volumes:
-      - influxdb_data:/var/lib/influxdb2 # Volumen para persistir los datos de InfluxDB
+      - influxdb_data:/var/lib/influxdb2
     environment:
-      # --- Configuración inicial de InfluxDB ---
-      - DOCKER_INFLUXDB_INIT_MODE=setup # Modo de inicialización
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin # Usuario inicial. No usar 'admin' en producción.
-      - DOCKER_INFLUXDB_INIT_PASSWORD=password123 # Contraseña segura (Recordar que es solo para el caso, en Producción, no realizar dicha ello!)
-      - DOCKER_INFLUXDB_INIT_ORG=utp # Nombre de la organización
-      - DOCKER_INFLUXDB_INIT_BUCKET=sensors # Nombre del bucket (base de datos)
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mySuperSecretToken123! # Token de API (¡cambiar en producción!)
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password123
+      - DOCKER_INFLUXDB_INIT_ORG=utp
+      - DOCKER_INFLUXDB_INIT_BUCKET=sensors
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mySuperSecretToken123!
     restart: unless-stopped
-
+  
+  # --- Servicio del Servidor de Tiempo (Cristian) ---
   time-server:
-    build: . # Reutiliza la misma imagen Node.js
+    build: .
     container_name: time-server
     depends_on:
-      - mqtt-broker # Depende del broker para funcionar
-    command: "node time-server/time-server.js" # Ejecuta el nuevo script del servidor de tiempo
+      - mqtt-broker
+    command: "node time-server/time-server.js"
     restart: on-failure
 
-  # --- Servicio para el Publicador (Sensor simulado) ---
-  
-  #publisher:
-    # Construye la imagen usando el Dockerfile en el directorio actual (.)
-  #  build: .
-  #  container_name: publisher
-    # Define una dependencia: este servicio no iniciará hasta que 'mqtt-broker' esté listo
-  #  depends_on:
-  #    - mqtt-broker
-    # Sobrescribe el CMD por defecto del Dockerfile para ejecutar el script específico del publisher
-  #  command: "node publisher/publisher.js"
-    # Política de reinicio: reinicia automáticamente si el contenedor falla
-  #  restart: on-failure
-  
+  # --- Servicio del Coordinador de Bloqueo (Mutex) ---
+  lock-coordinator:
+    build: .
+    container_name: lock-coordinator
+    depends_on:
+      - mqtt-broker
+    command: "node lock-coordinator/lock-coordinator.js"
+    restart: on-failure
 
-  # --- CAMBIO: Renombrado a publisher-1 ---
+  # --- Servicio para el Publicador (Sensor 1) ---
   publisher-1:
     build: .
-    # --- CAMBIO: Nombre del contenedor ---
     container_name: publisher-1
     depends_on:
       - mqtt-broker
+      - time-server # Depende del servidor de tiempo
     command: "node publisher/publisher.js"
-    # --- NUEVO: Variables de entorno ---
     environment:
       - DEVICE_ID=sensor-001
-      - CLOCK_DRIFT_RATE=500 # Simula un reloj que se atrasa 0.5 segundos cada minuto
+      - CLOCK_DRIFT_RATE=500
       - PROCESS_ID=0
     restart: on-failure
 
-  # --- NUEVO: Servicio para el segundo Publisher ---
+  # --- Servicio para el Publicador (Sensor 2) ---
   publisher-2:
-    build: . # Reutiliza la misma imagen que publisher-1
+    build: .
     container_name: publisher-2
     depends_on:
       - mqtt-broker
-    command: "node publisher/publisher.js" # Ejecuta el mismo script
+      - time-server # Depende del servidor de tiempo
+    command: "node publisher/publisher.js"
     environment:
-      - DEVICE_ID=sensor-002 # ¡Le pasamos un ID diferente!
-      - CLOCK_DRIFT_RATE=-500 # Simula un reloj que se atrasa 0.5 segundos cada minuto
+      - DEVICE_ID=sensor-002
+      - CLOCK_DRIFT_RATE=-500
       - PROCESS_ID=1
     restart: on-failure
-
-  # --- NUEVO: Servicio para el Suscriptor de Persistencia ---
+  
+  # --- Servicio para el Suscriptor de Persistencia ---
   persistence-subscriber:
-    build: . # Reutiliza la misma imagen Node.js
+    build: .
     container_name: persistence-subscriber
-    depends_on: # Define dependencias y el orden de inicio
-      - mqtt-broker # Debe esperar al broker
-      - influxdb    # ¡Debe esperar también a la base de datos!
-    command: "node subscriber/persistence-subscriber.js" # Script que crearemos para persistir datos
+    depends_on:
+      - mqtt-broker
+      - influxdb
+    command: "node subscriber/persistence-subscriber.js"
     environment:
-      # Pasamos la configuración de InfluxDB como variables de entorno
       - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_TOKEN=mySuperSecretToken123! # El mismo token que definimos arriba
+      - INFLUXDB_TOKEN=mySuperSecretToken123!
       - INFLUXDB_ORG=utp
       - INFLUXDB_BUCKET=sensors
       - PROCESS_ID=2
     restart: on-failure
-  
-  # --- Servicio para el Suscriptor UNICAST(Se adiciona un cambio para la escucha de un solo sensor) ---
-  unicast-subscriber:
-    build: . # Usa el mismo Dockerfile que el publisher
-    container_name: unicast-subscriber
-    depends_on:
-      - mqtt-broker
-    command: "node subscriber/unicast.js" # Ejecuta el script unicast
-    # --- NUEVO (Opcional): Escucharemos solo al sensor-001 ---
-    environment:
-      - DEVICE_ID=sensor-001
-    restart: on-failure
 
-  # --- Servicio para el Suscriptor MULTICAST ---
+  # --- Suscriptores de ejemplo (sin cambios, pero dependen del broker) ---
+  unicast-subscriber:
+     build: .
+     container_name: unicast-subscriber
+     depends_on:
+       - mqtt-broker
+     command: "node subscriber/unicast.js"
+     environment:
+       - DEVICE_ID=sensor-001
+     restart: on-failure
+
   multicast-subscriber:
     build: .
     container_name: multicast-subscriber
     depends_on:
       - mqtt-broker
-    command: "node subscriber/multicast.js" # Ejecuta el script multicast
+    command: "node subscriber/multicast.js"
     restart: on-failure
-
-  # --- Servicio para el Suscriptor BROADCAST ---
+  
   broadcast-subscriber:
     build: .
     container_name: broadcast-subscriber
     depends_on:
       - mqtt-broker
-    command: "node subscriber/broadcast.js" # Ejecuta el script broadcast
+    command: "node subscriber/broadcast.js"
     restart: on-failure
 
-  # --- Servicio para el MONITOR de estado ---
   monitor:
     build: .
     container_name: monitor
     depends_on:
       - mqtt-broker
-    command: "node subscriber/monitor.js" # Ejecuta el script monitor
+    command: "node subscriber/monitor.js"
     restart: on-failure
 
-# --- NUEVO: Servicio para el Monitor Web (Frontend) ---
+  # --- Servicio para el Monitor Web (Frontend) ---
   web-monitor:
-    # Usamos una imagen ligera de Nginx
     image: nginx:1.25-alpine 
     container_name: web-monitor
-    # Mapea el puerto 80 del contenedor Nginx al puerto 8080 de tu máquina
     ports:
       - "8080:80"
-    # Monta el contenido de nuestra carpeta ./web-monitor
-    # en el directorio donde Nginx sirve los archivos por defecto
     volumes:
-      - ./web-monitor:/usr/share/nginx/html:ro # :ro significa solo lectura
-    # Depende del broker solo para asegurar un orden de inicio, aunque no se conecta directamente
+      - ./web-monitor:/usr/share/nginx/html:ro
     depends_on:
       - mqtt-broker
     restart: unless-stopped
 
-# --- Definición de volúmenes persistentes ---
+# --- Definición del volumen para InfluxDB ---
 volumes:
   influxdb_data:
-
-# --- (Opcional) Definición de redes ---
-# Por defecto, Docker Compose crea una red 'default' para todos los servicios
-# permitiendo que se comuniquen usando sus nombres de servicio (ej. 'mqtt-broker').
-# Si necesitas configuraciones de red más complejas, se recomienda definirías aquí.
-# networks:
-#   mi_red_mqtt:

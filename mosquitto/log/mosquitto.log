@@ -496,3 +496,296 @@
 1762579876: New client connected from ::ffff:192.168.65.1:37696 as web_monitor_571ca4 (p2, c1, k60).
 1762581333: Saving in-memory database to /mosquitto/data//mosquitto.db.
 1762583134: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1762583199: Client publisher_sensor-001_8311f0 closed its connection.
+1762583199: Client time_server_01 closed its connection.
+1762583199: Client unicast_sensor-001_3b846c closed its connection.
+1762583199: Client mqttjs_8abca061 closed its connection.
+1762583199: Client persistence_sub_6868ec closed its connection.
+1762583199: Client publisher_sensor-002_302afe closed its connection.
+1762583199: Client mqttjs_c9d4be70 closed its connection.
+1762583199: Client mqttjs_8732266d closed its connection.
+1762583200: mosquitto version 2.0.22 terminating
+1762583200: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1762583200: Client web_monitor_571ca4 closed its connection.
+1763064416: mosquitto version 2.0.22 starting
+1763064416: Config loaded from /mosquitto/config/mosquitto.conf.
+1763064416: Opening ipv4 listen socket on port 1883.
+1763064416: Opening ipv6 listen socket on port 1883.
+1763064416: Opening websockets listen socket on port 9001.
+1763064416: mosquitto version 2.0.22 running
+1763064416: New connection from 172.19.0.4:42812 on port 1883.
+1763064416: New client connected from 172.19.0.4:42812 as publisher_sensor-001_2b47b9 (p2, c1, k60).
+1763064416: New connection from 172.19.0.5:38584 on port 1883.
+1763064416: New client connected from 172.19.0.5:38584 as lock_coordinator_01 (p2, c1, k60).
+1763064416: New connection from 172.19.0.6:52262 on port 1883.
+1763064416: New client connected from 172.19.0.6:52262 as mqttjs_936f6aaf (p2, c1, k60).
+1763064416: New connection from 172.19.0.7:33838 on port 1883.
+1763064416: New client connected from 172.19.0.7:33838 as time_server_01 (p2, c1, k60).
+1763064416: New connection from 172.19.0.10:57654 on port 1883.
+1763064416: New client connected from 172.19.0.10:57654 as unicast_sensor-001_13d486 (p2, c1, k60).
+1763064416: New connection from 172.19.0.9:36066 on port 1883.
+1763064416: New client connected from 172.19.0.9:36066 as persistence_sub_86c237 (p2, c1, k60).
+1763064416: New connection from 172.19.0.11:39950 on port 1883.
+1763064416: New client connected from 172.19.0.11:39950 as publisher_sensor-002_633607 (p2, c1, k60).
+1763064416: New connection from 172.19.0.12:51068 on port 1883.
+1763064416: New client connected from 172.19.0.12:51068 as mqttjs_bce27f7b (p2, c1, k60).
+1763064416: New connection from 172.19.0.13:56330 on port 1883.
+1763064416: New client connected from 172.19.0.13:56330 as mqttjs_0da97705 (p2, c1, k60).
+1763064557: New connection from 192.168.65.1:33934 on port 1883.
+1763064557: Client <unknown> disconnected due to protocol error.
+1763064557: New connection from 192.168.65.1:21878 on port 1883.
+1763064557: Client <unknown> disconnected due to protocol error.
+1763064557: New connection from 192.168.65.1:37341 on port 1883.
+1763064557: New connection from 192.168.65.1:29627 on port 1883.
+1763064558: Client <unknown> disconnected due to protocol error.
+1763064558: Client <unknown> disconnected due to protocol error.
+1763064558: New connection from 192.168.65.1:21880 on port 1883.
+1763064558: Client <unknown> disconnected due to protocol error.
+1763064743: Client mqttjs_936f6aaf closed its connection.
+1763064743: Client publisher_sensor-002_633607 closed its connection.
+1763064743: Client mqttjs_bce27f7b closed its connection.
+1763064743: Client lock_coordinator_01 closed its connection.
+1763064743: Client time_server_01 closed its connection.
+1763064743: Client mqttjs_0da97705 closed its connection.
+1763064743: Client persistence_sub_86c237 closed its connection.
+1763064743: Client unicast_sensor-001_13d486 closed its connection.
+1763064743: Client publisher_sensor-001_2b47b9 closed its connection.
+1763064744: mosquitto version 2.0.22 terminating
+1763064744: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763064972: mosquitto version 2.0.22 starting
+1763064972: Config loaded from /mosquitto/config/mosquitto.conf.
+1763064972: Opening ipv4 listen socket on port 1883.
+1763064972: Opening ipv6 listen socket on port 1883.
+1763064972: Opening websockets listen socket on port 9001.
+1763064972: mosquitto version 2.0.22 running
+1763064972: New connection from 172.19.0.4:59946 on port 1883.
+1763064972: New client connected from 172.19.0.4:59946 as mqttjs_43951cea (p2, c1, k60).
+1763064972: New connection from 172.19.0.5:56778 on port 1883.
+1763064972: New connection from 172.19.0.7:60788 on port 1883.
+1763064972: New client connected from 172.19.0.5:56778 as persistence_sub_caae34 (p2, c1, k60).
+1763064972: New connection from 172.19.0.9:48280 on port 1883.
+1763064972: New client connected from 172.19.0.7:60788 as time_server_01 (p2, c1, k60).
+1763064972: New client connected from 172.19.0.9:48280 as unicast_sensor-001_47157b (p2, c1, k60).
+1763064972: New connection from 172.19.0.6:46544 on port 1883.
+1763064972: New client connected from 172.19.0.6:46544 as mqttjs_5005e47e (p2, c1, k60).
+1763064972: New connection from 172.19.0.10:47976 on port 1883.
+1763064972: New connection from 172.19.0.11:47842 on port 1883.
+1763064972: New client connected from 172.19.0.11:47842 as publisher_sensor-002_a0911c (p2, c1, k60).
+1763064972: New client connected from 172.19.0.10:47976 as publisher_sensor-001_ede766 (p2, c1, k60).
+1763064972: New connection from 172.19.0.13:33572 on port 1883.
+1763064972: New client connected from 172.19.0.13:33572 as mqttjs_5c4e1e1a (p2, c1, k60).
+1763064972: New connection from 172.19.0.12:48740 on port 1883.
+1763064972: New client connected from 172.19.0.12:48740 as lock_coordinator_01 (p2, c1, k60).
+1763065557: Client persistence_sub_caae34 closed its connection.
+1763065557: Client publisher_sensor-002_a0911c closed its connection.
+1763065557: Client time_server_01 closed its connection.
+1763065557: Client mqttjs_5c4e1e1a closed its connection.
+1763065557: Client lock_coordinator_01 closed its connection.
+1763065557: Client unicast_sensor-001_47157b closed its connection.
+1763065557: Client mqttjs_5005e47e closed its connection.
+1763065557: Client publisher_sensor-001_ede766 closed its connection.
+1763065557: Client mqttjs_43951cea closed its connection.
+1763065557: mosquitto version 2.0.22 terminating
+1763065557: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763065679: mosquitto version 2.0.22 starting
+1763065679: Config loaded from /mosquitto/config/mosquitto.conf.
+1763065679: Opening ipv4 listen socket on port 1883.
+1763065679: Opening ipv6 listen socket on port 1883.
+1763065679: Opening websockets listen socket on port 9001.
+1763065679: mosquitto version 2.0.22 running
+1763065680: New connection from 172.19.0.4:43282 on port 1883.
+1763065680: New connection from 172.19.0.5:49530 on port 1883.
+1763065680: New client connected from 172.19.0.4:43282 as mqttjs_e13de819 (p2, c1, k60).
+1763065680: New client connected from 172.19.0.5:49530 as unicast_sensor-001_86f184 (p2, c1, k60).
+1763065680: New connection from 172.19.0.6:57336 on port 1883.
+1763065680: New client connected from 172.19.0.6:57336 as lock_coordinator_01 (p2, c1, k60).
+1763065680: New connection from 172.19.0.8:35580 on port 1883.
+1763065680: New client connected from 172.19.0.8:35580 as mqttjs_f3039bd8 (p2, c1, k60).
+1763065680: New connection from 172.19.0.7:48276 on port 1883.
+1763065680: New client connected from 172.19.0.7:48276 as publisher_sensor-001_dd1b82 (p2, c1, k60).
+1763065680: New connection from 172.19.0.9:48998 on port 1883.
+1763065680: New connection from 172.19.0.11:37542 on port 1883.
+1763065680: New client connected from 172.19.0.9:48998 as time_server_01 (p2, c1, k60).
+1763065680: New client connected from 172.19.0.11:37542 as publisher_sensor-002_01ffea (p2, c1, k60).
+1763065680: New connection from 172.19.0.10:43002 on port 1883.
+1763065680: New client connected from 172.19.0.10:43002 as mqttjs_f7d5a5d8 (p2, c1, k60).
+1763065680: New connection from 172.19.0.13:57246 on port 1883.
+1763065680: New client connected from 172.19.0.13:57246 as persistence_sub_ba50ef (p2, c1, k60).
+1763070788: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763071248: Client persistence_sub_ba50ef closed its connection.
+1763071248: Client time_server_01 closed its connection.
+1763071248: Client mqttjs_f3039bd8 closed its connection.
+1763071248: Client publisher_sensor-001_dd1b82 closed its connection.
+1763071248: Client lock_coordinator_01 closed its connection.
+1763071248: Client mqttjs_f7d5a5d8 closed its connection.
+1763071248: Client mqttjs_e13de819 closed its connection.
+1763071248: Client unicast_sensor-001_86f184 closed its connection.
+1763071248: Client publisher_sensor-002_01ffea closed its connection.
+1763071249: mosquitto version 2.0.22 terminating
+1763071249: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763071271: mosquitto version 2.0.22 starting
+1763071271: Config loaded from /mosquitto/config/mosquitto.conf.
+1763071271: Opening ipv4 listen socket on port 1883.
+1763071271: Opening ipv6 listen socket on port 1883.
+1763071271: Opening websockets listen socket on port 9001.
+1763071271: mosquitto version 2.0.22 running
+1763071271: New connection from 172.19.0.4:54942 on port 1883.
+1763071271: New client connected from 172.19.0.4:54942 as unicast_sensor-001_7b8396 (p2, c1, k60).
+1763071271: New connection from 172.19.0.6:48230 on port 1883.
+1763071271: New connection from 172.19.0.5:48114 on port 1883.
+1763071271: New client connected from 172.19.0.6:48230 as lock_coordinator_01 (p2, c1, k60).
+1763071271: New client connected from 172.19.0.5:48114 as publisher_sensor-002_b4a786 (p2, c1, k60).
+1763071271: New connection from 172.19.0.7:40962 on port 1883.
+1763071271: New connection from 172.19.0.8:39480 on port 1883.
+1763071271: New client connected from 172.19.0.7:40962 as mqttjs_2685411a (p2, c1, k60).
+1763071271: New client connected from 172.19.0.8:39480 as publisher_sensor-001_a305ac (p2, c1, k60).
+1763071271: New connection from 172.19.0.9:52338 on port 1883.
+1763071271: New client connected from 172.19.0.9:52338 as time_server_01 (p2, c1, k60).
+1763071271: New connection from 172.19.0.11:42132 on port 1883.
+1763071271: New client connected from 172.19.0.11:42132 as mqttjs_ca76e5db (p2, c1, k60).
+1763071271: New connection from 172.19.0.12:50890 on port 1883.
+1763071271: New client connected from 172.19.0.12:50890 as mqttjs_9cd57955 (p2, c1, k60).
+1763071271: New connection from 172.19.0.13:42426 on port 1883.
+1763071271: New client connected from 172.19.0.13:42426 as persistence_sub_ca040b (p2, c1, k60).
+1763072016: Client time_server_01 closed its connection.
+1763072016: Client lock_coordinator_01 closed its connection.
+1763072016: Client persistence_sub_ca040b closed its connection.
+1763072016: Client publisher_sensor-002_b4a786 closed its connection.
+1763072016: Client unicast_sensor-001_7b8396 closed its connection.
+1763072016: Client publisher_sensor-001_a305ac closed its connection.
+1763072016: Client mqttjs_9cd57955 disconnected: Broken pipe.
+1763072016: Client mqttjs_2685411a closed its connection.
+1763072016: Client mqttjs_ca76e5db closed its connection.
+1763072017: mosquitto version 2.0.22 terminating
+1763072017: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763072036: mosquitto version 2.0.22 starting
+1763072036: Config loaded from /mosquitto/config/mosquitto.conf.
+1763072036: Opening ipv4 listen socket on port 1883.
+1763072036: Opening ipv6 listen socket on port 1883.
+1763072036: Opening websockets listen socket on port 9001.
+1763072036: mosquitto version 2.0.22 running
+1763072036: New connection from 172.19.0.4:37188 on port 1883.
+1763072036: New client connected from 172.19.0.4:37188 as mqttjs_60cc1402 (p2, c1, k60).
+1763072036: New connection from 172.19.0.7:54530 on port 1883.
+1763072036: New connection from 172.19.0.6:39208 on port 1883.
+1763072036: New client connected from 172.19.0.7:54530 as publisher_sensor-001_a2f536 (p2, c1, k60).
+1763072036: New connection from 172.19.0.8:51470 on port 1883.
+1763072036: New client connected from 172.19.0.8:51470 as publisher_sensor-002_71e064 (p2, c1, k60).
+1763072036: New client connected from 172.19.0.6:39208 as mqttjs_c0f3a106 (p2, c1, k60).
+1763072036: New connection from 172.19.0.9:38420 on port 1883.
+1763072036: New client connected from 172.19.0.9:38420 as persistence_sub_b7fb55 (p2, c1, k60).
+1763072036: New connection from 172.19.0.10:37548 on port 1883.
+1763072036: New client connected from 172.19.0.10:37548 as unicast_sensor-001_b5735b (p2, c1, k60).
+1763072036: New connection from 172.19.0.11:36026 on port 1883.
+1763072036: New client connected from 172.19.0.11:36026 as mqttjs_1851b5cf (p2, c1, k60).
+1763072036: New connection from 172.19.0.12:35156 on port 1883.
+1763072036: New client connected from 172.19.0.12:35156 as lock_coordinator_01 (p2, c1, k60).
+1763072036: New connection from 172.19.0.13:38842 on port 1883.
+1763072036: New client connected from 172.19.0.13:38842 as time_server_01 (p2, c1, k60).
+1763072142: Client publisher_sensor-002_71e064 closed its connection.
+1763072142: Client unicast_sensor-001_b5735b closed its connection.
+1763072142: Client mqttjs_c0f3a106 closed its connection.
+1763072142: Client lock_coordinator_01 closed its connection.
+1763072142: Client mqttjs_60cc1402 closed its connection.
+1763072142: Client persistence_sub_b7fb55 closed its connection.
+1763072142: Client mqttjs_1851b5cf closed its connection.
+1763072142: Client time_server_01 closed its connection.
+1763072142: Client publisher_sensor-001_a2f536 closed its connection.
+1763072142: mosquitto version 2.0.22 terminating
+1763072142: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763072160: mosquitto version 2.0.22 starting
+1763072160: Config loaded from /mosquitto/config/mosquitto.conf.
+1763072160: Opening ipv4 listen socket on port 1883.
+1763072160: Opening ipv6 listen socket on port 1883.
+1763072160: Opening websockets listen socket on port 9001.
+1763072160: mosquitto version 2.0.22 running
+1763072160: New connection from 172.19.0.4:37996 on port 1883.
+1763072160: New client connected from 172.19.0.4:37996 as mqttjs_cd687923 (p2, c1, k60).
+1763072160: New connection from 172.19.0.7:37264 on port 1883.
+1763072160: New client connected from 172.19.0.7:37264 as unicast_sensor-001_1c4990 (p2, c1, k60).
+1763072160: New connection from 172.19.0.8:57112 on port 1883.
+1763072160: New connection from 172.19.0.6:49828 on port 1883.
+1763072160: New client connected from 172.19.0.8:57112 as mqttjs_faf0d245 (p2, c1, k60).
+1763072160: New client connected from 172.19.0.6:49828 as persistence_sub_3e3cad (p2, c1, k60).
+1763072160: New connection from 172.19.0.9:33776 on port 1883.
+1763072160: New client connected from 172.19.0.9:33776 as publisher_sensor-001_05b923 (p2, c1, k60).
+1763072160: New connection from 172.19.0.11:35588 on port 1883.
+1763072160: New connection from 172.19.0.12:55384 on port 1883.
+1763072160: New client connected from 172.19.0.11:35588 as time_server_01 (p2, c1, k60).
+1763072160: New client connected from 172.19.0.12:55384 as publisher_sensor-002_237267 (p2, c1, k60).
+1763072160: New connection from 172.19.0.10:48622 on port 1883.
+1763072160: New client connected from 172.19.0.10:48622 as mqttjs_88b6622b (p2, c1, k60).
+1763072160: New connection from 172.19.0.13:35636 on port 1883.
+1763072160: New client connected from 172.19.0.13:35636 as lock_coordinator_01 (p2, c1, k60).
+1763077147: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763078948: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763079230: Client mqttjs_faf0d245 closed its connection.
+1763079230: Client time_server_01 closed its connection.
+1763079230: Client publisher_sensor-002_237267 closed its connection.
+1763079230: Client lock_coordinator_01 closed its connection.
+1763079230: Client mqttjs_cd687923 closed its connection.
+1763079230: Client publisher_sensor-001_05b923 closed its connection.
+1763079230: Client mqttjs_88b6622b disconnected: Broken pipe.
+1763079230: Client unicast_sensor-001_1c4990 closed its connection.
+1763079230: Client persistence_sub_3e3cad closed its connection.
+1763079231: mosquitto version 2.0.22 terminating
+1763079231: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763079835: mosquitto version 2.0.22 starting
+1763079835: Config loaded from /mosquitto/config/mosquitto.conf.
+1763079835: Opening ipv4 listen socket on port 1883.
+1763079835: Opening ipv6 listen socket on port 1883.
+1763079835: Opening websockets listen socket on port 9001.
+1763079835: mosquitto version 2.0.22 running
+1763079836: New connection from 172.19.0.7:56918 on port 1883.
+1763079836: New client connected from 172.19.0.7:56918 as mqttjs_f4b966b0 (p2, c1, k60).
+1763079836: New connection from 172.19.0.8:43694 on port 1883.
+1763079836: New connection from 172.19.0.9:47454 on port 1883.
+1763079836: New client connected from 172.19.0.9:47454 as mqttjs_3e06a414 (p2, c1, k60).
+1763079836: New connection from 172.19.0.5:35440 on port 1883.
+1763079836: New client connected from 172.19.0.5:35440 as lock_coordinator_01 (p2, c1, k60).
+1763079836: New client connected from 172.19.0.8:43694 as unicast_sensor-001_0b4caf (p2, c1, k60).
+1763079836: New connection from 172.19.0.4:38578 on port 1883.
+1763079836: New client connected from 172.19.0.4:38578 as mqttjs_3747aa96 (p2, c1, k60).
+1763079836: New connection from 172.19.0.6:42164 on port 1883.
+1763079836: New connection from 172.19.0.10:38048 on port 1883.
+1763079836: New client connected from 172.19.0.6:42164 as time_server_01 (p2, c1, k60).
+1763079836: New client connected from 172.19.0.10:38048 as persistence_sub_5de751 (p2, c1, k60).
+1763079836: New connection from 172.19.0.12:34708 on port 1883.
+1763079836: New client connected from 172.19.0.12:34708 as publisher_sensor-001_7eb821 (p2, c1, k60).
+1763079836: New connection from 172.19.0.13:46786 on port 1883.
+1763079836: New client connected from 172.19.0.13:46786 as publisher_sensor-002_1cfb74 (p2, c1, k60).
+1763079848: New client connected from ::ffff:192.168.65.1:43562 as web_monitor_3690bd (p2, c1, k60).
+1763080356: Client web_monitor_3690bd closed its connection.
+1763080357: New client connected from ::ffff:192.168.65.1:23627 as web_monitor_1f1f9b (p2, c1, k60).
+1763080820: Client web_monitor_1f1f9b closed its connection.
+1763080821: New client connected from ::ffff:192.168.65.1:56212 as web_monitor_b8beb7 (p2, c1, k60).
+1763081012: Client web_monitor_b8beb7 closed its connection.
+1763081013: New client connected from ::ffff:192.168.65.1:49216 as web_monitor_ba9eec (p2, c1, k60).
+1763081059: Client web_monitor_ba9eec closed its connection.
+1763081059: New client connected from ::ffff:192.168.65.1:41198 as web_monitor_4a3344 (p2, c1, k60).
+1763081635: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763082134: Client web_monitor_4a3344 closed its connection.
+1763082135: New client connected from ::ffff:192.168.65.1:25034 as web_monitor_4a3344 (p2, c1, k60).
+1763083621: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763085422: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763087223: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763088583: Client web_monitor_4a3344 closed its connection.
+1763088586: New client connected from ::ffff:192.168.65.1:46112 as web_monitor_4a3344 (p2, c1, k60).
+1763093014: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763094815: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763095200: Client web_monitor_4a3344 closed its connection.
+1763095202: New client connected from ::ffff:192.168.65.1:17675 as web_monitor_4a3344 (p2, c1, k60).
+1763119159: Client web_monitor_4a3344 closed its connection.
+1763119161: New client connected from ::ffff:192.168.65.1:54480 as web_monitor_4a3344 (p2, c1, k60).
+1763125286: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763127087: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763128888: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763130689: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763132490: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763134291: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763136092: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763137893: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763139694: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763141495: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763141549: Client web_monitor_4a3344 closed its connection.
+1763141549: New client connected from ::ffff:192.168.65.1:54944 as web_monitor_dc8a19 (p2, c1, k60).
