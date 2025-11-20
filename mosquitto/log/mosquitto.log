@@ -809,3 +809,29 @@
 1763152473: mosquitto version 2.0.22 terminating
 1763152473: Saving in-memory database to /mosquitto/data//mosquitto.db.
 1763152473: Client web_monitor_c2092c closed its connection.
+1763647671: mosquitto version 2.0.22 starting
+1763647671: Config loaded from /mosquitto/config/mosquitto.conf.
+1763647671: Opening ipv4 listen socket on port 1883.
+1763647671: Opening ipv6 listen socket on port 1883.
+1763647671: Opening websockets listen socket on port 9001.
+1763647671: mosquitto version 2.0.22 running
+1763647671: New connection from 172.19.0.6:59892 on port 1883.
+1763647671: New client connected from 172.19.0.6:59892 as mqttjs_a809877b (p2, c1, k60).
+1763647671: New connection from 172.19.0.7:36636 on port 1883.
+1763647671: New client connected from 172.19.0.7:36636 as lock_coordinator_69088c (p2, c1, k60).
+1763647671: New connection from 172.19.0.4:40540 on port 1883.
+1763647671: New connection from 172.19.0.5:36132 on port 1883.
+1763647671: New connection from 172.19.0.9:41920 on port 1883.
+1763647671: New client connected from 172.19.0.4:40540 as unicast_sensor-001_450c65 (p2, c1, k60).
+1763647671: New client connected from 172.19.0.5:36132 as time_server_01 (p2, c1, k60).
+1763647671: New client connected from 172.19.0.9:41920 as mqttjs_cf6bd273 (p2, c1, k60).
+1763647671: New connection from 172.19.0.8:59754 on port 1883.
+1763647671: New client connected from 172.19.0.8:59754 as mqttjs_178b8b79 (p2, c1, k60).
+1763647671: New connection from 172.19.0.11:52752 on port 1883.
+1763647671: New client connected from 172.19.0.11:52752 as persistence_sub_bd071c (p2, c1, k60).
+1763647671: New connection from 172.19.0.12:51074 on port 1883.
+1763647671: New client connected from 172.19.0.12:51074 as pub_sensor-001_682 (p2, c1, k60).
+1763647671: New connection from 172.19.0.13:46318 on port 1883.
+1763647671: New client connected from 172.19.0.13:46318 as pub_sensor-002_c77 (p2, c1, k60).
+1763647743: New client connected from ::ffff:172.19.0.1:62072 as web_monitor_817a82 (p2, c1, k60).
+1763647922: Client lock_coordinator_69088c closed its connection.

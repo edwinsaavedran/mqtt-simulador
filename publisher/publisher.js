@@ -3,224 +3,334 @@
 const mqtt = require('mqtt');
 const config = require('../config');
 
-// --- Configuración de Deriva ---
+// --- Configuración Básica ---
 const CLOCK_DRIFT_RATE = parseFloat(process.env.CLOCK_DRIFT_RATE || '0');
-const realStartTime = Date.now();
-let lastRealTime = realStartTime;
-let lastSimulatedTime = realStartTime;
-
-// --- Configuración del Dispositivo ---
 const DEVICE_ID = process.env.DEVICE_ID || 'sensor-default';
 const PROCESS_ID = parseInt(process.env.PROCESS_ID || '0');
 
-// --- Relojes Lógicos ---
-const VECTOR_PROCESS_COUNT = 3; 
-let vectorClock = new Array(VECTOR_PROCESS_COUNT).fill(0);
-let lamportClock = 0;
+// --- Configuración de Elección (Bully) ---
+const MY_PRIORITY = parseInt(process.env.PROCESS_PRIORITY || '0');
+let currentLeaderPriority = 100; // Asumimos que hay alguien superior al inicio
+let isCoordinator = false;
+let electionInProgress = false;
+let lastHeartbeatTime = Date.now();
+const HEARTBEAT_INTERVAL = 2000; // Enviar PING cada 2s
+const LEADER_TIMEOUT = 5000;     // Líder muerto si no responde en 5s
+const ELECTION_TIMEOUT = 3000;   // Tiempo espera respuestas ALIVE
 
-// --- Sincronización Cristian ---
+// --- Estado Mutex (Cliente) ---
+let sensorState = 'IDLE';
+const CALIBRATION_INTERVAL_MS = 20000 + (Math.random() * 5000);
+const CALIBRATION_DURATION_MS = 5000;
+
+// --- Estado Mutex (Servidor/Coordinador) - SOLO SE USA SI isCoordinator = true ---
+let coord_isLockAvailable = true;
+let coord_lockHolder = null;
+let coord_waitingQueue = [];
+
+// --- Sincronización Reloj (Cristian, Lamport, Vector) ---
+// ... (Variables reducidas para brevedad, la lógica se mantiene)
+let lastRealTime = Date.now();
+let lastSimulatedTime = Date.now();
 let clockOffset = 0;
-let t1_request_time = 0;
-const SYNC_INTERVAL_MS = 30000; 
+let lamportClock = 0;
+const VECTOR_PROCESS_COUNT = 3;
+let vectorClock = new Array(VECTOR_PROCESS_COUNT).fill(0);
 
-// --- Exclusión Mutua ---
-let sensorState = 'IDLE'; // 'IDLE', 'REQUESTING', 'CALIBRATING'
-const CALIBRATION_INTERVAL_MS = 45000 + (Math.random() * 10000);
-const CALIBRATION_DURATION_MS = 5000; 
-
-// --- Tópicos y Opciones ---
+// --- Conexión MQTT ---
 const statusTopic = config.topics.status(DEVICE_ID);
-const lastWillMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'offline' });
-const options = {
-  will: {
-    topic: statusTopic,
-    payload: lastWillMessage,
-    qos: 1,
-    retain: true,
-  },
-  clientId: `publisher_${DEVICE_ID}_${Math.random().toString(16).slice(2, 8)}`
-};
-
 const brokerUrl = `mqtt://${config.broker.address}:${config.broker.port}`;
-const client = mqtt.connect(brokerUrl, options);
+const client = mqtt.connect(brokerUrl, {
+  clientId: `pub_${DEVICE_ID}_${Math.random().toString(16).slice(2, 5)}`,
+  will: { topic: statusTopic, payload: JSON.stringify({ deviceId: DEVICE_ID, status: 'offline' }), qos: 1, retain: true }
+});
 
-/**
- * Obtiene el tiempo simulado con deriva.
- */
+// ============================================================================
+//                            LÓGICA DEL CICLO DE VIDA
+// ============================================================================
+
+client.on('connect', () => {
+  console.log(`[INFO] ${DEVICE_ID} (Prio: ${MY_PRIORITY}) conectado.`);
+
+  // 1. Suscripciones Básicas
+  client.subscribe(config.topics.time_response(DEVICE_ID));
+  client.subscribe(config.topics.mutex_grant(DEVICE_ID));
+
+  // 2. Suscripciones de Elección
+  client.subscribe(config.topics.election.heartbeat); // Escuchar PONG
+  client.subscribe(config.topics.election.messages);  // Escuchar ELECTION, ALIVE
+  client.subscribe(config.topics.election.coordinator); // Escuchar VICTORY
+
+  // 3. Iniciar Ciclos
+  // A. Telemetría
+  setInterval(publishTelemetry, 5000);
+  // B. Sincronización Reloj (Cristian)
+  setInterval(syncClock, 30000);
+  // C. Intentos de Calibración (Cliente Mutex)
+  setTimeout(() => { setInterval(requestCalibration, CALIBRATION_INTERVAL_MS); }, 5000);
+
+  // D. Monitoreo del Líder (Heartbeat Check)
+  setInterval(checkLeaderStatus, 1000);
+
+  // E. Enviar Heartbeats (PING)
+  setInterval(sendHeartbeat, HEARTBEAT_INTERVAL);
+
+  // Publicar estado online
+  client.publish(statusTopic, JSON.stringify({ deviceId: DEVICE_ID, status: 'online' }), { retain: true });
+});
+
+client.on('message', (topic, message) => {
+  const payload = JSON.parse(message.toString());
+
+  // --- 1. MANEJO DE ELECCIÓN (Bully) ---
+  if (topic.startsWith('utp/sistemas_distribuidos/grupo1/election')) {
+    handleElectionMessages(topic, payload);
+    return;
+  }
+
+  // --- 2. SI SOY COORDINADOR: MANEJAR SOLICITUDES MUTEX ---
+  if (isCoordinator) {
+    if (topic === config.topics.mutex_request) {
+      handleCoordRequest(payload.deviceId);
+      return;
+    }
+    if (topic === config.topics.mutex_release) {
+      handleCoordRelease(payload.deviceId);
+      return;
+    }
+  }
+
+  // --- 3. SI SOY CLIENTE: MANEJAR RESPUESTAS ---
+  if (topic === config.topics.mutex_grant(DEVICE_ID)) {
+    if (sensorState === 'REQUESTING') {
+      console.log(`[MUTEX-CLIENT] Permiso recibido.`);
+      sensorState = 'CALIBRATING';
+      enterCriticalSection();
+    }
+  }
+
+  // --- 4. SINCRONIZACIÓN DE RELOJ (CRISTIAN) ---
+  if (topic === config.topics.time_response(DEVICE_ID)) {
+    const rtt = Date.now() - (payload.t1 || Date.now()); // Simplificado
+    const correctTime = payload.serverTime + (rtt / 2);
+    clockOffset = correctTime - getSimulatedTime().getTime();
+  }
+});
+
+// ============================================================================
+//                          ALGORITMO DE ELECCIÓN (BULLY)
+// ============================================================================
+
+function sendHeartbeat() {
+  // Solo enviamos PING si NO somos el coordinador
+  if (!isCoordinator) {
+    client.publish(config.topics.election.heartbeat, JSON.stringify({ type: 'PING', fromPriority: MY_PRIORITY }));
+  }
+}
+
+function checkLeaderStatus() {
+  if (isCoordinator) return; // Si soy líder, no monitoreo a nadie
+
+  // Si pasó mucho tiempo desde el último PONG o mensaje del líder
+  if (Date.now() - lastHeartbeatTime > LEADER_TIMEOUT) {
+    console.warn(`[BULLY] ¡Líder caído! (Timeout). Iniciando elección.`);
+    startElection();
+  }
+}
+
+function startElection() {
+  if (electionInProgress) return;
+  electionInProgress = true;
+  lastHeartbeatTime = Date.now(); // Reset timer para no spammear
+
+  console.log(`[BULLY] Convocando elección... Buscando nodos con prioridad > ${MY_PRIORITY}`);
+
+  // 1. Enviar mensaje ELECTION a todos los nodos con prioridad superior
+  client.publish(config.topics.election.messages, JSON.stringify({
+    type: 'ELECTION',
+    fromPriority: MY_PRIORITY
+  }));
+
+  // 2. Esperar respuesta (ALIVE)
+  setTimeout(() => {
+    if (electionInProgress) {
+      // Si llegamos aquí y electionInProgress sigue true, es que NADIE respondió ALIVE.
+      // ¡Significa que somos el nodo vivo con mayor prioridad!
+      declareVictory();
+    }
+  }, ELECTION_TIMEOUT);
+}
+
+function handleElectionMessages(topic, payload) {
+  // A. HEARTBEATS
+  if (topic === config.topics.election.heartbeat) {
+    if (payload.type === 'PONG' && payload.fromPriority > MY_PRIORITY) {
+      // El líder respondió, todo está bien.
+      lastHeartbeatTime = Date.now();
+    }
+    return;
+  }
+
+  // B. MENSAJES DE ELECCIÓN
+  if (topic === config.topics.election.messages) {
+    // Si alguien con MENOR prioridad inicia elección, le decimos que estamos vivos
+    if (payload.type === 'ELECTION' && payload.fromPriority < MY_PRIORITY) {
+      console.log(`[BULLY] Recibida elección de inferior (${payload.fromPriority}). Enviando ALIVE.`);
+      client.publish(config.topics.election.messages, JSON.stringify({
+        type: 'ALIVE', toPriority: payload.fromPriority, fromPriority: MY_PRIORITY
+      }));
+      // E iniciamos nuestra propia elección por si acaso el líder real murió
+      startElection();
+    }
+    // Si recibimos ALIVE de alguien SUPERIOR, nos callamos y esperamos
+    else if (payload.type === 'ALIVE' && payload.fromPriority > MY_PRIORITY) {
+      console.log(`[BULLY] Recibido ALIVE de superior (${payload.fromPriority}). Me retiro.`);
+      electionInProgress = false; // Dejamos de intentar ser líderes
+    }
+    return;
+  }
+
+  // C. ANUNCIO DE COORDINADOR (VICTORY)
+  if (topic === config.topics.election.coordinator) {
+    console.log(`[BULLY] Nuevo Coordinador electo: ${payload.coordinatorId} (Prio: ${payload.priority})`);
+    currentLeaderPriority = payload.priority;
+    lastHeartbeatTime = Date.now(); // El líder está vivo
+    electionInProgress = false;
+
+    // Chequear si soy yo (por si acaso)
+    if (payload.priority === MY_PRIORITY) {
+      becomeCoordinator();
+    } else {
+      isCoordinator = false;
+      // Dejar de escuchar peticiones de mutex si antes era coordinador
+      client.unsubscribe(config.topics.mutex_request);
+      client.unsubscribe(config.topics.mutex_release);
+    }
+  }
+}
+
+function declareVictory() {
+  console.log(`[BULLY] ¡Nadie superior respondió! ME DECLARO COORDINADOR.`);
+  const msg = JSON.stringify({ type: 'VICTORY', coordinatorId: DEVICE_ID, priority: MY_PRIORITY });
+  client.publish(config.topics.election.coordinator, msg, { retain: true });
+  becomeCoordinator();
+}
+
+function becomeCoordinator() {
+  if (isCoordinator) return;
+  isCoordinator = true;
+  electionInProgress = false;
+  console.log(`[ROLE] *** ASCENDIDO A COORDINADOR DE BLOQUEO ***`);
+
+  // Reiniciar estado del mutex (para evitar bloqueos heredados)
+  coord_isLockAvailable = true;
+  coord_lockHolder = null;
+  coord_waitingQueue = [];
+
+  // Suscribirse a los tópicos que debe escuchar el líder
+  client.subscribe(config.topics.mutex_request, { qos: 1 });
+  client.subscribe(config.topics.mutex_release, { qos: 1 });
+
+  // Publicar estado inicial
+  publishCoordStatus();
+}
+
+// ============================================================================
+//                  LÓGICA DE SERVIDOR MUTEX (Solo si isCoordinator)
+// ============================================================================
+// (Esta lógica es idéntica a la de lock-coordinator.js, ahora embebida aquí)
+
+function handleCoordRequest(requesterId) {
+  console.log(`[COORD] Procesando solicitud de: ${requesterId}`);
+  if (coord_isLockAvailable) {
+    grantCoordLock(requesterId);
+  } else {
+    if (!coord_waitingQueue.includes(requesterId) && coord_lockHolder !== requesterId) {
+      coord_waitingQueue.push(requesterId);
+    }
+  }
+  publishCoordStatus();
+}
+
+function handleCoordRelease(requesterId) {
+  if (coord_lockHolder === requesterId) {
+    console.log(`[COORD] Liberado por: ${requesterId}`);
+    coord_lockHolder = null;
+    coord_isLockAvailable = true;
+    if (coord_waitingQueue.length > 0) {
+      grantCoordLock(coord_waitingQueue.shift());
+    }
+  }
+  publishCoordStatus();
+}
+
+function grantCoordLock(requesterId) {
+  coord_isLockAvailable = false;
+  coord_lockHolder = requesterId;
+  client.publish(config.topics.mutex_grant(requesterId), JSON.stringify({ status: 'granted' }), { qos: 1 });
+}
+
+function publishCoordStatus() {
+  client.publish(config.topics.mutex_status, JSON.stringify({
+    isAvailable: coord_isLockAvailable,
+    holder: coord_lockHolder,
+    queue: coord_waitingQueue
+  }), { retain: true });
+}
+
+// ============================================================================
+//                            FUNCIONES AUXILIARES
+// ============================================================================
+
 function getSimulatedTime() {
   const now = Date.now();
   const realElapsed = now - lastRealTime;
   const simulatedElapsed = realElapsed + (realElapsed * CLOCK_DRIFT_RATE / 1000);
-  const newSimulatedTime = lastSimulatedTime + simulatedElapsed;
+  lastSimulatedTime = lastSimulatedTime + simulatedElapsed;
   lastRealTime = now;
-  lastSimulatedTime = newSimulatedTime;
-  return new Date(Math.floor(newSimulatedTime));
+  return new Date(Math.floor(lastSimulatedTime));
 }
 
-/**
- * (Cristian) Solicita la sincronización de hora.
- */
 function syncClock() {
-  console.log(`[SYNC] ${DEVICE_ID} - Solicitando hora al servidor...`);
-  t1_request_time = Date.now();
-  const requestPayload = JSON.stringify({ deviceId: DEVICE_ID });
-  client.publish(config.topics.time_request, requestPayload, { qos: 0 });
+  const payload = JSON.stringify({ deviceId: DEVICE_ID, t1: Date.now() });
+  client.publish(config.topics.time_request, payload, { qos: 0 });
 }
 
-/**
- * (Mutex) 1. Intenta solicitar el recurso de calibración
- */
 function requestCalibration() {
-  if (sensorState === 'IDLE') {
-    console.log(`[MUTEX] ${DEVICE_ID} - Solicitando acceso a la Estación de Calibración...`);
+  if (sensorState === 'IDLE' && !isCoordinator) { // El coordinador no se auto-solicita en este ejemplo simple
+    console.log(`[MUTEX-CLIENT] Solicitando...`);
     sensorState = 'REQUESTING';
-    const payload = JSON.stringify({ deviceId: DEVICE_ID });
-    client.publish(config.topics.mutex_request, payload, { qos: 1 });
-  } else {
-    console.log(`[MUTEX] ${DEVICE_ID} - Ya está en estado '${sensorState}', no se solicita.`);
+    client.publish(config.topics.mutex_request, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
   }
 }
 
-/**
- * (Mutex) 3. Entra en la Sección Crítica (simulada)
- */
 function enterCriticalSection() {
-  console.log(`[MUTEX] ${DEVICE_ID} - <<< ENTRANDO A SECCIÓN CRÍTICA (Calibrando...) >>>`);
-  
   setTimeout(() => {
-    console.log(`[MUTEX] ${DEVICE_ID} - <<< SALIENDO DE SECCIÓN CRÍTICA (Calibración terminada) >>>`);
-    // 4. Liberar el recurso
+    console.log(`[MUTEX-CLIENT] Fin calibración.`);
     releaseLock();
   }, CALIBRATION_DURATION_MS);
 }
 
-/**
- * (Mutex) 5. Libera el recurso
- */
 function releaseLock() {
-  console.log(`[MUTEX] ${DEVICE_ID} - Liberando el recurso...`);
   sensorState = 'IDLE';
-  const payload = JSON.stringify({ deviceId: DEVICE_ID });
-  client.publish(config.topics.mutex_release, payload, { qos: 1 });
+  client.publish(config.topics.mutex_release, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
 }
 
-// --- Evento de Conexión ---
-client.on('connect', () => {
-  console.log(`[INFO] Publisher ${DEVICE_ID} conectado a ${brokerUrl}`);
-  console.log(`[INFO] ${DEVICE_ID} - Tasa de deriva: ${CLOCK_DRIFT_RATE} ms/s`);
-
-  // Suscribirse a respuesta de tiempo (Cristian)
-  const timeResponseTopic = config.topics.time_response(DEVICE_ID);
-  client.subscribe(timeResponseTopic, { qos: 0 }, (err) => {
-    if (!err) console.log(`[INFO] ${DEVICE_ID} - Suscrito a respuestas de tiempo en [${timeResponseTopic}]`);
-  });
-
-  // Suscribirse a 'grant' de MUTEX
-  const grantTopic = config.topics.mutex_grant(DEVICE_ID);
-  client.subscribe(grantTopic, { qos: 1 }, (err) => {
-    if (!err) {
-      console.log(`[INFO] ${DEVICE_ID} - Suscrito a 'grant' de MUTEX en [${grantTopic}]`);
-    }
-  });
-
-  // Publicar estado online
-  const onlineMessage = JSON.stringify({ deviceId: DEVICE_ID, status: 'online' });
-  client.publish(statusTopic, onlineMessage, { qos: 1, retain: true }, (err) => {
-    if(!err) console.log(`[INFO] ${DEVICE_ID} - Estado 'online' publicado.`);
-  });
-  
-  // Iniciar simulación de telemetría
-  console.log(`[INFO] ${DEVICE_ID} - Iniciando simulación de telemetría...`);
-  setInterval(publishTelemetry, 5000 + Math.random() * 1000);
-
-  // Iniciar ciclo de sincronización de reloj
-  syncClock();
-  setInterval(syncClock, SYNC_INTERVAL_MS);
-
-  // Iniciar el ciclo de solicitud de calibración
-  setTimeout(() => {
-    requestCalibration();
-    setInterval(requestCalibration, CALIBRATION_INTERVAL_MS);
-  }, 10000 + Math.random() * 10000); 
-});
-
-// --- Evento de Recepción de Mensaje ---
-client.on('message', (topic, message) => {
-  // --- Lógica de Sincronización de Reloj (Cristian) ---
-  if (topic === config.topics.time_response(DEVICE_ID)) {
-    const t2_response_time = Date.now();
-    try {
-      const data = JSON.parse(message.toString());
-      const serverTime = data.serverTime;
-      const rtt = t2_response_time - t1_request_time;
-      const correctTime = serverTime + (rtt / 2);
-      const simulatedTime = getSimulatedTime().getTime();
-      clockOffset = correctTime - simulatedTime;
-
-      console.log(`[SYNC] ${DEVICE_ID} - Sincronización recibida:`);
-      console.log(`         RTT: ${rtt} ms, Offset: ${clockOffset.toFixed(0)} ms`);
-    } catch (e) {
-      console.error(`[ERROR] ${DEVICE_ID} - Error al procesar respuesta de tiempo:`, e.message);
-    }
-    return; // Salir
-  }
-
-  // --- Lógica de Exclusión Mutua (Recepción de Permiso) ---
-  if (topic === config.topics.mutex_grant(DEVICE_ID)) {
-    if (sensorState === 'REQUESTING') {
-      console.log(`[MUTEX] ${DEVICE_ID} - Permiso (GRANT) recibido.`);
-      sensorState = 'CALIBRATING';
-      enterCriticalSection();
-    } else {
-      console.warn(`[WARN] ${DEVICE_ID} - Recibió un 'GRANT' pero no estaba en estado 'REQUESTING' (estado actual: ${sensorState})`);
-    }
-    return; // Salir
-  }
-});
-
-// --- Evento de Error ---
-client.on('error', (error) => {
-  console.error(`[ERROR] ${DEVICE_ID} - Error de conexión:`, error);
-  client.end();
-});
-
-// --- Función de Publicación de Telemetría ---
 function publishTelemetry() {
-  // Lógica de Relojes (Lamport y Vectorial)
   lamportClock++;
   vectorClock[PROCESS_ID]++;
-
-  // Lógica de Relojes (Cristian)
-  const simulatedTime = getSimulatedTime();
-  const correctedTime = new Date(simulatedTime.getTime() + clockOffset);
+  const correctedTime = new Date(getSimulatedTime().getTime() + clockOffset);
 
   const telemetryData = {
     deviceId: DEVICE_ID,
-    temperatura: parseFloat((Math.random() * 15 + 10).toFixed(2)),
-    humedad: parseFloat((Math.random() * 30 + 35).toFixed(2)),
-    
-    // Timestamps Físicos
+    temperatura: (Math.random() * 30).toFixed(2),
+    humedad: (Math.random() * 100).toFixed(2),
     timestamp: correctedTime.toISOString(),
-    timestamp_simulado: simulatedTime.toISOString(),
+    timestamp_simulado: getSimulatedTime().toISOString(),
     clock_offset: clockOffset.toFixed(0),
-
-    // Timestamps Lógicos
     lamport_ts: lamportClock,
     vector_clock: [...vectorClock],
-
-    // Estado de Mutex
-    sensor_state: sensorState 
+    sensor_state: isCoordinator ? 'COORDINATOR' : sensorState // Mostrar rol especial si es líder
   };
-
-  const message = JSON.stringify(telemetryData);
-  const topic = config.topics.telemetry(DEVICE_ID);
-
-  client.publish(topic, message, { qos: 1, retain: false }, (error) => {
-    if (error) {
-      console.error(`[ERROR] ${DEVICE_ID} - Error al publicar (QoS 1):`, error);
-    } else {
-      // Log reducido
-      // console.log(`[PUB] ${DEVICE_ID} - (Lamport: ${lamportClock}) (Vector: [${vectorClock.join(',')}])`);
-    }
-  });
+  client.publish(config.topics.telemetry(DEVICE_ID), JSON.stringify(telemetryData));
 }
