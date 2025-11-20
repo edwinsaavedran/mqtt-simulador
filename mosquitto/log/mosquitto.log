@@ -789,3 +789,23 @@
 1763141495: Saving in-memory database to /mosquitto/data//mosquitto.db.
 1763141549: Client web_monitor_4a3344 closed its connection.
 1763141549: New client connected from ::ffff:192.168.65.1:54944 as web_monitor_dc8a19 (p2, c1, k60).
+1763143296: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763145097: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763146898: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763148699: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763150500: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763152301: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763152441: Client web_monitor_dc8a19 closed its connection.
+1763152441: New client connected from ::ffff:192.168.65.1:42752 as web_monitor_c2092c (p2, c1, k60).
+1763152471: Client publisher_sensor-001_7eb821 closed its connection.
+1763152471: Client publisher_sensor-002_1cfb74 closed its connection.
+1763152471: Client mqttjs_3747aa96 disconnected: Broken pipe.
+1763152471: Client mqttjs_f4b966b0 closed its connection.
+1763152471: Client mqttjs_3e06a414 closed its connection.
+1763152471: Client unicast_sensor-001_0b4caf closed its connection.
+1763152471: Client lock_coordinator_01 closed its connection.
+1763152471: Client persistence_sub_5de751 closed its connection.
+1763152472: Client time_server_01 closed its connection.
+1763152473: mosquitto version 2.0.22 terminating
+1763152473: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763152473: Client web_monitor_c2092c closed its connection.
