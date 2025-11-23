@@ -44,19 +44,19 @@ services:
     restart: on-failure
 
   # --- Servicio del Coordinador de Bloqueo (Mutex) ---
-  lock-coordinator:
-    build: .
-    container_name: lock-coordinator
-    depends_on:
-      - mqtt-broker
-    command: "node lock-coordinator/lock-coordinator.js"
-    environment:
-      # ID de Proceso para Exclusión Mutua
-      - PROCESS_ID=2
-      # --- NUEVO: Configuración de Elección ---
-      - PROCESS_PRIORITY=10 # El ID más alto, es el líder
-      - ELECTION_PARTICIPANTS=10:lock-coordinator,6:publisher-2,5:publisher-1
-    restart: on-failure
+  # lock-coordinator:
+  #   build: .
+  #   container_name: lock-coordinator
+  #   depends_on:
+  #     - mqtt-broker
+  #   command: "node lock-coordinator/lock-coordinator.js"
+  #   environment:
+  #     # ID de Proceso para Exclusión Mutua
+  #     - PROCESS_ID=2
+  #     # --- NUEVO: Configuración de Elección ---
+  #     - PROCESS_PRIORITY=10 # El ID más alto, es el líder
+  #     - ELECTION_PARTICIPANTS=10:lock-coordinator,6:publisher-2,5:publisher-1
+  #   restart: on-failure
 
   # --- Servicio para el Publicador (Sensor 1) ---
   publisher-1:
@@ -68,11 +68,12 @@ services:
     command: "node publisher/publisher.js"
     environment:
       - DEVICE_ID=sensor-001
+      - PROCESS_ID=1
       - CLOCK_DRIFT_RATE=500
-      - PROCESS_ID=0
       # --- NUEVO: Configuración de Elección ---
-      - PROCESS_PRIORITY=5 # El ID más bajo
-      - ELECTION_PARTICIPANTS=10:lock-coordinator,6:publisher-2,5:publisher-1
+      - PROCESS_PRIORITY=10 # El ID más bajo
+      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - TOTAL_NODES=5
     restart: on-failure
 
   # --- Servicio para el Publicador (Sensor 2) ---
@@ -85,11 +86,65 @@ services:
     command: "node publisher/publisher.js"
     environment:
       - DEVICE_ID=sensor-002
-      - CLOCK_DRIFT_RATE=-500
-      - PROCESS_ID=1
+      - PROCESS_ID=2
+      - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
-      - PROCESS_PRIORITY=6 # ID intermedio
-      - ELECTION_PARTICIPANTS=10:lock-coordinator,6:publisher-2,5:publisher-1
+      - PROCESS_PRIORITY=20 # El ID más bajo      
+      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - TOTAL_NODES=5
+    restart: on-failure
+  # --- Servicio para el Publicador (Sensor 3) ---
+  publisher-3:
+    build: .
+    container_name: publisher-3
+    depends_on:
+      - mqtt-broker
+      - time-server # Depende del servidor de tiempo
+    command: "node publisher/publisher.js"
+    environment:
+      - DEVICE_ID=sensor-003
+      - PROCESS_ID=3
+      - CLOCK_DRIFT_RATE=500
+      # --- NUEVO: Configuración de Elección ---
+      - PROCESS_PRIORITY=30 # El ID más bajo
+      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - TOTAL_NODES=5
+    restart: on-failure
+
+  # --- Servicio para el Publicador (Sensor 4) ---
+  publisher-4:
+    build: .
+    container_name: publisher-4
+    depends_on:
+      - mqtt-broker
+      - time-server # Depende del servidor de tiempo
+    command: "node publisher/publisher.js"
+    environment:
+      - DEVICE_ID=sensor-004
+      - PROCESS_ID=4
+      - CLOCK_DRIFT_RATE=500
+      # --- NUEVO: Configuración de Elección ---
+      - PROCESS_PRIORITY=40 #
+      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - TOTAL_NODES=5
+    restart: on-failure
+
+  # --- Servicio para el Publicador (Sensor 5) ---
+  publisher-5:
+    build: .
+    container_name: publisher-5
+    depends_on:
+      - mqtt-broker
+      - time-server # Depende del servidor de tiempo
+    command: "node publisher/publisher.js"
+    environment:
+      - DEVICE_ID=sensor-005
+      - PROCESS_ID=5
+      - CLOCK_DRIFT_RATE=500
+      # --- NUEVO: Configuración de Elección ---
+      - PROCESS_PRIORITY=50 # El "Bully" original (Líder natural)
+      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - TOTAL_NODES=5
     restart: on-failure
 
   # --- Servicio para el Suscriptor de Persistencia ---
@@ -105,7 +160,7 @@ services:
       - INFLUXDB_TOKEN=mySuperSecretToken123!
       - INFLUXDB_ORG=utp
       - INFLUXDB_BUCKET=sensors
-      - PROCESS_ID=2
+      - PROCESS_ID=4
     restart: on-failure
 
   # --- Suscriptores de ejemplo (sin cambios, pero dependen del broker) ---

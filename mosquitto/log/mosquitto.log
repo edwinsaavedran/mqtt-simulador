@@ -835,3 +835,699 @@
 1763647671: New client connected from 172.19.0.13:46318 as pub_sensor-002_c77 (p2, c1, k60).
 1763647743: New client connected from ::ffff:172.19.0.1:62072 as web_monitor_817a82 (p2, c1, k60).
 1763647922: Client lock_coordinator_69088c closed its connection.
+1763649471: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763650456: Client web_monitor_817a82 closed its connection.
+1763650457: New client connected from ::ffff:172.19.0.1:61060 as web_monitor_817a82 (p2, c1, k60).
+1763650460: Client web_monitor_817a82 closed its connection.
+1763650462: New client connected from ::ffff:172.19.0.1:61074 as web_monitor_817a82 (p2, c1, k60).
+1763651604: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763653405: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763655206: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763657007: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763657559: Client web_monitor_817a82 closed its connection.
+1763657562: New client connected from ::ffff:172.19.0.1:57938 as web_monitor_817a82 (p2, c1, k60).
+1763659566: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763661367: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763663168: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763664969: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763666770: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763667075: Client web_monitor_817a82 closed its connection.
+1763667077: New client connected from ::ffff:172.19.0.1:55426 as web_monitor_817a82 (p2, c1, k60).
+1763668089: Client web_monitor_817a82 closed its connection.
+1763668091: New client connected from ::ffff:172.19.0.1:55362 as web_monitor_817a82 (p2, c1, k60).
+1763669310: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763671111: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763672363: Client mqttjs_cf6bd273 closed its connection.
+1763672363: Client pub_sensor-001_682 closed its connection.
+1763672363: Client unicast_sensor-001_450c65 closed its connection.
+1763672363: Client mqttjs_178b8b79 closed its connection.
+1763672363: Client pub_sensor-002_c77 closed its connection.
+1763672363: Client mqttjs_a809877b closed its connection.
+1763672363: Client persistence_sub_bd071c closed its connection.
+1763672364: Client time_server_01 closed its connection.
+1763672364: mosquitto version 2.0.22 terminating
+1763672364: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763672364: Client web_monitor_817a82 closed its connection.
+1763750455: mosquitto version 2.0.22 starting
+1763750455: Config loaded from /mosquitto/config/mosquitto.conf.
+1763750455: Opening ipv4 listen socket on port 1883.
+1763750455: Opening ipv6 listen socket on port 1883.
+1763750455: Opening websockets listen socket on port 9001.
+1763750455: mosquitto version 2.0.22 running
+1763750456: New connection from 172.19.0.6:33332 on port 1883.
+1763750456: New connection from 172.19.0.5:51230 on port 1883.
+1763750456: New client connected from 172.19.0.6:33332 as time_server_01 (p2, c1, k60).
+1763750456: New client connected from 172.19.0.5:51230 as lock_coordinator_08eb29 (p2, c1, k60).
+1763750456: New connection from 172.19.0.4:34730 on port 1883.
+1763750456: New connection from 172.19.0.9:36256 on port 1883.
+1763750456: New client connected from 172.19.0.4:34730 as unicast_sensor-001_f58d4c (p2, c1, k60).
+1763750456: New connection from 172.19.0.8:41204 on port 1883.
+1763750456: New client connected from 172.19.0.8:41204 as mqttjs_6f22ff6a (p2, c1, k60).
+1763750456: New client connected from 172.19.0.9:36256 as mqttjs_3fa9deb4 (p2, c1, k60).
+1763750456: New connection from 172.19.0.11:37282 on port 1883.
+1763750456: New client connected from 172.19.0.11:37282 as persistence_sub_45c5f2 (p2, c1, k60).
+1763750456: New connection from 172.19.0.7:37324 on port 1883.
+1763750456: New client connected from 172.19.0.7:37324 as mqttjs_3becfea1 (p2, c1, k60).
+1763750456: New connection from 172.19.0.12:51970 on port 1883.
+1763750456: New client connected from 172.19.0.12:51970 as pub_sensor-002_820 (p2, c1, k60).
+1763750456: New connection from 172.19.0.13:56460 on port 1883.
+1763750456: New client connected from 172.19.0.13:56460 as pub_sensor-001_662 (p2, c1, k60).
+1763750456: New client connected from ::ffff:192.168.65.1:36832 as web_monitor_b01ad1 (p2, c1, k60).
+1763752257: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763754058: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763755859: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763757660: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763758098: Client web_monitor_b01ad1 closed its connection.
+1763758100: New client connected from ::ffff:192.168.65.1:58471 as web_monitor_b01ad1 (p2, c1, k60).
+1763763099: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763764900: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763766701: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763768502: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763770303: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763772104: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763772382: Client web_monitor_b01ad1 closed its connection.
+1763772385: New client connected from ::ffff:192.168.65.1:50082 as web_monitor_b01ad1 (p2, c1, k60).
+1763775316: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763777117: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763778918: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763779680: Client web_monitor_b01ad1 closed its connection.
+1763779682: New client connected from ::ffff:192.168.65.1:40776 as web_monitor_b01ad1 (p2, c1, k60).
+1763782143: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763783944: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763785745: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763787546: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763789347: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763791148: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763792949: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763794750: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763796551: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763798352: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763800153: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763800823: Client web_monitor_b01ad1 closed its connection.
+1763800830: New client connected from ::ffff:192.168.65.1:60659 as web_monitor_b01ad1 (p2, c1, k60).
+1763816212: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763818013: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763819814: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763821615: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763823084: Client web_monitor_b01ad1 closed its connection.
+1763823105: New client connected from ::ffff:192.168.65.1:20256 as web_monitor_b01ad1 (p2, c1, k60).
+1763823286: Client web_monitor_b01ad1 closed its connection.
+1763823312: New client connected from ::ffff:192.168.65.1:19271 as web_monitor_b01ad1 (p2, c1, k60).
+1763823416: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763823481: Client web_monitor_b01ad1 closed its connection.
+1763823498: New client connected from ::ffff:192.168.65.1:35227 as web_monitor_b01ad1 (p2, c1, k60).
+1763823608: Client lock_coordinator_08eb29 closed its connection.
+1763823608: Client mqttjs_3fa9deb4 closed its connection.
+1763823608: Client mqttjs_3becfea1 closed its connection.
+1763823608: Client unicast_sensor-001_f58d4c closed its connection.
+1763823608: Client pub_sensor-001_662 closed its connection.
+1763823608: Client mqttjs_6f22ff6a closed its connection.
+1763823608: Client persistence_sub_45c5f2 closed its connection.
+1763823608: Client pub_sensor-002_820 closed its connection.
+1763823610: Client time_server_01 closed its connection.
+1763823610: mosquitto version 2.0.22 terminating
+1763823610: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763823610: Client web_monitor_b01ad1 closed its connection.
+1763823625: mosquitto version 2.0.22 starting
+1763823625: Config loaded from /mosquitto/config/mosquitto.conf.
+1763823625: Opening ipv4 listen socket on port 1883.
+1763823625: Opening ipv6 listen socket on port 1883.
+1763823625: Opening websockets listen socket on port 9001.
+1763823625: mosquitto version 2.0.22 running
+1763823626: New connection from 172.19.0.4:59424 on port 1883.
+1763823626: New client connected from 172.19.0.4:59424 as unicast_sensor-001_353e5a (p2, c1, k60).
+1763823626: New connection from 172.19.0.5:36820 on port 1883.
+1763823626: New client connected from 172.19.0.5:36820 as mqttjs_dee401b1 (p2, c1, k60).
+1763823626: New connection from 172.19.0.6:53712 on port 1883.
+1763823626: New connection from 172.19.0.7:43174 on port 1883.
+1763823626: New client connected from 172.19.0.6:53712 as mqttjs_8cbd847d (p2, c1, k60).
+1763823626: New client connected from 172.19.0.7:43174 as persistence_sub_819d65 (p2, c1, k60).
+1763823626: New connection from 172.19.0.9:32834 on port 1883.
+1763823626: New connection from 172.19.0.10:41822 on port 1883.
+1763823626: New client connected from 172.19.0.9:32834 as mqttjs_d87126ab (p2, c1, k60).
+1763823626: New client connected from 172.19.0.10:41822 as time_server_01 (p2, c1, k60).
+1763823626: New connection from 172.19.0.11:40704 on port 1883.
+1763823626: New client connected from 172.19.0.11:40704 as pub_sensor-003_adc (p2, c1, k60).
+1763823626: New connection from 172.19.0.12:33918 on port 1883.
+1763823626: New client connected from 172.19.0.12:33918 as pub_sensor-002_524 (p2, c1, k60).
+1763823626: New connection from 172.19.0.13:50346 on port 1883.
+1763823626: New client connected from 172.19.0.13:50346 as pub_sensor-005_be4 (p2, c1, k60).
+1763823626: New connection from 172.19.0.15:45974 on port 1883.
+1763823626: New connection from 172.19.0.14:60170 on port 1883.
+1763823626: New client connected from 172.19.0.15:45974 as pub_sensor-001_b32 (p2, c1, k60).
+1763823626: New client connected from 172.19.0.14:60170 as pub_sensor-004_3d9 (p2, c1, k60).
+1763823626: New client connected from ::ffff:192.168.65.1:63810 as web_monitor_b01ad1 (p2, c1, k60).
+1763823635: Client web_monitor_b01ad1 closed its connection.
+1763823635: New client connected from ::ffff:192.168.65.1:38724 as web_monitor_ef8987 (p2, c1, k60).
+1763825426: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763827227: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763829028: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763830829: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763832630: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763833602: Client web_monitor_ef8987 closed its connection.
+1763833605: New client connected from ::ffff:192.168.65.1:50469 as web_monitor_ef8987 (p2, c1, k60).
+1763838304: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763839017: Client web_monitor_ef8987 closed its connection.
+1763839027: New client connected from ::ffff:192.168.65.1:50611 as web_monitor_ef8987 (p2, c1, k60).
+1763839285: Client web_monitor_ef8987 closed its connection.
+1763839303: New client connected from ::ffff:192.168.65.1:59697 as web_monitor_ef8987 (p2, c1, k60).
+1763839472: Client web_monitor_ef8987 closed its connection.
+1763839487: New client connected from ::ffff:192.168.65.1:16749 as web_monitor_ef8987 (p2, c1, k60).
+1763839660: Client web_monitor_ef8987 closed its connection.
+1763839680: New client connected from ::ffff:192.168.65.1:40000 as web_monitor_ef8987 (p2, c1, k60).
+1763839855: Client web_monitor_ef8987 closed its connection.
+1763839877: New client connected from ::ffff:192.168.65.1:35266 as web_monitor_ef8987 (p2, c1, k60).
+1763840051: Client web_monitor_ef8987 closed its connection.
+1763840075: New client connected from ::ffff:192.168.65.1:17635 as web_monitor_ef8987 (p2, c1, k60).
+1763840105: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763840253: Client web_monitor_ef8987 closed its connection.
+1763840278: New client connected from ::ffff:192.168.65.1:23094 as web_monitor_ef8987 (p2, c1, k60).
+1763840459: Client web_monitor_ef8987 closed its connection.
+1763840495: New client connected from ::ffff:192.168.65.1:24993 as web_monitor_ef8987 (p2, c1, k60).
+1763840587: Client web_monitor_ef8987 closed its connection.
+1763840608: New client connected from ::ffff:192.168.65.1:44533 as web_monitor_ef8987 (p2, c1, k60).
+1763840700: Client web_monitor_ef8987 closed its connection.
+1763840725: New client connected from ::ffff:192.168.65.1:36989 as web_monitor_ef8987 (p2, c1, k60).
+1763840817: Client web_monitor_ef8987 closed its connection.
+1763840846: New client connected from ::ffff:192.168.65.1:45109 as web_monitor_ef8987 (p2, c1, k60).
+1763840938: Client web_monitor_ef8987 closed its connection.
+1763840965: New client connected from ::ffff:192.168.65.1:22222 as web_monitor_ef8987 (p2, c1, k60).
+1763841057: Client web_monitor_ef8987 closed its connection.
+1763841084: New client connected from ::ffff:192.168.65.1:16043 as web_monitor_ef8987 (p2, c1, k60).
+1763841176: Client web_monitor_ef8987 closed its connection.
+1763841212: New client connected from ::ffff:192.168.65.1:48400 as web_monitor_ef8987 (p2, c1, k60).
+1763841304: Client web_monitor_ef8987 closed its connection.
+1763841338: New client connected from ::ffff:192.168.65.1:23826 as web_monitor_ef8987 (p2, c1, k60).
+1763841430: Client web_monitor_ef8987 closed its connection.
+1763841463: New client connected from ::ffff:192.168.65.1:36863 as web_monitor_ef8987 (p2, c1, k60).
+1763841555: Client web_monitor_ef8987 closed its connection.
+1763841583: New client connected from ::ffff:192.168.65.1:32968 as web_monitor_ef8987 (p2, c1, k60).
+1763841675: Client web_monitor_ef8987 closed its connection.
+1763841716: New client connected from ::ffff:192.168.65.1:37121 as web_monitor_ef8987 (p2, c1, k60).
+1763841808: Client web_monitor_ef8987 closed its connection.
+1763841843: New client connected from ::ffff:192.168.65.1:18030 as web_monitor_ef8987 (p2, c1, k60).
+1763841906: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763841936: Client web_monitor_ef8987 closed its connection.
+1763841979: New client connected from ::ffff:192.168.65.1:31860 as web_monitor_ef8987 (p2, c1, k60).
+1763842071: Client web_monitor_ef8987 closed its connection.
+1763842118: New client connected from ::ffff:192.168.65.1:59642 as web_monitor_ef8987 (p2, c1, k60).
+1763842210: Client web_monitor_ef8987 closed its connection.
+1763842262: New client connected from ::ffff:192.168.65.1:37962 as web_monitor_ef8987 (p2, c1, k60).
+1763842355: Client web_monitor_ef8987 closed its connection.
+1763842414: New client connected from ::ffff:192.168.65.1:55474 as web_monitor_ef8987 (p2, c1, k60).
+1763842507: Client web_monitor_ef8987 closed its connection.
+1763842556: New client connected from ::ffff:192.168.65.1:53255 as web_monitor_ef8987 (p2, c1, k60).
+1763842673: Client web_monitor_ef8987 closed its connection.
+1763842707: New client connected from ::ffff:192.168.65.1:31485 as web_monitor_ef8987 (p2, c1, k60).
+1763842798: Client web_monitor_ef8987 closed its connection.
+1763842832: New client connected from ::ffff:192.168.65.1:65074 as web_monitor_ef8987 (p2, c1, k60).
+1763842925: Client web_monitor_ef8987 closed its connection.
+1763842961: New client connected from ::ffff:192.168.65.1:61981 as web_monitor_ef8987 (p2, c1, k60).
+1763843053: Client web_monitor_ef8987 closed its connection.
+1763843090: New client connected from ::ffff:192.168.65.1:33237 as web_monitor_ef8987 (p2, c1, k60).
+1763843182: Client web_monitor_ef8987 closed its connection.
+1763843222: New client connected from ::ffff:192.168.65.1:50816 as web_monitor_ef8987 (p2, c1, k60).
+1763843315: Client web_monitor_ef8987 closed its connection.
+1763843348: New client connected from ::ffff:192.168.65.1:26430 as web_monitor_ef8987 (p2, c1, k60).
+1763843441: Client web_monitor_ef8987 closed its connection.
+1763843480: New client connected from ::ffff:192.168.65.1:45696 as web_monitor_ef8987 (p2, c1, k60).
+1763843571: Client web_monitor_ef8987 closed its connection.
+1763843606: New client connected from ::ffff:192.168.65.1:18109 as web_monitor_ef8987 (p2, c1, k60).
+1763843699: Client web_monitor_ef8987 closed its connection.
+1763843731: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763843735: New client connected from ::ffff:192.168.65.1:52980 as web_monitor_ef8987 (p2, c1, k60).
+1763843827: Client web_monitor_ef8987 closed its connection.
+1763843864: New client connected from ::ffff:192.168.65.1:26065 as web_monitor_ef8987 (p2, c1, k60).
+1763843955: Client web_monitor_ef8987 closed its connection.
+1763843992: New client connected from ::ffff:192.168.65.1:33486 as web_monitor_ef8987 (p2, c1, k60).
+1763844084: Client web_monitor_ef8987 closed its connection.
+1763844122: New client connected from ::ffff:192.168.65.1:36681 as web_monitor_ef8987 (p2, c1, k60).
+1763844214: Client web_monitor_ef8987 closed its connection.
+1763844258: New client connected from ::ffff:192.168.65.1:58114 as web_monitor_ef8987 (p2, c1, k60).
+1763844351: Client web_monitor_ef8987 closed its connection.
+1763844393: New client connected from ::ffff:192.168.65.1:59391 as web_monitor_ef8987 (p2, c1, k60).
+1763844485: Client web_monitor_ef8987 closed its connection.
+1763844529: New client connected from ::ffff:192.168.65.1:42080 as web_monitor_ef8987 (p2, c1, k60).
+1763844621: Client web_monitor_ef8987 closed its connection.
+1763844671: New client connected from ::ffff:192.168.65.1:27767 as web_monitor_ef8987 (p2, c1, k60).
+1763844763: Client web_monitor_ef8987 closed its connection.
+1763844808: New client connected from ::ffff:192.168.65.1:54762 as web_monitor_ef8987 (p2, c1, k60).
+1763844900: Client web_monitor_ef8987 closed its connection.
+1763844949: New client connected from ::ffff:192.168.65.1:55085 as web_monitor_ef8987 (p2, c1, k60).
+1763845042: Client web_monitor_ef8987 closed its connection.
+1763845094: New client connected from ::ffff:192.168.65.1:21746 as web_monitor_ef8987 (p2, c1, k60).
+1763845186: Client web_monitor_ef8987 closed its connection.
+1763845234: New client connected from ::ffff:192.168.65.1:43530 as web_monitor_ef8987 (p2, c1, k60).
+1763845327: Client web_monitor_ef8987 closed its connection.
+1763845375: New client connected from ::ffff:192.168.65.1:24122 as web_monitor_ef8987 (p2, c1, k60).
+1763845467: Client web_monitor_ef8987 closed its connection.
+1763845517: New client connected from ::ffff:192.168.65.1:24851 as web_monitor_ef8987 (p2, c1, k60).
+1763845532: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763845610: Client web_monitor_ef8987 closed its connection.
+1763845659: New client connected from ::ffff:192.168.65.1:40617 as web_monitor_ef8987 (p2, c1, k60).
+1763845751: Client web_monitor_ef8987 closed its connection.
+1763845803: New client connected from ::ffff:192.168.65.1:43425 as web_monitor_ef8987 (p2, c1, k60).
+1763845896: Client web_monitor_ef8987 closed its connection.
+1763845947: New client connected from ::ffff:192.168.65.1:34594 as web_monitor_ef8987 (p2, c1, k60).
+1763846039: Client web_monitor_ef8987 closed its connection.
+1763846097: New client connected from ::ffff:192.168.65.1:55876 as web_monitor_ef8987 (p2, c1, k60).
+1763846189: Client web_monitor_ef8987 closed its connection.
+1763846251: New client connected from ::ffff:192.168.65.1:63477 as web_monitor_ef8987 (p2, c1, k60).
+1763846342: Client web_monitor_ef8987 closed its connection.
+1763846417: New client connected from ::ffff:192.168.65.1:25342 as web_monitor_ef8987 (p2, c1, k60).
+1763846509: Client web_monitor_ef8987 closed its connection.
+1763846576: New client connected from ::ffff:192.168.65.1:61206 as web_monitor_ef8987 (p2, c1, k60).
+1763846668: Client web_monitor_ef8987 closed its connection.
+1763846779: New client connected from ::ffff:192.168.65.1:62973 as web_monitor_ef8987 (p2, c1, k60).
+1763846871: Client web_monitor_ef8987 closed its connection.
+1763846932: New client connected from ::ffff:192.168.65.1:54061 as web_monitor_ef8987 (p2, c1, k60).
+1763847024: Client web_monitor_ef8987 closed its connection.
+1763847084: New client connected from ::ffff:192.168.65.1:57809 as web_monitor_ef8987 (p2, c1, k60).
+1763847177: Client web_monitor_ef8987 closed its connection.
+1763847252: New client connected from ::ffff:192.168.65.1:60382 as web_monitor_ef8987 (p2, c1, k60).
+1763847333: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763847344: Client web_monitor_ef8987 closed its connection.
+1763847426: New client connected from ::ffff:192.168.65.1:57282 as web_monitor_ef8987 (p2, c1, k60).
+1763847518: Client web_monitor_ef8987 closed its connection.
+1763847592: New client connected from ::ffff:192.168.65.1:18335 as web_monitor_ef8987 (p2, c1, k60).
+1763847683: Client web_monitor_ef8987 closed its connection.
+1763847769: New client connected from ::ffff:192.168.65.1:60900 as web_monitor_ef8987 (p2, c1, k60).
+1763847860: Client web_monitor_ef8987 closed its connection.
+1763847952: New client connected from ::ffff:192.168.65.1:64006 as web_monitor_ef8987 (p2, c1, k60).
+1763848044: Client web_monitor_ef8987 closed its connection.
+1763848125: New client connected from ::ffff:192.168.65.1:26124 as web_monitor_ef8987 (p2, c1, k60).
+1763848217: Client web_monitor_ef8987 closed its connection.
+1763848265: New client connected from ::ffff:192.168.65.1:24484 as web_monitor_ef8987 (p2, c1, k60).
+1763848358: Client web_monitor_ef8987 closed its connection.
+1763848401: New client connected from ::ffff:192.168.65.1:40785 as web_monitor_ef8987 (p2, c1, k60).
+1763848493: Client web_monitor_ef8987 closed its connection.
+1763848537: New client connected from ::ffff:192.168.65.1:63548 as web_monitor_ef8987 (p2, c1, k60).
+1763848629: Client web_monitor_ef8987 closed its connection.
+1763848715: New client connected from ::ffff:192.168.65.1:48673 as web_monitor_ef8987 (p2, c1, k60).
+1763848807: Client web_monitor_ef8987 closed its connection.
+1763848860: New client connected from ::ffff:192.168.65.1:44174 as web_monitor_ef8987 (p2, c1, k60).
+1763848952: Client web_monitor_ef8987 closed its connection.
+1763849012: New client connected from ::ffff:192.168.65.1:30145 as web_monitor_ef8987 (p2, c1, k60).
+1763849104: Client web_monitor_ef8987 closed its connection.
+1763849134: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763849168: New client connected from ::ffff:192.168.65.1:40265 as web_monitor_ef8987 (p2, c1, k60).
+1763849260: Client web_monitor_ef8987 closed its connection.
+1763849323: New client connected from ::ffff:192.168.65.1:30055 as web_monitor_ef8987 (p2, c1, k60).
+1763849416: Client web_monitor_ef8987 closed its connection.
+1763849479: New client connected from ::ffff:192.168.65.1:39950 as web_monitor_ef8987 (p2, c1, k60).
+1763849571: Client web_monitor_ef8987 closed its connection.
+1763849635: New client connected from ::ffff:192.168.65.1:21172 as web_monitor_ef8987 (p2, c1, k60).
+1763849727: Client web_monitor_ef8987 closed its connection.
+1763849800: New client connected from ::ffff:192.168.65.1:42623 as web_monitor_ef8987 (p2, c1, k60).
+1763849892: Client web_monitor_ef8987 closed its connection.
+1763849988: New client connected from ::ffff:192.168.65.1:60051 as web_monitor_ef8987 (p2, c1, k60).
+1763850080: Client web_monitor_ef8987 closed its connection.
+1763850167: New client connected from ::ffff:192.168.65.1:37769 as web_monitor_ef8987 (p2, c1, k60).
+1763850259: Client web_monitor_ef8987 closed its connection.
+1763850361: New client connected from ::ffff:192.168.65.1:37058 as web_monitor_ef8987 (p2, c1, k60).
+1763850453: Client web_monitor_ef8987 closed its connection.
+1763850557: New client connected from ::ffff:192.168.65.1:48857 as web_monitor_ef8987 (p2, c1, k60).
+1763850650: Client web_monitor_ef8987 closed its connection.
+1763850762: New client connected from ::ffff:192.168.65.1:23958 as web_monitor_ef8987 (p2, c1, k60).
+1763850834: Client web_monitor_ef8987 closed its connection.
+1763852382: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763852583: New client connected from ::ffff:192.168.65.1:42982 as web_monitor_ef8987 (p2, c1, k60).
+1763853272: Client web_monitor_ef8987 closed its connection.
+1763853403: New client connected from ::ffff:192.168.65.1:44441 as web_monitor_ef8987 (p2, c1, k60).
+1763853495: Client web_monitor_ef8987 closed its connection.
+1763853544: New client connected from ::ffff:192.168.65.1:45067 as web_monitor_ef8987 (p2, c1, k60).
+1763853636: Client web_monitor_ef8987 closed its connection.
+1763853687: New client connected from ::ffff:192.168.65.1:47965 as web_monitor_ef8987 (p2, c1, k60).
+1763853779: Client web_monitor_ef8987 closed its connection.
+1763853832: New client connected from ::ffff:192.168.65.1:17248 as web_monitor_ef8987 (p2, c1, k60).
+1763853924: Client web_monitor_ef8987 closed its connection.
+1763853974: New client connected from ::ffff:192.168.65.1:33417 as web_monitor_ef8987 (p2, c1, k60).
+1763854066: Client web_monitor_ef8987 closed its connection.
+1763854119: New client connected from ::ffff:192.168.65.1:57249 as web_monitor_ef8987 (p2, c1, k60).
+1763854211: Client web_monitor_ef8987 closed its connection.
+1763854264: New client connected from ::ffff:192.168.65.1:22065 as web_monitor_ef8987 (p2, c1, k60).
+1763854356: Client web_monitor_ef8987 closed its connection.
+1763854410: New client connected from ::ffff:192.168.65.1:45728 as web_monitor_ef8987 (p2, c1, k60).
+1763854502: Client web_monitor_ef8987 closed its connection.
+1763854555: New client connected from ::ffff:192.168.65.1:23390 as web_monitor_ef8987 (p2, c1, k60).
+1763854648: Client web_monitor_ef8987 closed its connection.
+1763854701: New client connected from ::ffff:192.168.65.1:36663 as web_monitor_ef8987 (p2, c1, k60).
+1763854793: Client web_monitor_ef8987 closed its connection.
+1763854848: New client connected from ::ffff:192.168.65.1:50157 as web_monitor_ef8987 (p2, c1, k60).
+1763854940: Client web_monitor_ef8987 closed its connection.
+1763854989: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763854995: New client connected from ::ffff:192.168.65.1:50594 as web_monitor_ef8987 (p2, c1, k60).
+1763855087: Client web_monitor_ef8987 closed its connection.
+1763855142: New client connected from ::ffff:192.168.65.1:51108 as web_monitor_ef8987 (p2, c1, k60).
+1763855235: Client web_monitor_ef8987 closed its connection.
+1763855299: New client connected from ::ffff:192.168.65.1:55733 as web_monitor_ef8987 (p2, c1, k60).
+1763855391: Client web_monitor_ef8987 closed its connection.
+1763855448: New client connected from ::ffff:192.168.65.1:64380 as web_monitor_ef8987 (p2, c1, k60).
+1763855540: Client web_monitor_ef8987 closed its connection.
+1763855598: New client connected from ::ffff:192.168.65.1:44696 as web_monitor_ef8987 (p2, c1, k60).
+1763855691: Client web_monitor_ef8987 closed its connection.
+1763855748: New client connected from ::ffff:192.168.65.1:59125 as web_monitor_ef8987 (p2, c1, k60).
+1763855840: Client web_monitor_ef8987 closed its connection.
+1763855899: New client connected from ::ffff:192.168.65.1:55670 as web_monitor_ef8987 (p2, c1, k60).
+1763855991: Client web_monitor_ef8987 closed its connection.
+1763856050: New client connected from ::ffff:192.168.65.1:23666 as web_monitor_ef8987 (p2, c1, k60).
+1763856142: Client web_monitor_ef8987 closed its connection.
+1763856204: New client connected from ::ffff:192.168.65.1:37050 as web_monitor_ef8987 (p2, c1, k60).
+1763856297: Client web_monitor_ef8987 closed its connection.
+1763856358: New client connected from ::ffff:192.168.65.1:38912 as web_monitor_ef8987 (p2, c1, k60).
+1763856451: Client web_monitor_ef8987 closed its connection.
+1763856519: New client connected from ::ffff:192.168.65.1:60690 as web_monitor_ef8987 (p2, c1, k60).
+1763856612: Client web_monitor_ef8987 closed its connection.
+1763856675: New client connected from ::ffff:192.168.65.1:31840 as web_monitor_ef8987 (p2, c1, k60).
+1763856767: Client web_monitor_ef8987 closed its connection.
+1763856790: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763856830: New client connected from ::ffff:192.168.65.1:52635 as web_monitor_ef8987 (p2, c1, k60).
+1763856923: Client web_monitor_ef8987 closed its connection.
+1763856987: New client connected from ::ffff:192.168.65.1:54584 as web_monitor_ef8987 (p2, c1, k60).
+1763857080: Client web_monitor_ef8987 closed its connection.
+1763857144: New client connected from ::ffff:192.168.65.1:30677 as web_monitor_ef8987 (p2, c1, k60).
+1763857236: Client web_monitor_ef8987 closed its connection.
+1763857302: New client connected from ::ffff:192.168.65.1:26831 as web_monitor_ef8987 (p2, c1, k60).
+1763857394: Client web_monitor_ef8987 closed its connection.
+1763857462: New client connected from ::ffff:192.168.65.1:29588 as web_monitor_ef8987 (p2, c1, k60).
+1763857554: Client web_monitor_ef8987 closed its connection.
+1763857621: New client connected from ::ffff:192.168.65.1:18144 as web_monitor_ef8987 (p2, c1, k60).
+1763857713: Client web_monitor_ef8987 closed its connection.
+1763857780: New client connected from ::ffff:192.168.65.1:30744 as web_monitor_ef8987 (p2, c1, k60).
+1763857872: Client web_monitor_ef8987 closed its connection.
+1763857947: New client connected from ::ffff:192.168.65.1:26973 as web_monitor_ef8987 (p2, c1, k60).
+1763858040: Client web_monitor_ef8987 closed its connection.
+1763858109: New client connected from ::ffff:192.168.65.1:19425 as web_monitor_ef8987 (p2, c1, k60).
+1763858201: Client web_monitor_ef8987 closed its connection.
+1763858270: New client connected from ::ffff:192.168.65.1:47178 as web_monitor_ef8987 (p2, c1, k60).
+1763858362: Client web_monitor_ef8987 closed its connection.
+1763858432: New client connected from ::ffff:192.168.65.1:43250 as web_monitor_ef8987 (p2, c1, k60).
+1763858524: Client web_monitor_ef8987 closed its connection.
+1763858591: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763858594: New client connected from ::ffff:192.168.65.1:56847 as web_monitor_ef8987 (p2, c1, k60).
+1763858687: Client web_monitor_ef8987 closed its connection.
+1763858759: New client connected from ::ffff:192.168.65.1:52080 as web_monitor_ef8987 (p2, c1, k60).
+1763858851: Client web_monitor_ef8987 closed its connection.
+1763858922: New client connected from ::ffff:192.168.65.1:64215 as web_monitor_ef8987 (p2, c1, k60).
+1763859014: Client web_monitor_ef8987 closed its connection.
+1763859086: New client connected from ::ffff:192.168.65.1:20927 as web_monitor_ef8987 (p2, c1, k60).
+1763859179: Client web_monitor_ef8987 closed its connection.
+1763859253: New client connected from ::ffff:192.168.65.1:21005 as web_monitor_ef8987 (p2, c1, k60).
+1763859345: Client web_monitor_ef8987 closed its connection.
+1763859420: New client connected from ::ffff:192.168.65.1:23516 as web_monitor_ef8987 (p2, c1, k60).
+1763859512: Client web_monitor_ef8987 closed its connection.
+1763859585: New client connected from ::ffff:192.168.65.1:33150 as web_monitor_ef8987 (p2, c1, k60).
+1763859678: Client web_monitor_ef8987 closed its connection.
+1763859760: New client connected from ::ffff:192.168.65.1:55714 as web_monitor_ef8987 (p2, c1, k60).
+1763859768: Client web_monitor_ef8987 closed its connection.
+1763859792: New client connected from ::ffff:192.168.65.1:19199 as web_monitor_ef8987 (p2, c1, k60).
+1763860698: Client web_monitor_ef8987 closed its connection.
+1763863637: New client connected from ::ffff:192.168.65.1:34228 as web_monitor_ef8987 (p2, c1, k60).
+1763865581: Client web_monitor_ef8987 closed its connection.
+1763867093: New client connected from ::ffff:192.168.65.1:43613 as web_monitor_ef8987 (p2, c1, k60).
+1763869081: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763869087: Client web_monitor_ef8987 closed its connection.
+1763870738: New client connected from ::ffff:192.168.65.1:53355 as web_monitor_ef8987 (p2, c1, k60).
+1763873608: Client web_monitor_ef8987 closed its connection.
+1763875339: New client connected from ::ffff:192.168.65.1:27380 as web_monitor_ef8987 (p2, c1, k60).
+1763877118: Client web_monitor_ef8987 closed its connection.
+1763877224: New client connected from ::ffff:192.168.65.1:29564 as web_monitor_ef8987 (p2, c1, k60).
+1763877317: Client web_monitor_ef8987 closed its connection.
+1763877391: New client connected from ::ffff:192.168.65.1:47526 as web_monitor_ef8987 (p2, c1, k60).
+1763877484: Client web_monitor_ef8987 closed its connection.
+1763879417: New client connected from ::ffff:192.168.65.1:27157 as web_monitor_ef8987 (p2, c1, k60).
+1763881361: Client web_monitor_ef8987 closed its connection.
+1763884816: New client connected from ::ffff:192.168.65.1:47100 as web_monitor_ef8987 (p2, c1, k60).
+1763895759: Client web_monitor_ef8987 closed its connection.
+1763901657: New client connected from ::ffff:192.168.65.1:28324 as web_monitor_ef8987 (p2, c1, k60).
+1763901750: Client web_monitor_ef8987 closed its connection.
+1763901832: New client connected from ::ffff:192.168.65.1:25580 as web_monitor_ef8987 (p2, c1, k60).
+1763901925: Client web_monitor_ef8987 closed its connection.
+1763902002: New client connected from ::ffff:192.168.65.1:32253 as web_monitor_ef8987 (p2, c1, k60).
+1763902023: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763902095: Client web_monitor_ef8987 closed its connection.
+1763902173: New client connected from ::ffff:192.168.65.1:27351 as web_monitor_ef8987 (p2, c1, k60).
+1763902266: Client web_monitor_ef8987 closed its connection.
+1763902347: New client connected from ::ffff:192.168.65.1:34511 as web_monitor_ef8987 (p2, c1, k60).
+1763902440: Client web_monitor_ef8987 closed its connection.
+1763902519: New client connected from ::ffff:192.168.65.1:42829 as web_monitor_ef8987 (p2, c1, k60).
+1763902612: Client web_monitor_ef8987 closed its connection.
+1763902692: New client connected from ::ffff:192.168.65.1:44182 as web_monitor_ef8987 (p2, c1, k60).
+1763902785: Client web_monitor_ef8987 closed its connection.
+1763902875: New client connected from ::ffff:192.168.65.1:25058 as web_monitor_ef8987 (p2, c1, k60).
+1763902968: Client web_monitor_ef8987 closed its connection.
+1763903048: New client connected from ::ffff:192.168.65.1:47255 as web_monitor_ef8987 (p2, c1, k60).
+1763903141: Client web_monitor_ef8987 closed its connection.
+1763903228: New client connected from ::ffff:192.168.65.1:58170 as web_monitor_ef8987 (p2, c1, k60).
+1763903321: Client web_monitor_ef8987 closed its connection.
+1763903408: New client connected from ::ffff:192.168.65.1:50113 as web_monitor_ef8987 (p2, c1, k60).
+1763903501: Client web_monitor_ef8987 closed its connection.
+1763903584: New client connected from ::ffff:192.168.65.1:47732 as web_monitor_ef8987 (p2, c1, k60).
+1763903677: Client web_monitor_ef8987 closed its connection.
+1763903761: New client connected from ::ffff:192.168.65.1:49129 as web_monitor_ef8987 (p2, c1, k60).
+1763903824: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763903854: Client web_monitor_ef8987 closed its connection.
+1763903937: New client connected from ::ffff:192.168.65.1:58703 as web_monitor_ef8987 (p2, c1, k60).
+1763904030: Client web_monitor_ef8987 closed its connection.
+1763904115: New client connected from ::ffff:192.168.65.1:53859 as web_monitor_ef8987 (p2, c1, k60).
+1763904208: Client web_monitor_ef8987 closed its connection.
+1763904293: New client connected from ::ffff:192.168.65.1:45370 as web_monitor_ef8987 (p2, c1, k60).
+1763904386: Client web_monitor_ef8987 closed its connection.
+1763904472: New client connected from ::ffff:192.168.65.1:59262 as web_monitor_ef8987 (p2, c1, k60).
+1763904565: Client web_monitor_ef8987 closed its connection.
+1763904651: New client connected from ::ffff:192.168.65.1:21297 as web_monitor_ef8987 (p2, c1, k60).
+1763904744: Client web_monitor_ef8987 closed its connection.
+1763904832: New client connected from ::ffff:192.168.65.1:28653 as web_monitor_ef8987 (p2, c1, k60).
+1763904925: Client web_monitor_ef8987 closed its connection.
+1763905011: New client connected from ::ffff:192.168.65.1:54221 as web_monitor_ef8987 (p2, c1, k60).
+1763905104: Client web_monitor_ef8987 closed its connection.
+1763905193: New client connected from ::ffff:192.168.65.1:31429 as web_monitor_ef8987 (p2, c1, k60).
+1763905286: Client web_monitor_ef8987 closed its connection.
+1763905375: New client connected from ::ffff:192.168.65.1:29864 as web_monitor_ef8987 (p2, c1, k60).
+1763905468: Client web_monitor_ef8987 closed its connection.
+1763905558: New client connected from ::ffff:192.168.65.1:16444 as web_monitor_ef8987 (p2, c1, k60).
+1763905625: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763905651: Client web_monitor_ef8987 closed its connection.
+1763905741: New client connected from ::ffff:192.168.65.1:59580 as web_monitor_ef8987 (p2, c1, k60).
+1763905834: Client web_monitor_ef8987 closed its connection.
+1763905926: New client connected from ::ffff:192.168.65.1:36445 as web_monitor_ef8987 (p2, c1, k60).
+1763906019: Client web_monitor_ef8987 closed its connection.
+1763906114: New client connected from ::ffff:192.168.65.1:18898 as web_monitor_ef8987 (p2, c1, k60).
+1763906207: Client web_monitor_ef8987 closed its connection.
+1763906295: Client pub_sensor-005_be4 closed its connection.
+1763906295: Client unicast_sensor-001_353e5a closed its connection.
+1763906295: Client mqttjs_dee401b1 closed its connection.
+1763906295: Client pub_sensor-004_3d9 closed its connection.
+1763906295: Client pub_sensor-002_524 closed its connection.
+1763906295: Client mqttjs_8cbd847d closed its connection.
+1763906295: Client pub_sensor-003_adc closed its connection.
+1763906295: Client persistence_sub_819d65 closed its connection.
+1763906295: Client pub_sensor-001_b32 closed its connection.
+1763906295: Client mqttjs_d87126ab closed its connection.
+1763906296: Client time_server_01 closed its connection.
+1763906297: mosquitto version 2.0.22 terminating
+1763906297: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763906328: mosquitto version 2.0.22 starting
+1763906328: Config loaded from /mosquitto/config/mosquitto.conf.
+1763906328: Opening ipv4 listen socket on port 1883.
+1763906328: Opening ipv6 listen socket on port 1883.
+1763906328: Opening websockets listen socket on port 9001.
+1763906328: mosquitto version 2.0.22 running
+1763906328: New connection from 172.19.0.5:49532 on port 1883.
+1763906328: New client connected from 172.19.0.5:49532 as mqttjs_011a0e22 (p2, c1, k60).
+1763906328: New connection from 172.19.0.8:39592 on port 1883.
+1763906328: New connection from 172.19.0.6:57996 on port 1883.
+1763906328: New client connected from 172.19.0.6:57996 as mqttjs_541a3e2c (p2, c1, k60).
+1763906328: New client connected from 172.19.0.8:39592 as persistence_sub_efc162 (p2, c1, k60).
+1763906328: New connection from 172.19.0.7:59086 on port 1883.
+1763906328: New client connected from 172.19.0.7:59086 as unicast_sensor-001_97d3e4 (p2, c1, k60).
+1763906328: New connection from 172.19.0.10:45860 on port 1883.
+1763906328: New client connected from 172.19.0.10:45860 as time_server_01 (p2, c1, k60).
+1763906328: New connection from 172.19.0.9:33220 on port 1883.
+1763906328: New client connected from 172.19.0.9:33220 as mqttjs_16449819 (p2, c1, k60).
+1763906328: New connection from 172.19.0.11:58944 on port 1883.
+1763906328: New client connected from 172.19.0.11:58944 as pub_sensor-001_9ea (p2, c1, k60).
+1763906328: New connection from 172.19.0.13:38460 on port 1883.
+1763906328: New client connected from 172.19.0.13:38460 as pub_sensor-005_445 (p2, c1, k60).
+1763906328: New connection from 172.19.0.12:58754 on port 1883.
+1763906328: New client connected from 172.19.0.12:58754 as pub_sensor-004_8c2 (p2, c1, k60).
+1763906328: New connection from 172.19.0.14:54138 on port 1883.
+1763906328: New client connected from 172.19.0.14:54138 as pub_sensor-002_766 (p2, c1, k60).
+1763906328: New connection from 172.19.0.15:50564 on port 1883.
+1763906328: New client connected from 172.19.0.15:50564 as pub_sensor-003_ada (p2, c1, k60).
+1763906329: New client connected from ::ffff:192.168.65.1:25862 as web_monitor_ef8987 (p2, c1, k60).
+1763906422: Client web_monitor_ef8987 closed its connection.
+1763906441: New client connected from ::ffff:192.168.65.1:18253 as web_monitor_a931b0 (p2, c1, k60).
+1763906633: Client pub_sensor-005_445 has exceeded timeout, disconnecting.
+1763906751: New connection from 172.19.0.13:59366 on port 1883.
+1763906751: New client connected from 172.19.0.13:59366 as pub_sensor-005_445 (p2, c1, k60).
+1763908129: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763909930: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763911731: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763913291: Client web_monitor_a931b0 closed its connection.
+1763913293: New client connected from ::ffff:192.168.65.1:22419 as web_monitor_a931b0 (p2, c1, k60).
+1763914322: Client web_monitor_a931b0 closed its connection.
+1763914325: New client connected from ::ffff:192.168.65.1:64183 as web_monitor_a931b0 (p2, c1, k60).
+1763914732: Client web_monitor_a931b0 closed its connection.
+1763914734: New client connected from ::ffff:192.168.65.1:56516 as web_monitor_a931b0 (p2, c1, k60).
+1763915505: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763916988: Client unicast_sensor-001_97d3e4 closed its connection.
+1763916988: Client mqttjs_541a3e2c closed its connection.
+1763916988: Client pub_sensor-004_8c2 closed its connection.
+1763916988: Client pub_sensor-001_9ea closed its connection.
+1763916988: Client pub_sensor-003_ada closed its connection.
+1763916988: Client pub_sensor-005_445 closed its connection.
+1763916988: Client persistence_sub_efc162 closed its connection.
+1763916988: Client mqttjs_16449819 closed its connection.
+1763916988: Client mqttjs_011a0e22 closed its connection.
+1763916988: Client pub_sensor-002_766 closed its connection.
+1763916990: Client time_server_01 closed its connection.
+1763916990: mosquitto version 2.0.22 terminating
+1763916990: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763916990: Client web_monitor_a931b0 closed its connection.
+1763917046: mosquitto version 2.0.22 starting
+1763917046: Config loaded from /mosquitto/config/mosquitto.conf.
+1763917046: Opening ipv4 listen socket on port 1883.
+1763917046: Opening ipv6 listen socket on port 1883.
+1763917046: Opening websockets listen socket on port 9001.
+1763917046: mosquitto version 2.0.22 running
+1763917047: New client connected from ::ffff:192.168.65.1:58763 as web_monitor_a931b0 (p2, c1, k60).
+1763917047: New connection from 172.19.0.5:35032 on port 1883.
+1763917047: New connection from 172.19.0.7:47628 on port 1883.
+1763917047: New client connected from 172.19.0.5:35032 as time_server_01 (p2, c1, k60).
+1763917047: New client connected from 172.19.0.7:47628 as mqttjs_70bd64d9 (p2, c1, k60).
+1763917047: New connection from 172.19.0.4:44896 on port 1883.
+1763917047: New client connected from 172.19.0.4:44896 as persistence_sub_4213a4 (p2, c1, k60).
+1763917047: New connection from 172.19.0.9:34590 on port 1883.
+1763917047: New client connected from 172.19.0.9:34590 as mqttjs_bbb9a20e (p2, c1, k60).
+1763917047: New connection from 172.19.0.6:38430 on port 1883.
+1763917047: New connection from 172.19.0.8:49016 on port 1883.
+1763917047: New client connected from 172.19.0.6:38430 as unicast_sensor-001_b77de3 (p2, c1, k60).
+1763917047: New client connected from 172.19.0.8:49016 as mqttjs_79c9742b (p2, c1, k60).
+1763917073: Client web_monitor_a931b0 closed its connection.
+1763917075: New client connected from ::ffff:192.168.65.1:31240 as web_monitor_b03c34 (p2, c1, k60).
+1763917415: Client mqttjs_79c9742b closed its connection.
+1763917415: Client time_server_01 closed its connection.
+1763917415: Client persistence_sub_4213a4 closed its connection.
+1763917415: Client mqttjs_70bd64d9 closed its connection.
+1763917415: Client unicast_sensor-001_b77de3 closed its connection.
+1763917415: Client mqttjs_bbb9a20e closed its connection.
+1763917415: mosquitto version 2.0.22 terminating
+1763917415: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763917415: Client web_monitor_b03c34 closed its connection.
+1763918103: mosquitto version 2.0.22 starting
+1763918103: Config loaded from /mosquitto/config/mosquitto.conf.
+1763918103: Opening ipv4 listen socket on port 1883.
+1763918103: Opening ipv6 listen socket on port 1883.
+1763918103: Opening websockets listen socket on port 9001.
+1763918103: mosquitto version 2.0.22 running
+1763918103: New connection from 172.19.0.4:54000 on port 1883.
+1763918103: New client connected from 172.19.0.4:54000 as unicast_sensor-001_a38725 (p2, c1, k60).
+1763918103: New connection from 172.19.0.7:50502 on port 1883.
+1763918103: New connection from 172.19.0.5:54638 on port 1883.
+1763918103: New client connected from 172.19.0.5:54638 as mqttjs_af8a5194 (p2, c1, k60).
+1763918103: New client connected from 172.19.0.7:50502 as time_server_01 (p2, c1, k60).
+1763918103: New connection from 172.19.0.6:35270 on port 1883.
+1763918103: New client connected from 172.19.0.6:35270 as mqttjs_eaf4692e (p2, c1, k60).
+1763918103: New connection from 172.19.0.9:37012 on port 1883.
+1763918103: New client connected from 172.19.0.9:37012 as mqttjs_e81da497 (p2, c1, k60).
+1763918103: New connection from 172.19.0.10:40170 on port 1883.
+1763918103: New client connected from 172.19.0.10:40170 as persistence_sub_a0e0cb (p2, c1, k60).
+1763918105: New client connected from ::ffff:192.168.65.1:38663 as web_monitor_b03c34 (p2, c1, k60).
+1763918190: Client web_monitor_b03c34 closed its connection.
+1763918192: New client connected from ::ffff:192.168.65.1:20370 as web_monitor_4b8861 (p2, c1, k60).
+1763918206: Client mqttjs_af8a5194 closed its connection.
+1763918206: Client persistence_sub_a0e0cb closed its connection.
+1763918206: Client unicast_sensor-001_a38725 closed its connection.
+1763918206: Client mqttjs_e81da497 closed its connection.
+1763918206: Client time_server_01 closed its connection.
+1763918206: Client mqttjs_eaf4692e closed its connection.
+1763918207: mosquitto version 2.0.22 terminating
+1763918207: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763918207: Client web_monitor_4b8861 closed its connection.
+1763918211: mosquitto version 2.0.22 starting
+1763918211: Config loaded from /mosquitto/config/mosquitto.conf.
+1763918211: Opening ipv4 listen socket on port 1883.
+1763918211: Opening ipv6 listen socket on port 1883.
+1763918211: Opening websockets listen socket on port 9001.
+1763918211: mosquitto version 2.0.22 running
+1763918211: New connection from 172.19.0.5:45988 on port 1883.
+1763918211: New client connected from 172.19.0.5:45988 as unicast_sensor-001_439638 (p2, c1, k60).
+1763918211: New connection from 172.19.0.6:38368 on port 1883.
+1763918211: New client connected from 172.19.0.6:38368 as time_server_01 (p2, c1, k60).
+1763918211: New connection from 172.19.0.4:38856 on port 1883.
+1763918211: New connection from 172.19.0.7:48284 on port 1883.
+1763918211: New client connected from 172.19.0.4:38856 as mqttjs_695db345 (p2, c1, k60).
+1763918211: New client connected from 172.19.0.7:48284 as persistence_sub_400923 (p2, c1, k60).
+1763918211: New connection from 172.19.0.8:54640 on port 1883.
+1763918211: New client connected from 172.19.0.8:54640 as mqttjs_4c215f06 (p2, c1, k60).
+1763918211: New connection from 172.19.0.10:42410 on port 1883.
+1763918211: New client connected from 172.19.0.10:42410 as mqttjs_0929ce04 (p2, c1, k60).
+1763918211: New client connected from ::ffff:192.168.65.1:24207 as web_monitor_4b8861 (p2, c1, k60).
+1763918458: Client unicast_sensor-001_439638 closed its connection.
+1763918458: Client mqttjs_0929ce04 closed its connection.
+1763918458: Client mqttjs_695db345 closed its connection.
+1763918458: Client persistence_sub_400923 closed its connection.
+1763918458: Client mqttjs_4c215f06 closed its connection.
+1763918458: Client time_server_01 closed its connection.
+1763918458: mosquitto version 2.0.22 terminating
+1763918458: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763918458: Client web_monitor_4b8861 closed its connection.
+1763919348: mosquitto version 2.0.22 starting
+1763919348: Config loaded from /mosquitto/config/mosquitto.conf.
+1763919348: Opening ipv4 listen socket on port 1883.
+1763919348: Opening ipv6 listen socket on port 1883.
+1763919348: Opening websockets listen socket on port 9001.
+1763919348: mosquitto version 2.0.22 running
+1763919348: New connection from 172.19.0.9:58946 on port 1883.
+1763919348: New connection from 172.19.0.8:36028 on port 1883.
+1763919348: New connection from 172.19.0.7:35350 on port 1883.
+1763919348: New client connected from 172.19.0.7:35350 as mqttjs_417dbe2a (p2, c1, k60).
+1763919348: New client connected from 172.19.0.8:36028 as mqttjs_eb4b5952 (p2, c1, k60).
+1763919348: New client connected from 172.19.0.9:58946 as persistence_sub_62ce7a (p2, c1, k60).
+1763919348: New connection from 172.19.0.4:60594 on port 1883.
+1763919348: New connection from 172.19.0.6:60282 on port 1883.
+1763919348: New client connected from 172.19.0.4:60594 as mqttjs_1205da69 (p2, c1, k60).
+1763919348: New client connected from 172.19.0.6:60282 as time_server_01 (p2, c1, k60).
+1763919348: New connection from 172.19.0.5:52630 on port 1883.
+1763919348: New client connected from 172.19.0.5:52630 as unicast_sensor-001_b2ae32 (p2, c1, k60).
+1763919358: New client connected from ::ffff:192.168.65.1:50551 as web_monitor_4b8861 (p2, c1, k60).
+1763919884: Client mqttjs_eb4b5952 closed its connection.
+1763919884: Client mqttjs_1205da69 closed its connection.
+1763919884: Client mqttjs_417dbe2a closed its connection.
+1763919884: Client persistence_sub_62ce7a closed its connection.
+1763919884: Client time_server_01 closed its connection.
+1763919884: Client unicast_sensor-001_b2ae32 closed its connection.
+1763919884: mosquitto version 2.0.22 terminating
+1763919884: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763919884: Client web_monitor_4b8861 closed its connection.
+1763919924: mosquitto version 2.0.22 starting
+1763919924: Config loaded from /mosquitto/config/mosquitto.conf.
+1763919924: Opening ipv4 listen socket on port 1883.
+1763919924: Opening ipv6 listen socket on port 1883.
+1763919924: Opening websockets listen socket on port 9001.
+1763919924: mosquitto version 2.0.22 running
+1763919924: New connection from 172.19.0.4:54440 on port 1883.
+1763919924: New client connected from 172.19.0.4:54440 as mqttjs_7879979c (p2, c1, k60).
+1763919924: New connection from 172.19.0.6:36124 on port 1883.
+1763919924: New client connected from 172.19.0.6:36124 as mqttjs_efeb174b (p2, c1, k60).
+1763919924: New connection from 172.19.0.7:36090 on port 1883.
+1763919924: New client connected from 172.19.0.7:36090 as mqttjs_007334f6 (p2, c1, k60).
+1763919924: New connection from 172.19.0.5:48238 on port 1883.
+1763919924: New client connected from 172.19.0.5:48238 as unicast_sensor-001_e7bbd8 (p2, c1, k60).
+1763919924: New connection from 172.19.0.10:45498 on port 1883.
+1763919924: New client connected from 172.19.0.10:45498 as time_server_01 (p2, c1, k60).
+1763919924: New connection from 172.19.0.9:32860 on port 1883.
+1763919924: New client connected from 172.19.0.9:32860 as persistence_sub_4df0cc (p2, c1, k60).
+1763919924: New connection from 172.19.0.11:32974 on port 1883.
+1763919924: New client connected from 172.19.0.11:32974 as pub_sensor-004_661 (p2, c1, k60).
+1763919924: New connection from 172.19.0.12:56916 on port 1883.
+1763919924: New client connected from 172.19.0.12:56916 as pub_sensor-003_4fa (p2, c1, k60).
+1763919924: New connection from 172.19.0.13:48598 on port 1883.
+1763919924: New client connected from 172.19.0.13:48598 as pub_sensor-002_2f9 (p2, c1, k60).
+1763919924: New connection from 172.19.0.14:48920 on port 1883.
+1763919924: New client connected from 172.19.0.14:48920 as pub_sensor-005_1b4 (p2, c1, k60).
+1763919924: New connection from 172.19.0.15:49882 on port 1883.
+1763919924: New client connected from 172.19.0.15:49882 as pub_sensor-001_fed (p2, c1, k60).
+1763919925: New client connected from ::ffff:192.168.65.1:56252 as web_monitor_4b8861 (p2, c1, k60).
+1763921725: Saving in-memory database to /mosquitto/data//mosquitto.db.

@@ -55,9 +55,9 @@ mqttClient.on('message', (receivedTopic, message) => {
   // Incrementamos nuestro reloj local por el evento de "recibir mensaje".
   lamportClock++;
 
- // --- REGLA 1 (VECTORIAL): Evento interno ---
+  // --- REGLA 1 (VECTORIAL): Evento interno ---
   // El evento de "recibir" incrementa nuestro propio reloj (P_2)
-  vectorClock[PROCESS_ID]++; 
+  vectorClock[PROCESS_ID]++;
 
   console.log(`\n[MSG] Mensaje recibido en [${receivedTopic}]`);
   try {
@@ -75,12 +75,31 @@ mqttClient.on('message', (receivedTopic, message) => {
     for (let i = 0; i < VECTOR_PROCESS_COUNT; i++) {
       vectorClock[i] = Math.max(vectorClock[i], receivedVectorClock[i]);
     }
+
     console.log(`[VECTOR] Reloj local actualizado a: [${vectorClock.join(',')}] (recibido: [${receivedVectorClock.join(',')}])`);
 
     if (!deviceId || data.temperatura === undefined || data.humedad === undefined) {
       console.warn('[WARN] Mensaje incompleto recibido, ignorando:', data);
       return;
     }
+
+    // --- FILTRO : VALIDACIÓN TEMPORAL ---
+    const now = Date.now();
+    const msgTime = new Date(data.timestamp).getTime();
+    const diff = Math.abs(now - msgTime);
+    const MAX_SKEW_ALLOWED = 2000; // 2 segundos de tolerancia
+
+    // Caso 1: El mensaje viene del futuro o pasado lejano
+    if (diff > MAX_SKEW_ALLOWED) {
+
+      // Excepción: Si el reloj lógico dice que es consistente, lo salvamos con una etiqueta
+      // (Verificamos si receivedLamportTS > lamportClock local antes de actualizar)
+      // Nota: Aquí simplificamos la lógica de rescate para no complicar.
+
+      console.error(`[UTP-DEFENSE] Paquete RECHAZADO de ${deviceId}. Skew: ${diff}ms > 2000ms.`);
+      return; // <--- AQUÍ DETENEMOS EL PROCESAMIENTO. NO GUARDA EN DB.
+    }
+    // --------------------------------------------
 
     // Crear un punto de datos para InfluxDB
     const point = new Point('sensor_data')
@@ -103,8 +122,8 @@ mqttClient.on('message', (receivedTopic, message) => {
 
     // Escribir el punto en InfluxDB
     writeApi.writePoint(point);
-    
-   // Forzar el envío inmediato de los datos
+
+    // Forzar el envío inmediato de los datos
     writeApi.flush()
       .then(() => {
         console.log('[DB] Punto escrito exitosamente en InfluxDB.');
