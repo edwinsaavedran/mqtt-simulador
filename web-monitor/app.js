@@ -1,346 +1,285 @@
-// /web-monitor/app.js
-
 // --- Configuración ---
 const MQTT_BROKER_URL = "ws://localhost:9001";
-const CLIENT_ID = `web_monitor_${Math.random().toString(16).slice(2, 8)}`;
+const CLIENT_ID = `titan_monitor_${Math.random().toString(16).slice(2, 8)}`;
 
-const TELEMETRY_TOPIC = "utp/sistemas_distribuidos/grupo1/+/telemetry";
-const STATUS_TOPIC = "utp/sistemas_distribuidos/grupo1/+/status";
-const MUTEX_STATUS_TOPIC = "utp/sistemas_distribuidos/grupo1/mutex/status"; // <--
-
-// --- Elementos del DOM ---
-const connectionStatusEl = document.getElementById("connection-status");
-const deviceListEl = document.getElementById("device-list");
-const sensorCardsEl = document.getElementById("sensor-cards");
-const messageLogEl = document.getElementById("message-log");
-const browserTimeEl = document.getElementById("browser-time");
-const monitorClockEl = document.getElementById("monitor-clock");
-const monitorVectorClockEl = document.getElementById("monitor-vector-clock");
-// NUEVOS elementos para Mutex
-const resourceStatusLightEl = document.getElementById("resource-status-light");
-const resourceStatusTextEl = document.getElementById("resource-status-text");
-const resourceHolderEl = document.getElementById("resource-holder");
-const resourceQueueEl = document.getElementById("resource-queue");
-
-// --- Estado de la Aplicación ---
+// --- Estado Global ---
 let client;
-const devices = {}; // Almacenará el estado y datos de cada dispositivo
-let lamportClock = 0;
-const VECTOR_PROCESS_COUNT_MONITOR = 4;
-const PROCESS_ID_MONITOR = 3;
-let vectorClock = new Array(VECTOR_PROCESS_COUNT_MONITOR).fill(0);
-let lastReceivedVector = null;
+let currentLeader = null;
+const devices = {}; // Almacén de datos de sensores
+let network; // Instancia de Vis.js
+let nodesDataSet, edgesDataSet; // DataSets de Vis.js
 
-// --- Funciones de Logging ---
-function logMessage(message) {
-  const timestamp = new Date().toLocaleTimeString();
-  messageLogEl.innerHTML += `[${timestamp}] ${message}\n`;
-  messageLogEl.scrollTop = messageLogEl.scrollHeight;
+// ============================================================================
+// 1. INICIALIZACIÓN VISUAL (MAPA DE RED)
+// ============================================================================
+function initNetworkGraph() {
+  const container = document.getElementById("network-viz");
+
+  // Definición Inicial de Nodos (Estática por ahora, se podría hacer dinámica)
+  const nodesArray = [
+    {
+      id: "broker",
+      label: "MQTT Broker",
+      shape: "hexagon",
+      color: "#fff",
+      size: 40,
+      font: { color: "#000" },
+    },
+    { id: "sensor-001", label: "S1\n(10)", shape: "dot", color: "#238636" },
+    { id: "sensor-002", label: "S2\n(20)", shape: "dot", color: "#238636" },
+    { id: "sensor-003", label: "S3\n(30)", shape: "dot", color: "#238636" },
+    { id: "sensor-004", label: "S4\n(40)", shape: "dot", color: "#238636" },
+    { id: "sensor-005", label: "S5\n(50)", shape: "dot", color: "#238636" },
+  ];
+
+  const edgesArray = [
+    { id: "e1", from: "sensor-001", to: "broker" },
+    { id: "e2", from: "sensor-002", to: "broker" },
+    { id: "e3", from: "sensor-003", to: "broker" },
+    { id: "e4", from: "sensor-004", to: "broker" },
+    { id: "e5", from: "sensor-005", to: "broker" },
+  ];
+
+  nodesDataSet = new vis.DataSet(nodesArray);
+  edgesDataSet = new vis.DataSet(edgesArray);
+
+  const data = { nodes: nodesDataSet, edges: edgesDataSet };
+  const options = {
+    physics: { stabilization: true, barnesHut: { springLength: 150 } },
+    nodes: {
+      font: { color: "#ffffff", face: "JetBrains Mono", size: 14 },
+      borderWidth: 2,
+    },
+    edges: {
+      color: "#30363d",
+      width: 2,
+      smooth: { type: "continuous" },
+    },
+    interaction: { hover: true },
+  };
+
+  network = new vis.Network(container, data, options);
 }
 
-// --- Funciones de Actualización del DOM ---
-function updateMonitorClock() {
-  monitorClockEl.textContent = `Reloj Logico (Monitor): ${lamportClock}`;
-}
-function updateMonitorVectorClock() {
-  monitorVectorClockEl.textContent = `Reloj Vectorial: [${vectorClock.join(",")}]`;
-}
-function updateBrowserTime() {
-  browserTimeEl.textContent = `Hora Navegador: ${new Date().toLocaleTimeString()}`;
-}
-
-function updateConnectionStatus(isConnected, error = null) {
-  if (isConnected) {
-    connectionStatusEl.textContent = "Estado: Conectado";
-    connectionStatusEl.classList.add("connected");
-    connectionStatusEl.classList.remove("disconnected");
-    logMessage("*** Conectado al Broker MQTT ***");
-  } else {
-    connectionStatusEl.textContent = `Estado: Desconectado ${error ? `(${error})` : ""}`;
-    connectionStatusEl.classList.remove("connected");
-    connectionStatusEl.classList.add("disconnected");
-    logMessage(
-      `*** Desconectado del Broker MQTT ${error ? `- ${error}` : ""} ***`,
-    );
-  }
-}
-
-function updateDeviceStatus(deviceId, status) {
-  if (!devices[deviceId]) {
-    devices[deviceId] = { status: "desconocido", telemetry: {} };
-  }
-  devices[deviceId].status = status.toLowerCase();
-
-  let deviceEl = document.getElementById(`device-${deviceId}`);
-  if (!deviceEl) {
-    deviceEl = document.createElement("div");
-    deviceEl.id = `device-${deviceId}`;
-    deviceEl.classList.add("device-status-item");
-    deviceListEl.appendChild(deviceEl);
-  }
-
-  deviceEl.innerHTML = `
-        <span class="device-id">${deviceId}</span>
-        <span class="status-indicator ${devices[deviceId].status}">${status.toUpperCase()}</span>
-    `;
-  updateSensorCard(deviceId);
-}
-
-// --- Función para actualizar el panel de Mutex ---
-function updateMutexStatus(data) {
-  logMessage(`[MUTEX] Estado del recurso actualizado: ${JSON.stringify(data)}`);
-
-  if (data.isAvailable) {
-    resourceStatusLightEl.classList.remove("busy");
-    resourceStatusLightEl.classList.add("available");
-    resourceStatusTextEl.textContent = "Libre";
-  } else {
-    resourceStatusLightEl.classList.remove("available");
-    resourceStatusLightEl.classList.add("busy");
-    resourceStatusTextEl.textContent = "Ocupado";
-  }
-
-  resourceHolderEl.textContent = data.holder || "---";
-  resourceQueueEl.textContent =
-    data.queue.length > 0 ? data.queue.join(", ") : "---";
-}
-
-function updateSensorCard(deviceId) {
-  if (!devices[deviceId]) return;
-
-  let cardEl = document.getElementById(`card-${deviceId}`);
-  if (!cardEl) {
-    cardEl = document.createElement("div");
-    cardEl.id = `card-${deviceId}`;
-    cardEl.classList.add("sensor-card");
-    sensorCardsEl.appendChild(cardEl);
-  }
-
-  const deviceData = devices[deviceId];
-  const statusClass = deviceData.status === "online" ? "online" : "offline";
-
-  // --- Lógica de Delta y Timestamps ---
-  let timeCorregido = "N/A";
-  let timeSimulado = "N/A";
-  let offset = "N/A";
-  let delta = "N/A";
-  let deltaClass = "";
-
-  if (deviceData.telemetry.timestamp) {
-    const sensorTimeCorrected = new Date(deviceData.telemetry.timestamp);
-    const browserTime = new Date();
-    timeCorregido = sensorTimeCorrected.toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
-
-    const deltaSeconds =
-      (sensorTimeCorrected.getTime() - browserTime.getTime()) / 1000;
-    delta = `${deltaSeconds.toFixed(1)} s`;
-    if (deltaSeconds > 1.5) {
-      deltaClass = "delta-positive";
-    } else if (deltaSeconds < -1.5) {
-      deltaClass = "delta-negative";
-    }
-  }
-
-  if (deviceData.telemetry.timestamp_simulado) {
-    timeSimulado = new Date(
-      deviceData.telemetry.timestamp_simulado,
-    ).toLocaleTimeString("en-GB", { hour12: false });
-  }
-
-  if (deviceData.telemetry.clock_offset) {
-    offset = `${deviceData.telemetry.clock_offset} ms`;
-  }
-
-  const temp =
-    deviceData.telemetry.temperatura !== undefined
-      ? `${deviceData.telemetry.temperatura} °C`
-      : "N/A";
-  const hum =
-    deviceData.telemetry.humedad !== undefined
-      ? `${deviceData.telemetry.humedad} %`
-      : "N/A";
-  const lamport_ts =
-    deviceData.telemetry.lamport_ts !== undefined
-      ? deviceData.telemetry.lamport_ts
-      : "N/A";
-  const vector_clock = deviceData.telemetry.vector_clock
-    ? `[${deviceData.telemetry.vector_clock.join(",")}]`
-    : "N/A";
-
-  const sensorState = (
-    deviceData.telemetry.sensor_state || "IDLE"
-  ).toLowerCase();
-  const sensorStateText = sensorState.toUpperCase();
-
-  // --- HTML de la Tarjeta Actualizado ---
-  cardEl.innerHTML = `
-        <h3>${deviceId} <span class="status-indicator ${statusClass}">${deviceData.status.toUpperCase()}</span></h3>
-        <p>Temperatura: <strong>${temp}</strong></p>
-        <p>Humedad: <strong>${hum}</strong></p>
-
-        <p class="state state-${sensorState}">Estado: <strong>${sensorStateText}</strong></p>
-
-        <p>T. Corregido: <strong>${timeCorregido}</strong></p>
-        <p>T. Simulado: <span class="${deltaClass}">${timeSimulado}</span></p>
-        <p class="delta ${deltaClass}">Delta (Corregido - Navegador): <strong>${delta}</strong></p>
-        <p>Lamport TS (Sensor): <strong>${lamport_ts}</strong></p>
-        <p>Vector (Sensor): <strong>${vector_clock}</strong></p>
-    `;
-  // Nota: Se quitó 'Offset Aplicado' para no saturar la tarjeta.
-}
-
-// --- Lógica MQTT ---
+// ============================================================================
+// 2. LÓGICA DE CONEXIÓN MQTT
+// ============================================================================
 function connectToMqtt() {
-  logMessage(`Intentando conectar a ${MQTT_BROKER_URL}...`);
+  logEvent("SYSTEM", `Conectando a ${MQTT_BROKER_URL}...`);
+
   client = mqtt.connect(MQTT_BROKER_URL, {
     clientId: CLIENT_ID,
     clean: true,
-    connectTimeout: 4000,
+    reconnectPeriod: 5000,
   });
 
   client.on("connect", () => {
-    updateConnectionStatus(true);
+    document.getElementById("connection-status").innerText = "ONLINE";
+    document.getElementById("connection-status").style.backgroundColor =
+      "#238636"; // Green
+    logEvent("SYSTEM", " Conectado al Broker MQTT");
 
-    client.subscribe(TELEMETRY_TOPIC, { qos: 0 }, (err) => {
-      if (!err) logMessage(`Suscrito a telemetría: ${TELEMETRY_TOPIC}`);
-    });
-
-    client.subscribe(STATUS_TOPIC, { qos: 1 }, (err) => {
-      if (!err) logMessage(`Suscrito a estado: ${STATUS_TOPIC}`);
-    });
-
-    // ---  Suscripción al estado de Mutex ---
-    client.subscribe(MUTEX_STATUS_TOPIC, { qos: 1, retain: true }, (err) => {
-      if (!err) {
-        logMessage(`Suscrito a estado de MUTEX: ${MUTEX_STATUS_TOPIC}`);
-      } else {
-        logMessage(`Error al suscribirse a MUTEX: ${err}`);
-      }
-    });
+    // Suscripciones
+    client.subscribe("utp/sistemas_distribuidos/grupo1/election/coordinator");
+    client.subscribe("utp/sistemas_distribuidos/grupo1/mutex/status");
+    client.subscribe("utp/sistemas_distribuidos/grupo1/+/telemetry");
+    client.subscribe("utp/sistemas_distribuidos/grupo1/election/lease");
   });
 
   client.on("message", (topic, message) => {
-    // --- REGLA 1 (Lógica): Evento interno ---
-    vectorClock[PROCESS_ID_MONITOR]++;
-    lamportClock++;
-
-    const messageString = message.toString();
-    logMessage(`Mensaje recibido en [${topic}]`);
-
     try {
-      const data = JSON.parse(messageString);
+      const payload = JSON.parse(message.toString());
 
-      // Manejar el mensaje de estado de Mutex PRIMERO
-      if (topic === MUTEX_STATUS_TOPIC) {
-        updateMutexStatus(data);
-        updateMonitorClock(); // Actualizamos relojes aunque sea mensaje de mutex
-        updateMonitorVectorClock();
-        return; // Salir
+      // A. Mensajes de Telemetría (Actualización frecuente)
+      if (topic.includes("/telemetry")) {
+        handleTelemetry(payload);
       }
-        // --- REGLA 2 (Filtro): Validación ---
-      const deviceId = data.deviceId;
-      if (!deviceId) {
-        logMessage("Mensaje recibido sin deviceId, ignorando.");
-        return;
+      // B. Mensajes de Coordinador (Cambio de Líder)
+      else if (topic.includes("election/coordinator")) {
+        handleLeaderChange(payload);
       }
-
-      // --- REGLA 3 (Lógica): Fusión ---
-      const receivedLamportTS = data.lamport_ts || 0;
-      lamportClock = Math.max(lamportClock, receivedLamportTS);
-      updateMonitorClock();
-
-      const receivedVectorClock = data.vector_clock;
-      if (receivedVectorClock && Array.isArray(receivedVectorClock)) {
-        while (receivedVectorClock.length < VECTOR_PROCESS_COUNT_MONITOR) {
-          receivedVectorClock.push(0);
-        }
-        for (let i = 0; i < VECTOR_PROCESS_COUNT_MONITOR; i++) {
-          vectorClock[i] = Math.max(vectorClock[i], receivedVectorClock[i]);
-        }
-        updateMonitorVectorClock();
-        logMessage(
-          `[VECTOR] Fusion: [${receivedVectorClock.join(",")}] -> [${vectorClock.join(",")}]`,
-        );
-        checkConcurrency(receivedVectorClock);
-        lastReceivedVector = receivedVectorClock;
-      }
-
-      if (!devices[deviceId]) {
-        devices[deviceId] = { status: "desconocido", telemetry: {} };
-      }
-
-      if (topic.includes("/status")) {
-        updateDeviceStatus(deviceId, data.status);
-      } else if (topic.includes("/telemetry")) {
-        devices[deviceId].telemetry = data;
-        updateSensorCard(deviceId);
-        if (
-          devices[deviceId].status === "desconocido" ||
-          devices[deviceId].status === "offline"
-        ) {
-          updateDeviceStatus(deviceId, "online");
-        }
+      // C. Mensajes de Mutex (Cola)
+      else if (topic.includes("mutex/status")) {
+        updateVisualQueue(payload.queue, payload.holder);
       }
     } catch (e) {
-      logMessage(`Error procesando mensaje JSON: ${e.message}`);
+      console.error("Error parseando mensaje:", e);
     }
   });
 
-  client.on("error", (err) => {
-    updateConnectionStatus(false, err.message);
-    logMessage(`Error MQTT: ${err.message}`);
-  });
-  client.on("close", () => {
-    if (connectionStatusEl.textContent !== "Estado: Desconectado") {
-      updateConnectionStatus(false);
-    }
-  });
   client.on("offline", () => {
-    updateConnectionStatus(false, "Cliente desconectado");
-  });
-  client.on("reconnect", () => {
-    logMessage("Intentando reconectar...");
+    document.getElementById("connection-status").innerText = "OFFLINE";
+    document.getElementById("connection-status").style.backgroundColor =
+      "#da3633"; // Red
   });
 }
 
-// --- Funciones de Comparación (sin cambios) ---
-function compareVectorClocks(vA, vB) {
-  let a_lt_b = false;
-  let b_lt_a = false;
-  for (let i = 0; i < vA.length; i++) {
-    if (vA[i] < vB[i]) {
-      a_lt_b = true;
-    } else if (vA[i] > vB[i]) {
-      b_lt_a = true;
-    }
+// ============================================================================
+// 3. MANEJADORES DE EVENTOS
+// ============================================================================
+
+function handleTelemetry(data) {
+  const id = data.deviceId;
+
+  // 1. Actualizar Datos en Memoria
+  devices[id] = data;
+
+  // 2. Actualizar Tarjeta Visual (Nivel Operativo)
+  updateSensorCard(id, data);
+
+  // 3. Animar Grafo (Nivel Estratégico)
+  triggerTrafficAnimation(id);
+}
+
+function handleLeaderChange(payload) {
+  const newLeader = payload.coordinatorId;
+  if (currentLeader !== newLeader) {
+    logEvent(
+      "ELECTION",
+      ` NUEVO LÍDER: ${newLeader} (Prio: ${payload.priority})`,
+    );
+    currentLeader = newLeader;
+
+    // Actualizar Colores en Grafo
+    const updates = nodesDataSet.get().map((node) => {
+      if (node.id === "broker") return node;
+      const isLeader = node.id === newLeader;
+      return {
+        id: node.id,
+        color: isLeader ? "#d29922" : "#238636", // Gold vs Green
+        borderWidth: isLeader ? 4 : 2,
+        size: isLeader ? 35 : 25,
+        label: isLeader
+          ? node.label.replace("", "") + "\n"
+          : node.label.replace("\n", ""), // Hack simple para label
+      };
+    });
+    nodesDataSet.update(updates);
+
+    // Actualizar Borde en Tarjetas
+    document.querySelectorAll(".sensor-card").forEach((card) => {
+      card.classList.remove("leader");
+    });
+    const card = document.getElementById(`card-${newLeader}`);
+    if (card) card.classList.add("leader");
   }
-  if (a_lt_b && !b_lt_a) return "A_BEFORE_B";
-  if (b_lt_a && !a_lt_b) return "B_BEFORE_A";
-  return "CONCURRENT";
 }
 
-function checkConcurrency(newVector) {
-  if (lastReceivedVector) {
-    const relation = compareVectorClocks(lastReceivedVector, newVector);
-    if (relation === "CONCURRENT") {
-      logMessage(
-        `[CONCURRENCIA] Evento [${newVector.join(",")}] es CONCURRENTE con [${lastReceivedVector.join(",")}]`,
-      );
-    } else {
-      logMessage(
-        `[ORDEN] Evento [${lastReceivedVector.join(",")}] sucedió ${relation.replace("_", " ")} [${newVector.join(",")}]`,
-      );
-    }
+function triggerTrafficAnimation(sensorId) {
+  // Buscar el edge conectado a este sensor (asumimos ID sensor -> ID edge simple)
+  // En nuestra config estática: 'sensor-001' -> edge index 0? No, busquemos por 'from'
+  const edges = edgesDataSet.get({ filter: (item) => item.from === sensorId });
+  if (edges.length > 0) {
+    const edge = edges[0];
+
+    // Efecto "Flash" en el enlace
+    edgesDataSet.update({ id: edge.id, color: "#58a6ff", width: 5 }); // Azul brillante
+
+    setTimeout(() => {
+      edgesDataSet.update({ id: edge.id, color: "#30363d", width: 2 }); // Restaurar
+    }, 150);
+  }
+}
+
+// ============================================================================
+// 4. COMPONENTES UI (RENDERIZADO)
+// ============================================================================
+
+function updateSensorCard(id, data) {
+  const container = document.getElementById("sensor-grid");
+  let card = document.getElementById(`card-${id}`);
+
+  // Crear tarjeta si no existe
+  if (!card) {
+    card = document.createElement("div");
+    card.id = `card-${id}`;
+    card.className = "sensor-card";
+    container.appendChild(card);
+  }
+
+  // Calcular Delta de Tiempo (Drift)
+  const now = Date.now();
+  const msgTime = new Date(data.timestamp).getTime();
+  const delta = (now - msgTime) / 1000; // segundos
+  const deltaColor = Math.abs(delta) > 2 ? "#da3633" : "#238636";
+
+  // Estado del Mutex (si el sensor lo reporta)
+  const mutexState = data.sensor_state || "IDLE";
+
+  // Renderizar Contenido
+  card.innerHTML = `
+        <div class="sensor-header">
+            <span>${id}</span>
+            <span style="font-size: 0.8em; color: #8b949e">${mutexState}</span>
+        </div>
+
+        <div class="sensor-metric">
+            <span class="metric-label">Temp</span>
+            <span class="metric-value">${Number(data.temperatura).toFixed(1)}°C</span>
+        </div>
+        <div class="sensor-metric">
+            <span class="metric-label">Hum</span>
+            <span class="metric-value">${Number(data.humedad).toFixed(1)}%</span>
+        </div>
+        <div class="sensor-metric">
+            <span class="metric-label">Latency</span>
+            <span class="metric-value" style="color: ${deltaColor}">${delta.toFixed(2)}s</span>
+        </div>
+
+        <div class="vector-clock">
+            L:${data.lamport_ts} | V:[${data.vector_clock.join(",")}]
+        </div>
+    `;
+
+  // Efecto visual de actualización
+  card.classList.add("flash-update");
+  setTimeout(() => card.classList.remove("flash-update"), 500);
+}
+
+function updateVisualQueue(queue, holder) {
+  const track = document.getElementById("mutex-queue-track");
+  if (!track) return;
+  track.innerHTML = "";
+
+  // 1. Holder (Quien tiene el recurso)
+  if (holder) {
+    const node = document.createElement("div");
+    node.className = "queue-node active-lock";
+    node.innerHTML = ` <strong>${holder}</strong><br><small>EN SECCIÓN CRÍTICA</small>`;
+    track.appendChild(node);
+
+    // Flecha
+    const arrow = document.createElement("div");
+    arrow.innerText = "⬅";
+    arrow.style.color = "#58a6ff";
+    track.appendChild(arrow);
   } else {
-    logMessage(`[VECTOR] Primer evento recibido [${newVector.join(",")}]`);
+    const empty = document.createElement("div");
+    empty.innerText = " Recurso Libre";
+    empty.style.color = "#238636";
+    track.appendChild(empty);
+  }
+
+  // 2. Cola de Espera
+  if (queue && queue.length > 0) {
+    queue.forEach((waiter) => {
+      const node = document.createElement("div");
+      node.className = "queue-node";
+      node.innerText = ` ${waiter}`;
+      track.appendChild(node);
+    });
   }
 }
 
-// --- Iniciar Conexión y Relojes ---
+function logEvent(type, msg) {
+  const list = document.getElementById("messages");
+  const li = document.createElement("li");
+  const time = new Date().toLocaleTimeString();
+  li.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-type" style="color: var(--accent-color)">${type}:</span> ${msg}`;
+  list.prepend(li);
+  if (list.children.length > 15) list.removeChild(list.lastChild);
+}
+
+// --- Arranque ---
+initNetworkGraph();
 connectToMqtt();
-updateBrowserTime();
-setInterval(updateBrowserTime, 1000);
-updateMonitorClock();
-updateMonitorVectorClock();

@@ -72,7 +72,7 @@ services:
       - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
       - PROCESS_PRIORITY=10 # El ID más bajo
-      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - ELECTION_PARTICIPANTS=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
       - TOTAL_NODES=5
     restart: on-failure
 
@@ -90,7 +90,7 @@ services:
       - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
       - PROCESS_PRIORITY=20 # El ID más bajo      
-      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - ELECTION_PARTICIPANTS=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
       - TOTAL_NODES=5
     restart: on-failure
   # --- Servicio para el Publicador (Sensor 3) ---
@@ -107,7 +107,7 @@ services:
       - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
       - PROCESS_PRIORITY=30 # El ID más bajo
-      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - ELECTION_PARTICIPANTS=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
       - TOTAL_NODES=5
     restart: on-failure
 
@@ -125,7 +125,7 @@ services:
       - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
       - PROCESS_PRIORITY=40 #
-      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - ELECTION_PARTICIPANTS=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
       - TOTAL_NODES=5
     restart: on-failure
 
@@ -143,7 +143,7 @@ services:
       - CLOCK_DRIFT_RATE=500
       # --- NUEVO: Configuración de Elección ---
       - PROCESS_PRIORITY=50 # El "Bully" original (Líder natural)
-      - ELECTION_NODES=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
+      - ELECTION_PARTICIPANTS=sensor-001:10,sensor-002:20,sensor-003:30,sensor-004:40,sensor-005:50
       - TOTAL_NODES=5
     restart: on-failure
 

@@ -1,58 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor MQTT - Sistemas Distribuidos</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Centro de Mando MQTT</h1>
-        <div>
-            <div id="browser-time"></div> 
-            <div id="monitor-clock">Reloj Lógico (Monitor): 0</div> 
-            <div id="monitor-vector-clock">Reloj Vectorial: [0,0,0,0]</div>
-            <div id="connection-status">Estado: Desconectado</div>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Centro de Mando TITÁN</title>
+        <script
+            type="text/javascript"
+            src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+        ></script>
+        <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header
+            style="
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            "
+        >
+            <h1 style="margin: 0; color: white">
+                PROYECTO UTP
+                <span style="color: var(--text-secondary); font-size: 0.6em"
+                    >SISTEMA DE DEFENSA DISTRIBUIDA</span
+                >
+            </h1>
+            <div
+                id="connection-status"
+                style="
+                    background: var(--danger-color);
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    font-size: 0.8em;
+                "
+            >
+                OFFLINE
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <section class="panel">
+                <h2>Topología del Clúster (Live)</h2>
+                <div id="network-viz"></div>
+            </section>
+
+            <section class="panel">
+                <h2>Bitácora de Eventos</h2>
+                <ul id="messages" class="terminal-logs"></ul>
+            </section>
         </div>
-    </header>
 
-    <main>
-        <section id="mutex-section">
-            <h2>Estación de Calibración (Recurso Compartido)</h2>
-            <div id="resource-status-wrapper">
-                <div id="resource-status-light"></div>
-                <div id="resource-status-text">Desconocido</div>
-            </div>
-            <div id="resource-details">
-                <p>Propietario: <strong id="resource-holder">---</strong></p>
-                <p>Cola de Espera: <strong id="resource-queue">---</strong></p>
-            </div>
-        </section>
-        
-        <section id="device-status-section">
-            <h2>Estado de Dispositivos</h2>
-            <div id="device-list">
+        <div class="full-width-panel" style="margin-bottom: 20px">
+            <section class="panel">
+                <h2>Pipeline de Sección Crítica (Mutex Queue)</h2>
+                <div id="mutex-queue-track" class="queue-track">
+                    <div
+                        style="
+                            color: var(--text-secondary);
+                            width: 100%;
+                            text-align: center;
+                        "
+                    >
+                        Esperando sincronización de coordinador...
+                    </div>
                 </div>
+            </section>
+        </div>
+
+        <section class="panel full-width-panel">
+            <h2>Matriz de Sensores (Telemetría & Vectores)</h2>
+            <div id="sensor-grid"></div>
         </section>
 
-        <hr>
-
-        <section id="telemetry-section">
-            <h2>Telemetría en Tiempo Real</h2>
-            <div id="sensor-cards">
-                </div>
-        </section>
-        
-        <hr>
-
-        <section id="log-section">
-            <h2>Registro de Eventos</h2>
-            <pre id="message-log"></pre>
-        </section>
-    </main>
-
-    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-    <script src="app.js"></script>
-</body>
+        <script src="app.js"></script>
+    </body>
 </html>
