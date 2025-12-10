@@ -1930,3 +1930,1691 @@
 1763959882: New client connected from ::ffff:192.168.65.1:36814 as titan_monitor_fe634a (p2, c1, k60).
 1763959886: Client titan_monitor_f3f9f5 closed its connection.
 1763959894: New client connected from ::ffff:192.168.65.1:57048 as titan_monitor_d938c7 (p2, c1, k60).
+1763960145: Client titan_monitor_d938c7 closed its connection.
+1763960145: New client connected from ::ffff:192.168.65.1:18949 as titan_monitor_d8efc5 (p2, c1, k60).
+1763960498: Client titan_monitor_fe634a closed its connection.
+1763960506: Client titan_monitor_d8efc5 closed its connection.
+1763960506: New client connected from ::ffff:192.168.65.1:58003 as titan_monitor_7a4d3b (p2, c1, k60).
+1763961005: Client pub_sensor-004_f76 closed its connection.
+1763961005: Client mqttjs_86ec869f closed its connection.
+1763961005: Client mqttjs_4c9f773c closed its connection.
+1763961005: Client unicast_sensor-001_027f05 closed its connection.
+1763961005: Client pub_sensor-002_cc6 closed its connection.
+1763961005: Client pub_sensor-003_50c closed its connection.
+1763961005: Client pub_sensor-005_60f closed its connection.
+1763961005: Client pub_sensor-001_2b8 closed its connection.
+1763961005: Client persistence_sub_e4ba38 closed its connection.
+1763961005: Client mqttjs_e801f890 closed its connection.
+1763961007: Client time_server_01 closed its connection.
+1763961007: mosquitto version 2.0.22 terminating
+1763961007: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763961007: Client titan_monitor_7a4d3b closed its connection.
+1763961050: mosquitto version 2.0.22 starting
+1763961050: Config loaded from /mosquitto/config/mosquitto.conf.
+1763961050: Opening ipv4 listen socket on port 1883.
+1763961050: Opening ipv6 listen socket on port 1883.
+1763961050: Opening websockets listen socket on port 9001.
+1763961050: mosquitto version 2.0.22 running
+1763961050: New connection from 172.19.0.5:34214 on port 1883.
+1763961050: New client connected from 172.19.0.5:34214 as mqttjs_7f778037 (p2, c1, k60).
+1763961050: New connection from 172.19.0.4:60608 on port 1883.
+1763961050: New connection from 172.19.0.6:43556 on port 1883.
+1763961050: New connection from 172.19.0.7:52756 on port 1883.
+1763961050: New client connected from 172.19.0.7:52756 as unicast_sensor-001_99fd20 (p2, c1, k60).
+1763961050: New client connected from 172.19.0.4:60608 as mqttjs_8bc65424 (p2, c1, k60).
+1763961050: New client connected from 172.19.0.6:43556 as mqttjs_81f5c5e3 (p2, c1, k60).
+1763961050: New connection from 172.19.0.9:45772 on port 1883.
+1763961050: New client connected from 172.19.0.9:45772 as persistence_sub_7cd504 (p2, c1, k60).
+1763961050: New connection from 172.19.0.10:55016 on port 1883.
+1763961050: New client connected from 172.19.0.10:55016 as time_server_01 (p2, c1, k60).
+1763961050: New connection from 172.19.0.12:34206 on port 1883.
+1763961050: New client connected from 172.19.0.12:34206 as pub_sensor-005_182 (p2, c1, k60).
+1763961050: New connection from 172.19.0.11:53232 on port 1883.
+1763961050: New client connected from 172.19.0.11:53232 as pub_sensor-001_c9c (p2, c1, k60).
+1763961050: New connection from 172.19.0.13:42148 on port 1883.
+1763961050: New client connected from 172.19.0.13:42148 as pub_sensor-004_6a6 (p2, c1, k60).
+1763961050: New connection from 172.19.0.15:42150 on port 1883.
+1763961050: New client connected from 172.19.0.15:42150 as pub_sensor-002_4a1 (p2, c1, k60).
+1763961050: New connection from 172.19.0.14:41524 on port 1883.
+1763961050: New client connected from 172.19.0.14:41524 as pub_sensor-003_f8f (p2, c1, k60).
+1763961104: New client connected from ::ffff:192.168.65.1:51093 as titan_viz_d080e6 (p2, c1, k60).
+1763961204: Client titan_viz_d080e6 closed its connection.
+1763961205: New client connected from ::ffff:192.168.65.1:16898 as titan_viz_df81ae (p2, c1, k60).
+1763961562: Client titan_viz_df81ae closed its connection.
+1763961563: New client connected from ::ffff:192.168.65.1:35452 as titan_viz_ca343d (p2, c1, k60).
+1763961979: Client titan_viz_ca343d closed its connection.
+1763961979: New client connected from ::ffff:192.168.65.1:55915 as titan_viz_158917 (p2, c1, k60).
+1763961980: Client titan_viz_158917 closed its connection.
+1763961980: New client connected from ::ffff:192.168.65.1:62837 as titan_viz_3eb0e7 (p2, c1, k60).
+1763961980: Client titan_viz_3eb0e7 closed its connection.
+1763961980: New client connected from ::ffff:192.168.65.1:48130 as titan_viz_36c064 (p2, c1, k60).
+1763961980: Client titan_viz_36c064 closed its connection.
+1763961981: New client connected from ::ffff:192.168.65.1:26684 as titan_viz_42c45a (p2, c1, k60).
+1763961981: Client titan_viz_42c45a closed its connection.
+1763961981: New client connected from ::ffff:192.168.65.1:42166 as titan_viz_704f6f (p2, c1, k60).
+1763961981: Client titan_viz_704f6f closed its connection.
+1763961981: New client connected from ::ffff:192.168.65.1:47341 as titan_viz_7c2950 (p2, c1, k60).
+1763961981: Client titan_viz_7c2950 closed its connection.
+1763961981: New client connected from ::ffff:192.168.65.1:26976 as titan_viz_4fed32 (p2, c1, k60).
+1763962500: New client connected from ::ffff:192.168.65.1:41652 as titan_viz_9fca8c (p2, c1, k60).
+1763962850: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763963264: Client persistence_sub_7cd504 closed its connection.
+1763963264: Client pub_sensor-005_182 closed its connection.
+1763963264: Client pub_sensor-002_4a1 closed its connection.
+1763963264: Client mqttjs_81f5c5e3 closed its connection.
+1763963264: Client pub_sensor-001_c9c closed its connection.
+1763963264: Client pub_sensor-003_f8f closed its connection.
+1763963264: Client mqttjs_7f778037 closed its connection.
+1763963264: Client unicast_sensor-001_99fd20 closed its connection.
+1763963264: Client pub_sensor-004_6a6 closed its connection.
+1763963264: Client mqttjs_8bc65424 closed its connection.
+1763963266: Client time_server_01 closed its connection.
+1763963266: mosquitto version 2.0.22 terminating
+1763963266: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763963266: Client titan_viz_9fca8c closed its connection.
+1763963266: Client titan_viz_4fed32 closed its connection.
+1763964015: mosquitto version 2.0.22 starting
+1763964015: Config loaded from /mosquitto/config/mosquitto.conf.
+1763964015: Opening ipv4 listen socket on port 1883.
+1763964015: Opening ipv6 listen socket on port 1883.
+1763964015: Opening websockets listen socket on port 9001.
+1763964015: mosquitto version 2.0.22 running
+1763964016: New connection from 172.19.0.6:38458 on port 1883.
+1763964016: New connection from 172.19.0.4:33082 on port 1883.
+1763964016: New client connected from 172.19.0.4:33082 as mqttjs_cf1542d8 (p2, c1, k60).
+1763964016: New client connected from 172.19.0.6:38458 as mqttjs_24af8617 (p2, c1, k60).
+1763964016: New connection from 172.19.0.8:60794 on port 1883.
+1763964016: New connection from 172.19.0.5:55996 on port 1883.
+1763964016: New client connected from 172.19.0.5:55996 as unicast_sensor-001_c7c11e (p2, c1, k60).
+1763964016: New client connected from 172.19.0.8:60794 as time_server_01 (p2, c1, k60).
+1763964016: New connection from 172.19.0.9:37512 on port 1883.
+1763964016: New client connected from 172.19.0.9:37512 as persistence_sub_09bdf1 (p2, c1, k60).
+1763964016: New connection from 172.19.0.7:50980 on port 1883.
+1763964016: New client connected from 172.19.0.7:50980 as mqttjs_22cf3695 (p2, c1, k60).
+1763964016: New connection from 172.19.0.11:38824 on port 1883.
+1763964016: New client connected from 172.19.0.11:38824 as pub_sensor-004_974 (p2, c1, k60).
+1763964016: New connection from 172.19.0.12:42144 on port 1883.
+1763964016: New connection from 172.19.0.13:59656 on port 1883.
+1763964016: New client connected from 172.19.0.13:59656 as pub_sensor-003_d2b (p2, c1, k60).
+1763964016: New client connected from 172.19.0.12:42144 as pub_sensor-002_6ad (p2, c1, k60).
+1763964016: New connection from 172.19.0.14:50538 on port 1883.
+1763964016: New client connected from 172.19.0.14:50538 as pub_sensor-001_936 (p2, c1, k60).
+1763964016: New connection from 172.19.0.15:58354 on port 1883.
+1763964016: New client connected from 172.19.0.15:58354 as pub_sensor-005_4a6 (p2, c1, k60).
+1763964047: New client connected from ::ffff:192.168.65.1:65111 as titan_viz_a85ba5 (p2, c1, k60).
+1763964051: Client titan_viz_a85ba5 closed its connection.
+1763964051: New client connected from ::ffff:192.168.65.1:21941 as titan_viz_86f087 (p2, c1, k60).
+1763964052: Client titan_viz_86f087 closed its connection.
+1763964052: New client connected from ::ffff:192.168.65.1:59475 as titan_viz_c8a716 (p2, c1, k60).
+1763964052: Client titan_viz_c8a716 closed its connection.
+1763964053: New client connected from ::ffff:192.168.65.1:42412 as titan_viz_00142a (p2, c1, k60).
+1763964053: Client titan_viz_00142a closed its connection.
+1763964053: New client connected from ::ffff:192.168.65.1:40733 as titan_viz_a5e6be (p2, c1, k60).
+1763964053: Client titan_viz_a5e6be closed its connection.
+1763964053: New client connected from ::ffff:192.168.65.1:50008 as titan_viz_149f38 (p2, c1, k60).
+1763964053: Client titan_viz_149f38 closed its connection.
+1763964053: New client connected from ::ffff:192.168.65.1:54580 as titan_viz_0a1964 (p2, c1, k60).
+1763964053: Client titan_viz_0a1964 closed its connection.
+1763964054: New client connected from ::ffff:192.168.65.1:23718 as titan_viz_a2ff87 (p2, c1, k60).
+1763964054: Client titan_viz_a2ff87 closed its connection.
+1763964054: New client connected from ::ffff:192.168.65.1:36917 as titan_viz_65d12b (p2, c1, k60).
+1763964113: New client connected from ::ffff:192.168.65.1:31404 as titan_viz_160adf (p2, c1, k60).
+1763964444: Client pub_sensor-003_d2b closed its connection.
+1763964444: Client persistence_sub_09bdf1 closed its connection.
+1763964444: Client pub_sensor-005_4a6 closed its connection.
+1763964444: Client pub_sensor-001_936 closed its connection.
+1763964444: Client pub_sensor-002_6ad closed its connection.
+1763964444: Client mqttjs_cf1542d8 closed its connection.
+1763964444: Client mqttjs_22cf3695 closed its connection.
+1763964444: Client mqttjs_24af8617 closed its connection.
+1763964444: Client pub_sensor-004_974 closed its connection.
+1763964444: Client unicast_sensor-001_c7c11e closed its connection.
+1763964445: Client time_server_01 closed its connection.
+1763964445: mosquitto version 2.0.22 terminating
+1763964445: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763964445: Client titan_viz_160adf closed its connection.
+1763964445: Client titan_viz_65d12b closed its connection.
+1763964486: mosquitto version 2.0.22 starting
+1763964486: Config loaded from /mosquitto/config/mosquitto.conf.
+1763964486: Opening ipv4 listen socket on port 1883.
+1763964486: Opening ipv6 listen socket on port 1883.
+1763964486: Opening websockets listen socket on port 9001.
+1763964486: mosquitto version 2.0.22 running
+1763964486: New connection from 172.19.0.4:43096 on port 1883.
+1763964486: New client connected from 172.19.0.4:43096 as time_server_01 (p2, c1, k60).
+1763964486: New connection from 172.19.0.8:45440 on port 1883.
+1763964486: New client connected from 172.19.0.8:45440 as unicast_sensor-001_b8c8f1 (p2, c1, k60).
+1763964486: New connection from 172.19.0.5:35886 on port 1883.
+1763964486: New client connected from 172.19.0.5:35886 as mqttjs_96ede517 (p2, c1, k60).
+1763964486: New connection from 172.19.0.7:45898 on port 1883.
+1763964486: New client connected from 172.19.0.7:45898 as persistence_sub_e6aeeb (p2, c1, k60).
+1763964486: New connection from 172.19.0.10:44462 on port 1883.
+1763964486: New client connected from 172.19.0.10:44462 as mqttjs_2fa346ab (p2, c1, k60).
+1763964486: New connection from 172.19.0.9:33692 on port 1883.
+1763964486: New client connected from 172.19.0.9:33692 as mqttjs_8f038af5 (p2, c1, k60).
+1763964486: New connection from 172.19.0.11:41694 on port 1883.
+1763964486: New client connected from 172.19.0.11:41694 as pub_sensor-003_ac3 (p2, c1, k60).
+1763964486: New connection from 172.19.0.12:53460 on port 1883.
+1763964486: New client connected from 172.19.0.12:53460 as pub_sensor-004_027 (p2, c1, k60).
+1763964486: New connection from 172.19.0.13:38940 on port 1883.
+1763964486: New client connected from 172.19.0.13:38940 as pub_sensor-005_4cb (p2, c1, k60).
+1763964486: New connection from 172.19.0.14:57022 on port 1883.
+1763964486: New client connected from 172.19.0.14:57022 as pub_sensor-002_8da (p2, c1, k60).
+1763964486: New connection from 172.19.0.15:36928 on port 1883.
+1763964486: New client connected from 172.19.0.15:36928 as pub_sensor-001_e29 (p2, c1, k60).
+1763964567: New client connected from ::ffff:192.168.65.1:34556 as titan_ops_dd57b6 (p2, c1, k60).
+1763964577: New client connected from ::ffff:192.168.65.1:35297 as titan_ops_26e415 (p2, c1, k60).
+1763964588: Client titan_ops_26e415 closed its connection.
+1763964588: New client connected from ::ffff:192.168.65.1:16973 as titan_ops_493a92 (p2, c1, k60).
+1763964602: Client titan_ops_493a92 closed its connection.
+1763964607: New client connected from ::ffff:192.168.65.1:34051 as titan_ops_033fa3 (p2, c1, k60).
+1763964622: Client titan_ops_dd57b6 closed its connection.
+1763964622: New client connected from ::ffff:192.168.65.1:17218 as titan_ops_2db445 (p2, c1, k60).
+1763964652: Client titan_ops_2db445 closed its connection.
+1763964652: New client connected from ::ffff:192.168.65.1:55427 as titan_ops_eaab70 (p2, c1, k60).
+1763964684: Client titan_ops_eaab70 closed its connection.
+1763964684: New client connected from ::ffff:192.168.65.1:30947 as titan_ops_4ad54e (p2, c1, k60).
+1763964849: Client titan_ops_4ad54e closed its connection.
+1763964850: New client connected from ::ffff:192.168.65.1:48678 as titan_ops_9ac553 (p2, c1, k60).
+1763964957: Client titan_ops_033fa3 closed its connection.
+1763964986: Client titan_ops_9ac553 closed its connection.
+1763964986: New client connected from ::ffff:192.168.65.1:21267 as titan_ops_622a6b (p2, c1, k60).
+1763964988: Client titan_ops_622a6b closed its connection.
+1763964989: New client connected from ::ffff:192.168.65.1:26980 as titan_ops_48e962 (p2, c1, k60).
+1763964990: Client titan_ops_48e962 closed its connection.
+1763964990: New client connected from ::ffff:192.168.65.1:39090 as titan_ops_0135dc (p2, c1, k60).
+1763964991: Client titan_ops_0135dc closed its connection.
+1763964991: New client connected from ::ffff:192.168.65.1:32814 as titan_ops_44265f (p2, c1, k60).
+1763965133: Client titan_ops_44265f closed its connection.
+1763965134: New client connected from ::ffff:192.168.65.1:50863 as titan_ops_31ef4b (p2, c1, k60).
+1763965160: Client titan_ops_31ef4b closed its connection.
+1763965160: New client connected from ::ffff:192.168.65.1:64699 as titan_ops_7c94e3 (p2, c1, k60).
+1763965239: New client connected from ::ffff:192.168.65.1:19144 as titan_ops_07f5d5 (p2, c1, k60).
+1763965309: Client pub_sensor-003_ac3 closed its connection.
+1763965309: Client mqttjs_96ede517 closed its connection.
+1763965309: Client pub_sensor-004_027 closed its connection.
+1763965309: Client pub_sensor-001_e29 closed its connection.
+1763965309: Client unicast_sensor-001_b8c8f1 closed its connection.
+1763965309: Client mqttjs_8f038af5 closed its connection.
+1763965309: Client persistence_sub_e6aeeb closed its connection.
+1763965309: Client pub_sensor-002_8da closed its connection.
+1763965309: Client mqttjs_2fa346ab closed its connection.
+1763965309: Client pub_sensor-005_4cb closed its connection.
+1763965311: Client time_server_01 closed its connection.
+1763965311: mosquitto version 2.0.22 terminating
+1763965311: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1763965311: Client titan_ops_07f5d5 closed its connection.
+1763965311: Client titan_ops_7c94e3 closed its connection.
+1764009015: mosquitto version 2.0.22 starting
+1764009015: Config loaded from /mosquitto/config/mosquitto.conf.
+1764009015: Opening ipv4 listen socket on port 1883.
+1764009015: Opening ipv6 listen socket on port 1883.
+1764009015: Opening websockets listen socket on port 9001.
+1764009015: mosquitto version 2.0.22 running
+1764009015: New connection from 172.19.0.4:50358 on port 1883.
+1764009015: New connection from 172.19.0.5:48244 on port 1883.
+1764009015: New client connected from 172.19.0.4:50358 as mqttjs_421e56e9 (p2, c1, k60).
+1764009015: New client connected from 172.19.0.5:48244 as mqttjs_09d702af (p2, c1, k60).
+1764009015: New connection from 172.19.0.6:34842 on port 1883.
+1764009015: New client connected from 172.19.0.6:34842 as unicast_sensor-001_3a12ff (p2, c1, k60).
+1764009015: New connection from 172.19.0.7:53398 on port 1883.
+1764009015: New connection from 172.19.0.8:52894 on port 1883.
+1764009015: New client connected from 172.19.0.8:52894 as time_server_01 (p2, c1, k60).
+1764009015: New client connected from 172.19.0.7:53398 as mqttjs_a23cca35 (p2, c1, k60).
+1764009015: New connection from 172.19.0.9:55492 on port 1883.
+1764009015: New client connected from 172.19.0.9:55492 as persistence_sub_de19db (p2, c1, k60).
+1764009015: New connection from 172.19.0.11:38004 on port 1883.
+1764009015: New client connected from 172.19.0.11:38004 as pub_sensor-005_821 (p2, c1, k60).
+1764009015: New connection from 172.19.0.12:56180 on port 1883.
+1764009015: New client connected from 172.19.0.12:56180 as pub_sensor-004_908 (p2, c1, k60).
+1764009015: New connection from 172.19.0.13:56532 on port 1883.
+1764009015: New client connected from 172.19.0.13:56532 as pub_sensor-002_615 (p2, c1, k60).
+1764009015: New connection from 172.19.0.14:58032 on port 1883.
+1764009015: New client connected from 172.19.0.14:58032 as pub_sensor-001_e6f (p2, c1, k60).
+1764009015: New connection from 172.19.0.15:56032 on port 1883.
+1764009015: New client connected from 172.19.0.15:56032 as pub_sensor-003_0b0 (p2, c1, k60).
+1764009024: New client connected from ::ffff:172.19.0.1:56492 as titan_ops_0357ae (p2, c1, k60).
+1764009042: Client titan_ops_0357ae closed its connection.
+1764009042: New client connected from ::ffff:172.19.0.1:63106 as titan_ops_29fe6d (p2, c1, k60).
+1764009093: Client titan_ops_29fe6d closed its connection.
+1764009094: New client connected from ::ffff:172.19.0.1:56254 as titan_ops_938088 (p2, c1, k60).
+1764009096: Client titan_ops_938088 closed its connection.
+1764009097: New client connected from ::ffff:172.19.0.1:56268 as titan_ops_d101ed (p2, c1, k60).
+1764009128: New client connected from ::ffff:172.19.0.1:62446 as titan_ops_b04d14 (p2, c1, k60).
+1764009320: Client titan_ops_d101ed closed its connection.
+1764010816: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764011325: Client titan_ops_b04d14 closed its connection.
+1764012617: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764012839: New client connected from ::ffff:172.19.0.1:64522 as titan_ops_b04d14 (p2, c1, k60).
+1764014418: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764016219: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764018020: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764026297: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764027245: Client titan_ops_b04d14 closed its connection.
+1764028565: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764030366: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764032167: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764036747: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764038548: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764046201: Client unicast_sensor-001_3a12ff closed its connection.
+1764046201: Client pub_sensor-004_908 closed its connection.
+1764046201: Client mqttjs_a23cca35 closed its connection.
+1764046201: Client pub_sensor-001_e6f closed its connection.
+1764046201: Client pub_sensor-003_0b0 closed its connection.
+1764046201: Client pub_sensor-005_821 closed its connection.
+1764046201: Client mqttjs_09d702af closed its connection.
+1764046201: Client pub_sensor-002_615 closed its connection.
+1764046201: Client persistence_sub_de19db closed its connection.
+1764046201: Client mqttjs_421e56e9 closed its connection.
+1764046203: Client time_server_01 closed its connection.
+1764046203: mosquitto version 2.0.22 terminating
+1764046203: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764348828: mosquitto version 2.0.22 starting
+1764348828: Config loaded from /mosquitto/config/mosquitto.conf.
+1764348828: Opening ipv4 listen socket on port 1883.
+1764348828: Opening ipv6 listen socket on port 1883.
+1764348828: Opening websockets listen socket on port 9001.
+1764348828: mosquitto version 2.0.22 running
+1764348829: New connection from 172.19.0.4:45590 on port 1883.
+1764348829: New connection from 172.19.0.5:57924 on port 1883.
+1764348829: New client connected from 172.19.0.4:45590 as unicast_sensor-001_32b228 (p2, c1, k60).
+1764348829: New client connected from 172.19.0.5:57924 as time_server_01 (p2, c1, k60).
+1764348829: New connection from 172.19.0.6:47406 on port 1883.
+1764348829: New connection from 172.19.0.8:49260 on port 1883.
+1764348829: New client connected from 172.19.0.8:49260 as mqttjs_ccc60d3d (p2, c1, k60).
+1764348829: New client connected from 172.19.0.6:47406 as mqttjs_07608f04 (p2, c1, k60).
+1764348829: New connection from 172.19.0.7:44164 on port 1883.
+1764348829: New client connected from 172.19.0.7:44164 as mqttjs_501e6460 (p2, c1, k60).
+1764348829: New connection from 172.19.0.9:58158 on port 1883.
+1764348829: New client connected from 172.19.0.9:58158 as persistence_sub_b478f8 (p2, c1, k60).
+1764348829: New connection from 172.19.0.11:44460 on port 1883.
+1764348829: New client connected from 172.19.0.11:44460 as pub_sensor-002_a2c (p2, c1, k60).
+1764348829: New connection from 172.19.0.12:60262 on port 1883.
+1764348829: New client connected from 172.19.0.12:60262 as pub_sensor-005_c0b (p2, c1, k60).
+1764348829: New connection from 172.19.0.13:42194 on port 1883.
+1764348829: New client connected from 172.19.0.13:42194 as pub_sensor-001_7b7 (p2, c1, k60).
+1764348829: New connection from 172.19.0.14:57368 on port 1883.
+1764348829: New client connected from 172.19.0.14:57368 as pub_sensor-003_f34 (p2, c1, k60).
+1764348829: New connection from 172.19.0.15:47416 on port 1883.
+1764348829: New client connected from 172.19.0.15:47416 as pub_sensor-004_938 (p2, c1, k60).
+1764348958: New client connected from ::ffff:192.168.65.1:56829 as titan_ops_9d4b3b (p2, c1, k60).
+1764349312: Client titan_ops_9d4b3b closed its connection.
+1764349312: New client connected from ::ffff:192.168.65.1:61192 as titan_ops_88c144 (p2, c1, k60).
+1764349413: Client titan_ops_88c144 closed its connection.
+1764349421: New client connected from ::ffff:192.168.65.1:56766 as titan_ops_1d79bf (p2, c1, k60).
+1764349502: Client titan_ops_1d79bf closed its connection.
+1764349502: New client connected from ::ffff:192.168.65.1:33020 as titan_ops_ed5371 (p2, c1, k60).
+1764350560: Client titan_ops_ed5371 closed its connection.
+1764350629: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764351537: New client connected from ::ffff:192.168.65.1:65429 as titan_ops_ed5371 (p2, c1, k60).
+1764352430: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764354231: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764356032: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764356199: Client titan_ops_ed5371 closed its connection.
+1764356199: New client connected from ::ffff:192.168.65.1:26312 as titan_ops_827129 (p2, c1, k60).
+1764356221: Client titan_ops_827129 closed its connection.
+1764356228: New client connected from ::ffff:192.168.65.1:55825 as titan_ops_1646e0 (p2, c1, k60).
+1764361664: Client pub_sensor-005_c0b closed its connection.
+1764361664: Client pub_sensor-004_938 closed its connection.
+1764361664: Client unicast_sensor-001_32b228 closed its connection.
+1764361664: Client mqttjs_501e6460 closed its connection.
+1764361664: Client pub_sensor-002_a2c closed its connection.
+1764361664: Client mqttjs_ccc60d3d disconnected: Broken pipe.
+1764361664: Client persistence_sub_b478f8 closed its connection.
+1764361664: Client pub_sensor-001_7b7 closed its connection.
+1764361664: Client mqttjs_07608f04 disconnected: Broken pipe.
+1764361664: Client pub_sensor-003_f34 closed its connection.
+1764361666: Client time_server_01 closed its connection.
+1764361666: mosquitto version 2.0.22 terminating
+1764361666: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764361666: Client titan_ops_1646e0 closed its connection.
+1764361680: mosquitto version 2.0.22 starting
+1764361680: Config loaded from /mosquitto/config/mosquitto.conf.
+1764361680: Opening ipv4 listen socket on port 1883.
+1764361680: Opening ipv6 listen socket on port 1883.
+1764361680: Opening websockets listen socket on port 9001.
+1764361680: mosquitto version 2.0.22 running
+1764361680: New connection from 172.19.0.4:38676 on port 1883.
+1764361680: New connection from 172.19.0.5:46002 on port 1883.
+1764361680: New client connected from 172.19.0.5:46002 as unicast_sensor-001_34f08d (p2, c1, k60).
+1764361680: New client connected from 172.19.0.4:38676 as time_server_01 (p2, c1, k60).
+1764361680: New connection from 172.19.0.7:57548 on port 1883.
+1764361680: New client connected from 172.19.0.7:57548 as mqttjs_62cd00bc (p2, c1, k60).
+1764361680: New connection from 172.19.0.10:40054 on port 1883.
+1764361680: New connection from 172.19.0.9:53476 on port 1883.
+1764361680: New connection from 172.19.0.6:60758 on port 1883.
+1764361680: New client connected from 172.19.0.10:40054 as mqttjs_ab20a0fd (p2, c1, k60).
+1764361680: New client connected from 172.19.0.6:60758 as mqttjs_5848f2f9 (p2, c1, k60).
+1764361680: New client connected from 172.19.0.9:53476 as persistence_sub_302ab5 (p2, c1, k60).
+1764361680: New connection from 172.19.0.11:42634 on port 1883.
+1764361680: New client connected from 172.19.0.11:42634 as pub_sensor-002_2bf (p2, c1, k60).
+1764361680: New connection from 172.19.0.12:38192 on port 1883.
+1764361680: New client connected from 172.19.0.12:38192 as pub_sensor-005_bb3 (p2, c1, k60).
+1764361680: New connection from 172.19.0.13:59560 on port 1883.
+1764361680: New client connected from 172.19.0.13:59560 as pub_sensor-003_b49 (p2, c1, k60).
+1764361680: New connection from 172.19.0.14:55860 on port 1883.
+1764361680: New client connected from 172.19.0.14:55860 as pub_sensor-001_c5f (p2, c1, k60).
+1764361680: New connection from 172.19.0.15:44366 on port 1883.
+1764361680: New client connected from 172.19.0.15:44366 as pub_sensor-004_bbe (p2, c1, k60).
+1764361680: Client pub_sensor-002_2bf closed its connection.
+1764361680: Client pub_sensor-005_bb3 closed its connection.
+1764361680: Client pub_sensor-001_c5f closed its connection.
+1764361680: Client pub_sensor-003_b49 closed its connection.
+1764361680: Client pub_sensor-004_bbe closed its connection.
+1764361681: New connection from 172.19.0.11:42642 on port 1883.
+1764361681: New client connected from 172.19.0.11:42642 as pub_sensor-002_16c (p2, c1, k60).
+1764361681: New connection from 172.19.0.12:38198 on port 1883.
+1764361681: New client connected from 172.19.0.12:38198 as pub_sensor-005_a8e (p2, c1, k60).
+1764361681: New connection from 172.19.0.13:59576 on port 1883.
+1764361681: New client connected from 172.19.0.13:59576 as pub_sensor-001_ca2 (p2, c1, k60).
+1764361681: New connection from 172.19.0.14:55872 on port 1883.
+1764361681: New client connected from 172.19.0.14:55872 as pub_sensor-003_c47 (p2, c1, k60).
+1764361681: Client pub_sensor-002_16c closed its connection.
+1764361681: Client pub_sensor-005_a8e closed its connection.
+1764361681: Client pub_sensor-001_ca2 closed its connection.
+1764361681: Client pub_sensor-003_c47 closed its connection.
+1764361681: New connection from 172.19.0.15:44372 on port 1883.
+1764361681: New client connected from 172.19.0.15:44372 as pub_sensor-004_75f (p2, c1, k60).
+1764361681: Client pub_sensor-004_75f closed its connection.
+1764361681: New connection from 172.19.0.11:42650 on port 1883.
+1764361681: New connection from 172.19.0.12:38212 on port 1883.
+1764361681: New client connected from 172.19.0.11:42650 as pub_sensor-005_ba0 (p2, c1, k60).
+1764361681: New client connected from 172.19.0.12:38212 as pub_sensor-002_c41 (p2, c1, k60).
+1764361681: New connection from 172.19.0.13:59578 on port 1883.
+1764361681: New client connected from 172.19.0.13:59578 as pub_sensor-001_e8b (p2, c1, k60).
+1764361681: New connection from 172.19.0.14:55876 on port 1883.
+1764361681: New client connected from 172.19.0.14:55876 as pub_sensor-003_26f (p2, c1, k60).
+1764361681: Client pub_sensor-005_ba0 closed its connection.
+1764361681: Client pub_sensor-002_c41 closed its connection.
+1764361681: Client pub_sensor-001_e8b closed its connection.
+1764361681: New connection from 172.19.0.15:44380 on port 1883.
+1764361681: Client pub_sensor-003_26f closed its connection.
+1764361681: New client connected from 172.19.0.15:44380 as pub_sensor-004_f2f (p2, c1, k60).
+1764361681: Client pub_sensor-004_f2f closed its connection.
+1764361682: New connection from 172.19.0.11:42654 on port 1883.
+1764361682: New connection from 172.19.0.12:38216 on port 1883.
+1764361682: New client connected from 172.19.0.11:42654 as pub_sensor-005_309 (p2, c1, k60).
+1764361682: New client connected from 172.19.0.12:38216 as pub_sensor-002_b70 (p2, c1, k60).
+1764361682: New connection from 172.19.0.14:55886 on port 1883.
+1764361682: New connection from 172.19.0.13:59582 on port 1883.
+1764361682: New client connected from 172.19.0.14:55886 as pub_sensor-001_976 (p2, c1, k60).
+1764361682: New client connected from 172.19.0.13:59582 as pub_sensor-003_468 (p2, c1, k60).
+1764361682: Client pub_sensor-005_309 closed its connection.
+1764361682: Client pub_sensor-002_b70 closed its connection.
+1764361682: Client pub_sensor-001_976 closed its connection.
+1764361682: Client pub_sensor-003_468 closed its connection.
+1764361682: New connection from 172.19.0.15:44396 on port 1883.
+1764361682: New client connected from 172.19.0.15:44396 as pub_sensor-004_d5e (p2, c1, k60).
+1764361682: Client pub_sensor-004_d5e closed its connection.
+1764361682: New client connected from ::ffff:192.168.65.1:32030 as titan_ops_1646e0 (p2, c1, k60).
+1764361683: New connection from 172.19.0.11:42668 on port 1883.
+1764361683: New client connected from 172.19.0.11:42668 as pub_sensor-003_522 (p2, c1, k60).
+1764361683: New connection from 172.19.0.12:38222 on port 1883.
+1764361683: New connection from 172.19.0.13:59586 on port 1883.
+1764361683: New connection from 172.19.0.14:55890 on port 1883.
+1764361683: New client connected from 172.19.0.12:38222 as pub_sensor-001_083 (p2, c1, k60).
+1764361683: New client connected from 172.19.0.13:59586 as pub_sensor-002_fa3 (p2, c1, k60).
+1764361683: New client connected from 172.19.0.14:55890 as pub_sensor-005_efb (p2, c1, k60).
+1764361683: Client pub_sensor-003_522 closed its connection.
+1764361683: New connection from 172.19.0.15:44410 on port 1883.
+1764361683: New client connected from 172.19.0.15:44410 as pub_sensor-004_7a5 (p2, c1, k60).
+1764361683: Client pub_sensor-001_083 closed its connection.
+1764361683: Client pub_sensor-002_fa3 closed its connection.
+1764361683: Client pub_sensor-005_efb closed its connection.
+1764361683: Client pub_sensor-004_7a5 closed its connection.
+1764361685: New connection from 172.19.0.11:48436 on port 1883.
+1764361685: New client connected from 172.19.0.11:48436 as pub_sensor-005_54b (p2, c1, k60).
+1764361685: New connection from 172.19.0.12:33822 on port 1883.
+1764361685: New client connected from 172.19.0.12:33822 as pub_sensor-003_216 (p2, c1, k60).
+1764361685: New connection from 172.19.0.14:43908 on port 1883.
+1764361685: New client connected from 172.19.0.14:43908 as pub_sensor-001_a93 (p2, c1, k60).
+1764361685: New connection from 172.19.0.13:47108 on port 1883.
+1764361685: New client connected from 172.19.0.13:47108 as pub_sensor-002_bfd (p2, c1, k60).
+1764361685: New connection from 172.19.0.15:55264 on port 1883.
+1764361685: New client connected from 172.19.0.15:55264 as pub_sensor-004_c8a (p2, c1, k60).
+1764361685: Client pub_sensor-005_54b closed its connection.
+1764361685: Client pub_sensor-003_216 closed its connection.
+1764361685: Client pub_sensor-001_a93 closed its connection.
+1764361685: Client pub_sensor-002_bfd closed its connection.
+1764361685: Client pub_sensor-004_c8a closed its connection.
+1764361688: New connection from 172.19.0.11:48442 on port 1883.
+1764361688: New client connected from 172.19.0.11:48442 as pub_sensor-003_c9d (p2, c1, k60).
+1764361688: New connection from 172.19.0.13:47112 on port 1883.
+1764361688: New connection from 172.19.0.12:33824 on port 1883.
+1764361688: New client connected from 172.19.0.13:47112 as pub_sensor-001_f52 (p2, c1, k60).
+1764361688: New client connected from 172.19.0.12:33824 as pub_sensor-002_b3d (p2, c1, k60).
+1764361688: New connection from 172.19.0.14:43922 on port 1883.
+1764361688: New client connected from 172.19.0.14:43922 as pub_sensor-005_8eb (p2, c1, k60).
+1764361688: New connection from 172.19.0.15:55280 on port 1883.
+1764361688: New client connected from 172.19.0.15:55280 as pub_sensor-004_eb0 (p2, c1, k60).
+1764361688: Client pub_sensor-003_c9d closed its connection.
+1764361688: Client pub_sensor-002_b3d closed its connection.
+1764361688: Client pub_sensor-001_f52 closed its connection.
+1764361688: Client pub_sensor-005_8eb closed its connection.
+1764361688: Client pub_sensor-004_eb0 closed its connection.
+1764361691: Client titan_ops_1646e0 closed its connection.
+1764361695: New connection from 172.19.0.11:52988 on port 1883.
+1764361695: New client connected from 172.19.0.11:52988 as pub_sensor-003_546 (p2, c1, k60).
+1764361695: New connection from 172.19.0.12:46096 on port 1883.
+1764361695: New client connected from 172.19.0.12:46096 as pub_sensor-002_a57 (p2, c1, k60).
+1764361695: New connection from 172.19.0.13:46554 on port 1883.
+1764361695: New client connected from 172.19.0.13:46554 as pub_sensor-001_793 (p2, c1, k60).
+1764361695: New connection from 172.19.0.14:36482 on port 1883.
+1764361695: New client connected from 172.19.0.14:36482 as pub_sensor-005_f7a (p2, c1, k60).
+1764361695: New connection from 172.19.0.15:54816 on port 1883.
+1764361695: New client connected from 172.19.0.15:54816 as pub_sensor-004_f87 (p2, c1, k60).
+1764361695: Client pub_sensor-003_546 closed its connection.
+1764361695: Client pub_sensor-002_a57 closed its connection.
+1764361695: Client pub_sensor-001_793 closed its connection.
+1764361695: Client pub_sensor-005_f7a closed its connection.
+1764361695: Client pub_sensor-004_f87 closed its connection.
+1764361696: New client connected from ::ffff:192.168.65.1:21369 as titan_ops_ba4739 (p2, c1, k60).
+1764361708: New connection from 172.19.0.11:45408 on port 1883.
+1764361708: New client connected from 172.19.0.11:45408 as pub_sensor-003_44d (p2, c1, k60).
+1764361708: New connection from 172.19.0.12:60300 on port 1883.
+1764361708: New client connected from 172.19.0.12:60300 as pub_sensor-004_df4 (p2, c1, k60).
+1764361708: New connection from 172.19.0.13:42334 on port 1883.
+1764361708: New client connected from 172.19.0.13:42334 as pub_sensor-001_162 (p2, c1, k60).
+1764361708: New connection from 172.19.0.14:46912 on port 1883.
+1764361708: New client connected from 172.19.0.14:46912 as pub_sensor-005_a8f (p2, c1, k60).
+1764361708: New connection from 172.19.0.15:36786 on port 1883.
+1764361708: New client connected from 172.19.0.15:36786 as pub_sensor-002_fcd (p2, c1, k60).
+1764361708: Client pub_sensor-003_44d closed its connection.
+1764361708: Client pub_sensor-004_df4 closed its connection.
+1764361708: Client pub_sensor-001_162 closed its connection.
+1764361708: Client pub_sensor-005_a8f closed its connection.
+1764361708: Client pub_sensor-002_fcd closed its connection.
+1764361724: Client titan_ops_ba4739 closed its connection.
+1764361724: New client connected from ::ffff:192.168.65.1:44073 as titan_ops_57bbdc (p2, c1, k60).
+1764361734: New connection from 172.19.0.11:54784 on port 1883.
+1764361734: New client connected from 172.19.0.11:54784 as pub_sensor-003_351 (p2, c1, k60).
+1764361734: New connection from 172.19.0.12:34270 on port 1883.
+1764361734: New client connected from 172.19.0.12:34270 as pub_sensor-004_437 (p2, c1, k60).
+1764361734: New connection from 172.19.0.13:48762 on port 1883.
+1764361734: New connection from 172.19.0.14:34318 on port 1883.
+1764361734: New client connected from 172.19.0.13:48762 as pub_sensor-005_ad9 (p2, c1, k60).
+1764361734: New client connected from 172.19.0.14:34318 as pub_sensor-001_f69 (p2, c1, k60).
+1764361734: New connection from 172.19.0.15:34320 on port 1883.
+1764361734: New client connected from 172.19.0.15:34320 as pub_sensor-002_479 (p2, c1, k60).
+1764361734: Client pub_sensor-003_351 closed its connection.
+1764361734: Client pub_sensor-004_437 closed its connection.
+1764361734: Client pub_sensor-005_ad9 closed its connection.
+1764361734: Client pub_sensor-001_f69 closed its connection.
+1764361734: Client pub_sensor-002_479 closed its connection.
+1764361785: New connection from 172.19.0.11:33880 on port 1883.
+1764361785: New client connected from 172.19.0.11:33880 as pub_sensor-005_b8a (p2, c1, k60).
+1764361785: New connection from 172.19.0.12:45958 on port 1883.
+1764361785: New client connected from 172.19.0.12:45958 as pub_sensor-003_3ab (p2, c1, k60).
+1764361785: New connection from 172.19.0.13:44124 on port 1883.
+1764361785: New client connected from 172.19.0.13:44124 as pub_sensor-002_46c (p2, c1, k60).
+1764361785: New connection from 172.19.0.14:58088 on port 1883.
+1764361785: New client connected from 172.19.0.14:58088 as pub_sensor-004_ce2 (p2, c1, k60).
+1764361785: New connection from 172.19.0.15:55076 on port 1883.
+1764361785: New client connected from 172.19.0.15:55076 as pub_sensor-001_bb4 (p2, c1, k60).
+1764361785: Client pub_sensor-005_b8a closed its connection.
+1764361785: Client pub_sensor-003_3ab closed its connection.
+1764361785: Client pub_sensor-002_46c closed its connection.
+1764361785: Client pub_sensor-004_ce2 closed its connection.
+1764361785: Client pub_sensor-001_bb4 closed its connection.
+1764361837: Client titan_ops_57bbdc closed its connection.
+1764361838: New client connected from ::ffff:192.168.65.1:44138 as titan_ops_aceb41 (p2, c1, k60).
+1764361845: New connection from 172.19.0.11:49382 on port 1883.
+1764361845: New client connected from 172.19.0.11:49382 as pub_sensor-002_205 (p2, c1, k60).
+1764361845: New connection from 172.19.0.13:33990 on port 1883.
+1764361845: New client connected from 172.19.0.13:33990 as pub_sensor-005_b53 (p2, c1, k60).
+1764361845: New connection from 172.19.0.12:41504 on port 1883.
+1764361845: New client connected from 172.19.0.12:41504 as pub_sensor-003_fba (p2, c1, k60).
+1764361845: New connection from 172.19.0.14:35896 on port 1883.
+1764361845: New client connected from 172.19.0.14:35896 as pub_sensor-001_f69 (p2, c1, k60).
+1764361845: New connection from 172.19.0.15:38826 on port 1883.
+1764361845: New client connected from 172.19.0.15:38826 as pub_sensor-004_84e (p2, c1, k60).
+1764361845: Client pub_sensor-002_205 closed its connection.
+1764361845: Client pub_sensor-005_b53 closed its connection.
+1764361845: Client pub_sensor-003_fba closed its connection.
+1764361845: Client pub_sensor-001_f69 closed its connection.
+1764361845: Client pub_sensor-004_84e closed its connection.
+1764361868: Client titan_ops_aceb41 closed its connection.
+1764361869: New client connected from ::ffff:192.168.65.1:42968 as titan_ops_7b1de8 (p2, c1, k60).
+1764361906: New connection from 172.19.0.12:40022 on port 1883.
+1764361906: New client connected from 172.19.0.12:40022 as pub_sensor-005_f73 (p2, c1, k60).
+1764361906: New connection from 172.19.0.11:50478 on port 1883.
+1764361906: New client connected from 172.19.0.11:50478 as pub_sensor-002_338 (p2, c1, k60).
+1764361906: New connection from 172.19.0.14:55448 on port 1883.
+1764361906: New connection from 172.19.0.13:51522 on port 1883.
+1764361906: New client connected from 172.19.0.14:55448 as pub_sensor-003_32d (p2, c1, k60).
+1764361906: New client connected from 172.19.0.13:51522 as pub_sensor-004_51a (p2, c1, k60).
+1764361906: New connection from 172.19.0.15:58716 on port 1883.
+1764361906: New client connected from 172.19.0.15:58716 as pub_sensor-001_8cc (p2, c1, k60).
+1764361906: Client pub_sensor-005_f73 closed its connection.
+1764361906: Client pub_sensor-002_338 closed its connection.
+1764361906: Client pub_sensor-003_32d closed its connection.
+1764361906: Client pub_sensor-004_51a closed its connection.
+1764361906: Client pub_sensor-001_8cc closed its connection.
+1764361924: Client mqttjs_ab20a0fd closed its connection.
+1764361924: Client mqttjs_5848f2f9 closed its connection.
+1764361924: Client unicast_sensor-001_34f08d closed its connection.
+1764361924: Client persistence_sub_302ab5 closed its connection.
+1764361924: Client mqttjs_62cd00bc closed its connection.
+1764361924: Client time_server_01 closed its connection.
+1764361925: mosquitto version 2.0.22 terminating
+1764361925: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764361925: Client titan_ops_7b1de8 closed its connection.
+1764361927: mosquitto version 2.0.22 starting
+1764361927: Config loaded from /mosquitto/config/mosquitto.conf.
+1764361927: Opening ipv4 listen socket on port 1883.
+1764361927: Opening ipv6 listen socket on port 1883.
+1764361927: Opening websockets listen socket on port 9001.
+1764361927: mosquitto version 2.0.22 running
+1764361927: New connection from 172.19.0.4:48032 on port 1883.
+1764361927: New client connected from 172.19.0.4:48032 as mqttjs_8cc03071 (p2, c1, k60).
+1764361927: New connection from 172.19.0.6:49380 on port 1883.
+1764361927: New client connected from 172.19.0.6:49380 as unicast_sensor-001_f27a61 (p2, c1, k60).
+1764361927: New connection from 172.19.0.7:41284 on port 1883.
+1764361927: New connection from 172.19.0.8:33806 on port 1883.
+1764361927: New client connected from 172.19.0.7:41284 as mqttjs_774e4d82 (p2, c1, k60).
+1764361927: New client connected from 172.19.0.8:33806 as persistence_sub_778d75 (p2, c1, k60).
+1764361927: New connection from 172.19.0.10:48072 on port 1883.
+1764361927: New client connected from 172.19.0.10:48072 as mqttjs_b35b1696 (p2, c1, k60).
+1764361927: New connection from 172.19.0.9:36388 on port 1883.
+1764361927: New client connected from 172.19.0.9:36388 as time_server_01 (p2, c1, k60).
+1764361927: New connection from 172.19.0.11:42698 on port 1883.
+1764361927: New client connected from 172.19.0.11:42698 as pub_sensor-005_29b (p2, c1, k60).
+1764361927: New connection from 172.19.0.12:46842 on port 1883.
+1764361927: New client connected from 172.19.0.12:46842 as pub_sensor-002_649 (p2, c1, k60).
+1764361927: New connection from 172.19.0.13:52308 on port 1883.
+1764361927: New client connected from 172.19.0.13:52308 as pub_sensor-004_a4a (p2, c1, k60).
+1764361927: New connection from 172.19.0.15:34556 on port 1883.
+1764361927: New client connected from 172.19.0.15:34556 as pub_sensor-001_559 (p2, c1, k60).
+1764361927: New connection from 172.19.0.14:41368 on port 1883.
+1764361927: New client connected from 172.19.0.14:41368 as pub_sensor-003_6c8 (p2, c1, k60).
+1764361927: Client pub_sensor-005_29b closed its connection.
+1764361927: Client pub_sensor-002_649 closed its connection.
+1764361927: Client pub_sensor-004_a4a closed its connection.
+1764361927: Client pub_sensor-001_559 closed its connection.
+1764361927: Client pub_sensor-003_6c8 closed its connection.
+1764361927: New connection from 172.19.0.12:46848 on port 1883.
+1764361927: New connection from 172.19.0.11:42706 on port 1883.
+1764361928: New client connected from 172.19.0.11:42706 as pub_sensor-005_23e (p2, c1, k60).
+1764361928: New client connected from 172.19.0.12:46848 as pub_sensor-002_d85 (p2, c1, k60).
+1764361928: New connection from 172.19.0.13:52318 on port 1883.
+1764361928: New client connected from 172.19.0.13:52318 as pub_sensor-004_82a (p2, c1, k60).
+1764361928: New connection from 172.19.0.14:41382 on port 1883.
+1764361928: New client connected from 172.19.0.14:41382 as pub_sensor-003_4d0 (p2, c1, k60).
+1764361928: New connection from 172.19.0.15:34566 on port 1883.
+1764361928: New client connected from 172.19.0.15:34566 as pub_sensor-001_c84 (p2, c1, k60).
+1764361928: Client pub_sensor-002_d85 closed its connection.
+1764361928: Client pub_sensor-005_23e closed its connection.
+1764361928: Client pub_sensor-004_82a closed its connection.
+1764361928: Client pub_sensor-003_4d0 closed its connection.
+1764361928: Client pub_sensor-001_c84 closed its connection.
+1764361928: New connection from 172.19.0.11:42718 on port 1883.
+1764361928: New client connected from 172.19.0.11:42718 as pub_sensor-002_cfb (p2, c1, k60).
+1764361928: New connection from 172.19.0.13:52334 on port 1883.
+1764361928: New client connected from 172.19.0.13:52334 as pub_sensor-003_b82 (p2, c1, k60).
+1764361928: New connection from 172.19.0.12:46860 on port 1883.
+1764361928: New connection from 172.19.0.14:41394 on port 1883.
+1764361928: New client connected from 172.19.0.12:46860 as pub_sensor-005_657 (p2, c1, k60).
+1764361928: New client connected from 172.19.0.14:41394 as pub_sensor-004_12c (p2, c1, k60).
+1764361928: New connection from 172.19.0.15:34568 on port 1883.
+1764361928: New client connected from 172.19.0.15:34568 as pub_sensor-001_24d (p2, c1, k60).
+1764361928: Client pub_sensor-002_cfb closed its connection.
+1764361928: Client pub_sensor-003_b82 closed its connection.
+1764361928: Client pub_sensor-005_657 closed its connection.
+1764361928: Client pub_sensor-004_12c closed its connection.
+1764361928: Client pub_sensor-001_24d closed its connection.
+1764361929: New connection from 172.19.0.12:46870 on port 1883.
+1764361929: New client connected from 172.19.0.12:46870 as pub_sensor-005_a87 (p2, c1, k60).
+1764361929: New connection from 172.19.0.11:42732 on port 1883.
+1764361929: New client connected from 172.19.0.11:42732 as pub_sensor-002_cd4 (p2, c1, k60).
+1764361929: New connection from 172.19.0.14:41402 on port 1883.
+1764361929: New client connected from 172.19.0.14:41402 as pub_sensor-004_5d3 (p2, c1, k60).
+1764361929: New connection from 172.19.0.13:52348 on port 1883.
+1764361929: New client connected from 172.19.0.13:52348 as pub_sensor-003_f4f (p2, c1, k60).
+1764361929: New connection from 172.19.0.15:34578 on port 1883.
+1764361929: Client pub_sensor-005_a87 closed its connection.
+1764361929: New client connected from 172.19.0.15:34578 as pub_sensor-001_95b (p2, c1, k60).
+1764361929: Client pub_sensor-002_cd4 closed its connection.
+1764361929: Client pub_sensor-004_5d3 closed its connection.
+1764361929: Client pub_sensor-003_f4f closed its connection.
+1764361929: Client pub_sensor-001_95b closed its connection.
+1764361930: New connection from 172.19.0.11:42744 on port 1883.
+1764361930: New client connected from 172.19.0.11:42744 as pub_sensor-005_bca (p2, c1, k60).
+1764361930: New connection from 172.19.0.13:52356 on port 1883.
+1764361930: New client connected from 172.19.0.13:52356 as pub_sensor-004_ce7 (p2, c1, k60).
+1764361930: New connection from 172.19.0.12:46880 on port 1883.
+1764361930: New client connected from 172.19.0.12:46880 as pub_sensor-002_942 (p2, c1, k60).
+1764361930: New connection from 172.19.0.14:41414 on port 1883.
+1764361930: New client connected from 172.19.0.14:41414 as pub_sensor-003_d1e (p2, c1, k60).
+1764361930: New connection from 172.19.0.15:34582 on port 1883.
+1764361930: New client connected from 172.19.0.15:34582 as pub_sensor-001_8c4 (p2, c1, k60).
+1764361930: Client pub_sensor-005_bca closed its connection.
+1764361930: Client pub_sensor-004_ce7 closed its connection.
+1764361930: Client pub_sensor-002_942 closed its connection.
+1764361930: Client pub_sensor-003_d1e closed its connection.
+1764361930: Client pub_sensor-001_8c4 closed its connection.
+1764361930: New client connected from ::ffff:192.168.65.1:18336 as titan_ops_7b1de8 (p2, c1, k60).
+1764361931: New connection from 172.19.0.11:42756 on port 1883.
+1764361931: New client connected from 172.19.0.11:42756 as pub_sensor-004_dfa (p2, c1, k60).
+1764361931: New connection from 172.19.0.12:46888 on port 1883.
+1764361931: New client connected from 172.19.0.12:46888 as pub_sensor-002_974 (p2, c1, k60).
+1764361931: New connection from 172.19.0.13:52360 on port 1883.
+1764361931: New client connected from 172.19.0.13:52360 as pub_sensor-005_399 (p2, c1, k60).
+1764361932: New connection from 172.19.0.14:41420 on port 1883.
+1764361932: New client connected from 172.19.0.14:41420 as pub_sensor-003_df3 (p2, c1, k60).
+1764361932: New connection from 172.19.0.15:34594 on port 1883.
+1764361932: New client connected from 172.19.0.15:34594 as pub_sensor-001_814 (p2, c1, k60).
+1764361932: Client pub_sensor-004_dfa closed its connection.
+1764361932: Client pub_sensor-002_974 closed its connection.
+1764361932: Client pub_sensor-005_399 closed its connection.
+1764361932: Client pub_sensor-003_df3 closed its connection.
+1764361932: Client pub_sensor-001_814 closed its connection.
+1764361935: New connection from 172.19.0.11:58110 on port 1883.
+1764361935: New client connected from 172.19.0.11:58110 as pub_sensor-005_a36 (p2, c1, k60).
+1764361935: New connection from 172.19.0.13:33142 on port 1883.
+1764361935: New connection from 172.19.0.12:34776 on port 1883.
+1764361935: New connection from 172.19.0.14:35704 on port 1883.
+1764361935: New client connected from 172.19.0.13:33142 as pub_sensor-002_3ce (p2, c1, k60).
+1764361935: New connection from 172.19.0.15:45864 on port 1883.
+1764361935: New client connected from 172.19.0.14:35704 as pub_sensor-001_57f (p2, c1, k60).
+1764361935: New client connected from 172.19.0.12:34776 as pub_sensor-004_121 (p2, c1, k60).
+1764361935: New client connected from 172.19.0.15:45864 as pub_sensor-003_bed (p2, c1, k60).
+1764361935: Client pub_sensor-005_a36 closed its connection.
+1764361935: Client pub_sensor-001_57f closed its connection.
+1764361935: Client pub_sensor-002_3ce closed its connection.
+1764361935: Client pub_sensor-004_121 closed its connection.
+1764361935: Client pub_sensor-003_bed closed its connection.
+1764361942: New connection from 172.19.0.11:58114 on port 1883.
+1764361942: New client connected from 172.19.0.11:58114 as pub_sensor-002_5b6 (p2, c1, k60).
+1764361942: New connection from 172.19.0.13:33146 on port 1883.
+1764361942: New connection from 172.19.0.12:34788 on port 1883.
+1764361942: New client connected from 172.19.0.13:33146 as pub_sensor-001_9ad (p2, c1, k60).
+1764361942: New client connected from 172.19.0.12:34788 as pub_sensor-003_34a (p2, c1, k60).
+1764361942: New connection from 172.19.0.15:45872 on port 1883.
+1764361942: New client connected from 172.19.0.15:45872 as pub_sensor-004_747 (p2, c1, k60).
+1764361942: New connection from 172.19.0.14:35716 on port 1883.
+1764361942: New client connected from 172.19.0.14:35716 as pub_sensor-005_8b6 (p2, c1, k60).
+1764361942: Client pub_sensor-002_5b6 closed its connection.
+1764361942: Client pub_sensor-001_9ad closed its connection.
+1764361942: Client pub_sensor-003_34a closed its connection.
+1764361942: Client pub_sensor-004_747 closed its connection.
+1764361942: Client pub_sensor-005_8b6 closed its connection.
+1764361943: Client persistence_sub_778d75 closed its connection.
+1764361943: Client mqttjs_b35b1696 closed its connection.
+1764361943: Client mqttjs_774e4d82 closed its connection.
+1764361943: Client mqttjs_8cc03071 closed its connection.
+1764361943: Client unicast_sensor-001_f27a61 closed its connection.
+1764361943: Client time_server_01 closed its connection.
+1764361943: mosquitto version 2.0.22 terminating
+1764361943: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764361943: Client titan_ops_7b1de8 closed its connection.
+1764361952: mosquitto version 2.0.22 starting
+1764361952: Config loaded from /mosquitto/config/mosquitto.conf.
+1764361952: Opening ipv4 listen socket on port 1883.
+1764361952: Opening ipv6 listen socket on port 1883.
+1764361952: Opening websockets listen socket on port 9001.
+1764361952: mosquitto version 2.0.22 running
+1764361952: New connection from 172.19.0.4:34196 on port 1883.
+1764361952: New client connected from 172.19.0.4:34196 as mqttjs_5b7d118d (p2, c1, k60).
+1764361952: New connection from 172.19.0.5:60436 on port 1883.
+1764361952: New connection from 172.19.0.6:58932 on port 1883.
+1764361952: New client connected from 172.19.0.6:58932 as time_server_01 (p2, c1, k60).
+1764361952: New client connected from 172.19.0.5:60436 as mqttjs_7a43bb34 (p2, c1, k60).
+1764361952: New connection from 172.19.0.9:38330 on port 1883.
+1764361952: New connection from 172.19.0.8:51754 on port 1883.
+1764361952: New client connected from 172.19.0.9:38330 as mqttjs_289c8b9d (p2, c1, k60).
+1764361952: New client connected from 172.19.0.8:51754 as unicast_sensor-001_515c79 (p2, c1, k60).
+1764361952: New connection from 172.19.0.7:50814 on port 1883.
+1764361952: New client connected from 172.19.0.7:50814 as persistence_sub_a38d55 (p2, c1, k60).
+1764361952: New connection from 172.19.0.11:49506 on port 1883.
+1764361952: New client connected from 172.19.0.11:49506 as pub_sensor-005_6cf (p2, c1, k60).
+1764361952: New connection from 172.19.0.14:38030 on port 1883.
+1764361952: New connection from 172.19.0.12:58084 on port 1883.
+1764361952: New client connected from 172.19.0.12:58084 as pub_sensor-004_4ca (p2, c1, k60).
+1764361952: New client connected from 172.19.0.14:38030 as pub_sensor-002_396 (p2, c1, k60).
+1764361952: New connection from 172.19.0.13:48554 on port 1883.
+1764361952: New client connected from 172.19.0.13:48554 as pub_sensor-001_901 (p2, c1, k60).
+1764361952: New connection from 172.19.0.15:45422 on port 1883.
+1764361952: New client connected from 172.19.0.15:45422 as pub_sensor-003_384 (p2, c1, k60).
+1764361952: Client pub_sensor-005_6cf closed its connection.
+1764361952: Client pub_sensor-002_396 closed its connection.
+1764361952: Client pub_sensor-004_4ca closed its connection.
+1764361952: Client pub_sensor-001_901 closed its connection.
+1764361952: Client pub_sensor-003_384 closed its connection.
+1764361953: New connection from 172.19.0.12:58086 on port 1883.
+1764361953: New connection from 172.19.0.11:49512 on port 1883.
+1764361953: New client connected from 172.19.0.11:49512 as pub_sensor-005_034 (p2, c1, k60).
+1764361953: New client connected from 172.19.0.12:58086 as pub_sensor-002_ec7 (p2, c1, k60).
+1764361953: New connection from 172.19.0.13:48566 on port 1883.
+1764361953: New client connected from 172.19.0.13:48566 as pub_sensor-003_caf (p2, c1, k60).
+1764361953: New connection from 172.19.0.14:38040 on port 1883.
+1764361953: New client connected from 172.19.0.14:38040 as pub_sensor-001_b9d (p2, c1, k60).
+1764361953: New connection from 172.19.0.15:45436 on port 1883.
+1764361953: New client connected from 172.19.0.15:45436 as pub_sensor-004_8dd (p2, c1, k60).
+1764361953: Client pub_sensor-005_034 closed its connection.
+1764361953: Client pub_sensor-002_ec7 closed its connection.
+1764361953: Client pub_sensor-003_caf closed its connection.
+1764361953: Client pub_sensor-001_b9d closed its connection.
+1764361953: Client pub_sensor-004_8dd closed its connection.
+1764361953: New connection from 172.19.0.11:49522 on port 1883.
+1764361953: New client connected from 172.19.0.11:49522 as pub_sensor-005_fd8 (p2, c1, k60).
+1764361953: New connection from 172.19.0.12:58102 on port 1883.
+1764361953: New client connected from 172.19.0.12:58102 as pub_sensor-003_b70 (p2, c1, k60).
+1764361953: New connection from 172.19.0.13:48580 on port 1883.
+1764361953: New client connected from 172.19.0.13:48580 as pub_sensor-002_3c4 (p2, c1, k60).
+1764361953: New connection from 172.19.0.14:38046 on port 1883.
+1764361953: New client connected from 172.19.0.14:38046 as pub_sensor-001_b72 (p2, c1, k60).
+1764361953: New connection from 172.19.0.15:45442 on port 1883.
+1764361953: New client connected from 172.19.0.15:45442 as pub_sensor-004_fdd (p2, c1, k60).
+1764361953: Client pub_sensor-005_fd8 closed its connection.
+1764361953: Client pub_sensor-003_b70 closed its connection.
+1764361953: Client pub_sensor-002_3c4 closed its connection.
+1764361953: Client pub_sensor-001_b72 closed its connection.
+1764361953: Client pub_sensor-004_fdd closed its connection.
+1764361954: New connection from 172.19.0.11:49530 on port 1883.
+1764361954: New client connected from 172.19.0.11:49530 as pub_sensor-005_ac8 (p2, c1, k60).
+1764361954: New connection from 172.19.0.12:58110 on port 1883.
+1764361954: New client connected from 172.19.0.12:58110 as pub_sensor-002_62c (p2, c1, k60).
+1764361954: New connection from 172.19.0.13:48596 on port 1883.
+1764361954: New client connected from 172.19.0.13:48596 as pub_sensor-003_cfa (p2, c1, k60).
+1764361954: New connection from 172.19.0.15:45446 on port 1883.
+1764361954: New client connected from 172.19.0.15:45446 as pub_sensor-004_22d (p2, c1, k60).
+1764361954: New connection from 172.19.0.14:38060 on port 1883.
+1764361954: New client connected from 172.19.0.14:38060 as pub_sensor-001_588 (p2, c1, k60).
+1764361954: Client pub_sensor-005_ac8 closed its connection.
+1764361954: Client pub_sensor-003_cfa closed its connection.
+1764361954: Client pub_sensor-002_62c closed its connection.
+1764361954: Client pub_sensor-004_22d closed its connection.
+1764361954: Client pub_sensor-001_588 closed its connection.
+1764361955: New connection from 172.19.0.11:35508 on port 1883.
+1764361955: New client connected from 172.19.0.11:35508 as pub_sensor-003_bc1 (p2, c1, k60).
+1764361955: New connection from 172.19.0.12:49466 on port 1883.
+1764361955: New client connected from 172.19.0.12:49466 as pub_sensor-002_e05 (p2, c1, k60).
+1764361955: New connection from 172.19.0.13:53368 on port 1883.
+1764361955: New connection from 172.19.0.14:40640 on port 1883.
+1764361955: New client connected from 172.19.0.14:40640 as pub_sensor-001_437 (p2, c1, k60).
+1764361955: New connection from 172.19.0.15:48166 on port 1883.
+1764361955: New client connected from 172.19.0.13:53368 as pub_sensor-005_f0a (p2, c1, k60).
+1764361955: New client connected from 172.19.0.15:48166 as pub_sensor-004_326 (p2, c1, k60).
+1764361955: Client pub_sensor-002_e05 closed its connection.
+1764361955: Client pub_sensor-003_bc1 closed its connection.
+1764361955: Client pub_sensor-001_437 closed its connection.
+1764361955: Client pub_sensor-005_f0a closed its connection.
+1764361955: Client pub_sensor-004_326 closed its connection.
+1764361956: New client connected from ::ffff:192.168.65.1:33972 as titan_ops_7b1de8 (p2, c1, k60).
+1764361957: New connection from 172.19.0.12:49476 on port 1883.
+1764361957: New client connected from 172.19.0.12:49476 as pub_sensor-003_c1b (p2, c1, k60).
+1764361957: New connection from 172.19.0.13:53380 on port 1883.
+1764361957: New client connected from 172.19.0.13:53380 as pub_sensor-001_e24 (p2, c1, k60).
+1764361957: New connection from 172.19.0.11:35514 on port 1883.
+1764361957: New client connected from 172.19.0.11:35514 as pub_sensor-002_b4a (p2, c1, k60).
+1764361957: New connection from 172.19.0.14:40656 on port 1883.
+1764361957: New client connected from 172.19.0.14:40656 as pub_sensor-005_61a (p2, c1, k60).
+1764361957: New connection from 172.19.0.15:48178 on port 1883.
+1764361957: New client connected from 172.19.0.15:48178 as pub_sensor-004_319 (p2, c1, k60).
+1764361957: Client pub_sensor-003_c1b closed its connection.
+1764361957: Client pub_sensor-001_e24 closed its connection.
+1764361957: Client pub_sensor-002_b4a closed its connection.
+1764361957: Client pub_sensor-005_61a closed its connection.
+1764361957: Client pub_sensor-004_319 closed its connection.
+1764361960: New connection from 172.19.0.11:35522 on port 1883.
+1764361960: New client connected from 172.19.0.11:35522 as pub_sensor-001_397 (p2, c1, k60).
+1764361960: New connection from 172.19.0.12:49482 on port 1883.
+1764361960: New client connected from 172.19.0.12:49482 as pub_sensor-003_88c (p2, c1, k60).
+1764361960: New connection from 172.19.0.13:53390 on port 1883.
+1764361960: New client connected from 172.19.0.13:53390 as pub_sensor-002_b1d (p2, c1, k60).
+1764361960: Client pub_sensor-001_397 closed its connection.
+1764361960: Client pub_sensor-003_88c closed its connection.
+1764361960: Client pub_sensor-002_b1d closed its connection.
+1764361961: Client unicast_sensor-001_515c79 closed its connection.
+1764361961: Client mqttjs_289c8b9d closed its connection.
+1764361961: Client persistence_sub_a38d55 closed its connection.
+1764361961: Client mqttjs_7a43bb34 closed its connection.
+1764361961: Client mqttjs_5b7d118d closed its connection.
+1764361962: Client time_server_01 closed its connection.
+1764361962: mosquitto version 2.0.22 terminating
+1764361962: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764361962: Client titan_ops_7b1de8 closed its connection.
+1764361971: mosquitto version 2.0.22 starting
+1764361971: Config loaded from /mosquitto/config/mosquitto.conf.
+1764361971: Opening ipv4 listen socket on port 1883.
+1764361971: Opening ipv6 listen socket on port 1883.
+1764361971: Opening websockets listen socket on port 9001.
+1764361971: mosquitto version 2.0.22 running
+1764361971: New connection from 172.19.0.4:47382 on port 1883.
+1764361971: New client connected from 172.19.0.4:47382 as time_server_01 (p2, c1, k60).
+1764361971: New connection from 172.19.0.5:41994 on port 1883.
+1764361971: New client connected from 172.19.0.5:41994 as mqttjs_c008e181 (p2, c1, k60).
+1764361971: New connection from 172.19.0.8:51488 on port 1883.
+1764361971: New connection from 172.19.0.7:36496 on port 1883.
+1764361971: New client connected from 172.19.0.8:51488 as unicast_sensor-001_67a7bb (p2, c1, k60).
+1764361971: New connection from 172.19.0.9:38986 on port 1883.
+1764361971: New client connected from 172.19.0.7:36496 as mqttjs_8c03d0ce (p2, c1, k60).
+1764361971: New client connected from 172.19.0.9:38986 as persistence_sub_c7214d (p2, c1, k60).
+1764361971: New connection from 172.19.0.10:57148 on port 1883.
+1764361971: New client connected from 172.19.0.10:57148 as mqttjs_202c0aff (p2, c1, k60).
+1764361971: New connection from 172.19.0.12:40834 on port 1883.
+1764361971: New client connected from 172.19.0.12:40834 as pub_sensor-003_4a6 (p2, c1, k60).
+1764361971: New connection from 172.19.0.11:43900 on port 1883.
+1764361971: New client connected from 172.19.0.11:43900 as pub_sensor-004_222 (p2, c1, k60).
+1764361971: New connection from 172.19.0.13:55948 on port 1883.
+1764361971: New client connected from 172.19.0.13:55948 as pub_sensor-005_c9b (p2, c1, k60).
+1764361971: New connection from 172.19.0.14:49400 on port 1883.
+1764361971: New client connected from 172.19.0.14:49400 as pub_sensor-002_f3e (p2, c1, k60).
+1764361971: New connection from 172.19.0.15:33698 on port 1883.
+1764361971: New client connected from 172.19.0.15:33698 as pub_sensor-001_f75 (p2, c1, k60).
+1764361971: Client pub_sensor-003_4a6 closed its connection.
+1764361971: Client pub_sensor-004_222 closed its connection.
+1764361971: Client pub_sensor-005_c9b closed its connection.
+1764361971: Client pub_sensor-002_f3e closed its connection.
+1764361971: Client pub_sensor-001_f75 closed its connection.
+1764361972: New connection from 172.19.0.11:43906 on port 1883.
+1764361972: New client connected from 172.19.0.11:43906 as pub_sensor-003_e62 (p2, c1, k60).
+1764361972: New connection from 172.19.0.13:55952 on port 1883.
+1764361972: New connection from 172.19.0.12:40840 on port 1883.
+1764361972: New client connected from 172.19.0.13:55952 as pub_sensor-005_eac (p2, c1, k60).
+1764361972: New client connected from 172.19.0.12:40840 as pub_sensor-004_cdc (p2, c1, k60).
+1764361972: New connection from 172.19.0.14:49404 on port 1883.
+1764361972: New client connected from 172.19.0.14:49404 as pub_sensor-001_cf6 (p2, c1, k60).
+1764361972: New connection from 172.19.0.15:33700 on port 1883.
+1764361972: New client connected from 172.19.0.15:33700 as pub_sensor-002_2a5 (p2, c1, k60).
+1764361972: Client pub_sensor-003_e62 closed its connection.
+1764361972: Client pub_sensor-005_eac closed its connection.
+1764361972: Client pub_sensor-004_cdc closed its connection.
+1764361972: Client pub_sensor-001_cf6 closed its connection.
+1764361972: Client pub_sensor-002_2a5 closed its connection.
+1764361972: New connection from 172.19.0.11:43918 on port 1883.
+1764361972: New client connected from 172.19.0.11:43918 as pub_sensor-003_e87 (p2, c1, k60).
+1764361972: New connection from 172.19.0.12:40852 on port 1883.
+1764361972: New client connected from 172.19.0.12:40852 as pub_sensor-004_ff0 (p2, c1, k60).
+1764361972: New connection from 172.19.0.13:55956 on port 1883.
+1764361972: New client connected from 172.19.0.13:55956 as pub_sensor-005_39d (p2, c1, k60).
+1764361972: New connection from 172.19.0.14:49406 on port 1883.
+1764361972: New client connected from 172.19.0.14:49406 as pub_sensor-001_faf (p2, c1, k60).
+1764361972: New connection from 172.19.0.15:33710 on port 1883.
+1764361972: New client connected from 172.19.0.15:33710 as pub_sensor-002_533 (p2, c1, k60).
+1764361972: Client pub_sensor-003_e87 closed its connection.
+1764361972: Client pub_sensor-004_ff0 closed its connection.
+1764361972: Client pub_sensor-005_39d closed its connection.
+1764361972: Client pub_sensor-001_faf closed its connection.
+1764361972: Client pub_sensor-002_533 closed its connection.
+1764361973: New connection from 172.19.0.11:43930 on port 1883.
+1764361973: New connection from 172.19.0.12:40856 on port 1883.
+1764361973: New client connected from 172.19.0.11:43930 as pub_sensor-004_9b5 (p2, c1, k60).
+1764361973: New client connected from 172.19.0.12:40856 as pub_sensor-003_05c (p2, c1, k60).
+1764361973: New connection from 172.19.0.13:55962 on port 1883.
+1764361973: New client connected from 172.19.0.13:55962 as pub_sensor-005_b22 (p2, c1, k60).
+1764361973: New connection from 172.19.0.15:33726 on port 1883.
+1764361973: New client connected from 172.19.0.15:33726 as pub_sensor-002_c72 (p2, c1, k60).
+1764361973: New connection from 172.19.0.14:49420 on port 1883.
+1764361973: New client connected from 172.19.0.14:49420 as pub_sensor-001_8b2 (p2, c1, k60).
+1764361973: Client pub_sensor-004_9b5 closed its connection.
+1764361973: Client pub_sensor-003_05c closed its connection.
+1764361973: Client pub_sensor-005_b22 closed its connection.
+1764361973: Client pub_sensor-002_c72 closed its connection.
+1764361973: Client pub_sensor-001_8b2 closed its connection.
+1764361974: New connection from 172.19.0.11:43938 on port 1883.
+1764361974: New client connected from 172.19.0.11:43938 as pub_sensor-003_2a7 (p2, c1, k60).
+1764361974: New connection from 172.19.0.12:40868 on port 1883.
+1764361974: New client connected from 172.19.0.12:40868 as pub_sensor-004_16f (p2, c1, k60).
+1764361974: New connection from 172.19.0.14:49422 on port 1883.
+1764361974: New connection from 172.19.0.13:55976 on port 1883.
+1764361974: New client connected from 172.19.0.13:55976 as pub_sensor-005_fae (p2, c1, k60).
+1764361974: New client connected from 172.19.0.14:49422 as pub_sensor-002_871 (p2, c1, k60).
+1764361974: New connection from 172.19.0.15:33732 on port 1883.
+1764361974: New client connected from 172.19.0.15:33732 as pub_sensor-001_037 (p2, c1, k60).
+1764361974: Client pub_sensor-003_2a7 closed its connection.
+1764361974: Client pub_sensor-004_16f closed its connection.
+1764361974: Client pub_sensor-002_871 closed its connection.
+1764361974: Client pub_sensor-005_fae closed its connection.
+1764361974: Client pub_sensor-001_037 closed its connection.
+1764361975: New client connected from ::ffff:192.168.65.1:61482 as titan_ops_7b1de8 (p2, c1, k60).
+1764361976: New connection from 172.19.0.11:34830 on port 1883.
+1764361976: New client connected from 172.19.0.11:34830 as pub_sensor-004_e77 (p2, c1, k60).
+1764361976: New connection from 172.19.0.12:54664 on port 1883.
+1764361976: New client connected from 172.19.0.12:54664 as pub_sensor-003_d61 (p2, c1, k60).
+1764361976: New connection from 172.19.0.13:43604 on port 1883.
+1764361976: New client connected from 172.19.0.13:43604 as pub_sensor-001_751 (p2, c1, k60).
+1764361976: New connection from 172.19.0.14:59420 on port 1883.
+1764361976: New client connected from 172.19.0.14:59420 as pub_sensor-002_003 (p2, c1, k60).
+1764361976: New connection from 172.19.0.15:34208 on port 1883.
+1764361976: New client connected from 172.19.0.15:34208 as pub_sensor-005_8f9 (p2, c1, k60).
+1764361976: Client pub_sensor-004_e77 closed its connection.
+1764361976: Client pub_sensor-003_d61 closed its connection.
+1764361976: Client pub_sensor-001_751 closed its connection.
+1764361976: Client pub_sensor-002_003 closed its connection.
+1764361976: Client pub_sensor-005_8f9 closed its connection.
+1764361979: New connection from 172.19.0.11:34836 on port 1883.
+1764361979: New client connected from 172.19.0.11:34836 as pub_sensor-001_215 (p2, c1, k60).
+1764361979: New connection from 172.19.0.12:54674 on port 1883.
+1764361979: New client connected from 172.19.0.12:54674 as pub_sensor-002_b0e (p2, c1, k60).
+1764361979: New connection from 172.19.0.13:43610 on port 1883.
+1764361979: New client connected from 172.19.0.13:43610 as pub_sensor-004_1dc (p2, c1, k60).
+1764361979: New connection from 172.19.0.14:59430 on port 1883.
+1764361979: New client connected from 172.19.0.14:59430 as pub_sensor-005_806 (p2, c1, k60).
+1764361979: New connection from 172.19.0.15:34222 on port 1883.
+1764361979: New client connected from 172.19.0.15:34222 as pub_sensor-003_f00 (p2, c1, k60).
+1764361979: Client pub_sensor-001_215 closed its connection.
+1764361979: Client pub_sensor-002_b0e closed its connection.
+1764361979: Client pub_sensor-004_1dc closed its connection.
+1764361979: Client pub_sensor-005_806 closed its connection.
+1764361979: Client pub_sensor-003_f00 closed its connection.
+1764361986: New connection from 172.19.0.11:38410 on port 1883.
+1764361986: New client connected from 172.19.0.11:38410 as pub_sensor-005_1c5 (p2, c1, k60).
+1764361986: New connection from 172.19.0.12:57664 on port 1883.
+1764361986: New client connected from 172.19.0.12:57664 as pub_sensor-002_63a (p2, c1, k60).
+1764361986: New connection from 172.19.0.13:34950 on port 1883.
+1764361986: New client connected from 172.19.0.13:34950 as pub_sensor-004_4f3 (p2, c1, k60).
+1764361986: New connection from 172.19.0.14:43654 on port 1883.
+1764361986: New client connected from 172.19.0.14:43654 as pub_sensor-001_9d3 (p2, c1, k60).
+1764361986: New connection from 172.19.0.15:51118 on port 1883.
+1764361986: New client connected from 172.19.0.15:51118 as pub_sensor-003_cc3 (p2, c1, k60).
+1764361986: Client pub_sensor-005_1c5 closed its connection.
+1764361986: Client pub_sensor-002_63a closed its connection.
+1764361986: Client pub_sensor-004_4f3 closed its connection.
+1764361986: Client pub_sensor-001_9d3 closed its connection.
+1764361986: Client pub_sensor-003_cc3 closed its connection.
+1764361991: Client titan_ops_7b1de8 closed its connection.
+1764361998: New client connected from ::ffff:192.168.65.1:55686 as titan_ops_e1b8c0 (p2, c1, k60).
+1764361999: New connection from 172.19.0.11:51778 on port 1883.
+1764361999: New client connected from 172.19.0.11:51778 as pub_sensor-002_746 (p2, c1, k60).
+1764361999: New connection from 172.19.0.12:48600 on port 1883.
+1764361999: New client connected from 172.19.0.12:48600 as pub_sensor-003_190 (p2, c1, k60).
+1764361999: New connection from 172.19.0.13:39830 on port 1883.
+1764361999: New client connected from 172.19.0.13:39830 as pub_sensor-005_fc0 (p2, c1, k60).
+1764361999: New connection from 172.19.0.14:50098 on port 1883.
+1764361999: New client connected from 172.19.0.14:50098 as pub_sensor-001_d4c (p2, c1, k60).
+1764361999: New connection from 172.19.0.15:50898 on port 1883.
+1764361999: New client connected from 172.19.0.15:50898 as pub_sensor-004_fe4 (p2, c1, k60).
+1764361999: Client pub_sensor-002_746 closed its connection.
+1764361999: Client pub_sensor-003_190 closed its connection.
+1764361999: Client pub_sensor-005_fc0 closed its connection.
+1764361999: Client pub_sensor-001_d4c closed its connection.
+1764361999: Client pub_sensor-004_fe4 closed its connection.
+1764362004: Client titan_ops_e1b8c0 closed its connection.
+1764362004: New client connected from ::ffff:192.168.65.1:26690 as titan_ops_560ba6 (p2, c1, k60).
+1764362025: New connection from 172.19.0.11:60820 on port 1883.
+1764362025: New client connected from 172.19.0.11:60820 as pub_sensor-002_4b6 (p2, c1, k60).
+1764362025: New connection from 172.19.0.12:48202 on port 1883.
+1764362025: New connection from 172.19.0.13:52086 on port 1883.
+1764362025: New client connected from 172.19.0.13:52086 as pub_sensor-004_289 (p2, c1, k60).
+1764362025: New client connected from 172.19.0.12:48202 as pub_sensor-001_0e0 (p2, c1, k60).
+1764362025: New connection from 172.19.0.14:32974 on port 1883.
+1764362025: New client connected from 172.19.0.14:32974 as pub_sensor-003_9ad (p2, c1, k60).
+1764362025: New connection from 172.19.0.15:51056 on port 1883.
+1764362025: New client connected from 172.19.0.15:51056 as pub_sensor-005_fce (p2, c1, k60).
+1764362025: Client pub_sensor-002_4b6 closed its connection.
+1764362025: Client pub_sensor-001_0e0 closed its connection.
+1764362025: Client pub_sensor-004_289 closed its connection.
+1764362025: Client pub_sensor-003_9ad closed its connection.
+1764362025: Client pub_sensor-005_fce closed its connection.
+1764362076: New connection from 172.19.0.12:43222 on port 1883.
+1764362076: New client connected from 172.19.0.12:43222 as pub_sensor-003_6bc (p2, c1, k60).
+1764362076: New connection from 172.19.0.11:35784 on port 1883.
+1764362076: New client connected from 172.19.0.11:35784 as pub_sensor-002_707 (p2, c1, k60).
+1764362076: New connection from 172.19.0.13:46646 on port 1883.
+1764362076: New client connected from 172.19.0.13:46646 as pub_sensor-001_bcf (p2, c1, k60).
+1764362076: New connection from 172.19.0.14:45046 on port 1883.
+1764362076: New client connected from 172.19.0.14:45046 as pub_sensor-004_a37 (p2, c1, k60).
+1764362076: New connection from 172.19.0.15:47476 on port 1883.
+1764362076: New client connected from 172.19.0.15:47476 as pub_sensor-005_fe2 (p2, c1, k60).
+1764362076: Client pub_sensor-003_6bc closed its connection.
+1764362076: Client pub_sensor-002_707 closed its connection.
+1764362076: Client pub_sensor-001_bcf closed its connection.
+1764362076: Client pub_sensor-004_a37 closed its connection.
+1764362076: Client pub_sensor-005_fe2 closed its connection.
+1764362116: Client mqttjs_8c03d0ce closed its connection.
+1764362116: Client unicast_sensor-001_67a7bb closed its connection.
+1764362116: Client mqttjs_202c0aff closed its connection.
+1764362116: Client mqttjs_c008e181 closed its connection.
+1764362116: Client persistence_sub_c7214d closed its connection.
+1764362116: Client time_server_01 closed its connection.
+1764362117: mosquitto version 2.0.22 terminating
+1764362117: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764362117: Client titan_ops_560ba6 closed its connection.
+1764362159: mosquitto version 2.0.22 starting
+1764362159: Config loaded from /mosquitto/config/mosquitto.conf.
+1764362159: Opening ipv4 listen socket on port 1883.
+1764362159: Opening ipv6 listen socket on port 1883.
+1764362159: Opening websockets listen socket on port 9001.
+1764362159: mosquitto version 2.0.22 running
+1764362159: New connection from 172.19.0.4:49284 on port 1883.
+1764362159: New client connected from 172.19.0.4:49284 as time_server_01 (p2, c1, k60).
+1764362159: New connection from 172.19.0.9:46020 on port 1883.
+1764362159: New connection from 172.19.0.8:37822 on port 1883.
+1764362159: New client connected from 172.19.0.8:37822 as mqttjs_d55a26c5 (p2, c1, k60).
+1764362159: New client connected from 172.19.0.9:46020 as mqttjs_275ba75e (p2, c1, k60).
+1764362159: New connection from 172.19.0.5:45916 on port 1883.
+1764362159: New connection from 172.19.0.10:54754 on port 1883.
+1764362159: New client connected from 172.19.0.10:54754 as persistence_sub_5fab9d (p2, c1, k60).
+1764362159: New connection from 172.19.0.7:44034 on port 1883.
+1764362159: New client connected from 172.19.0.7:44034 as unicast_sensor-001_10d256 (p2, c1, k60).
+1764362159: New client connected from 172.19.0.5:45916 as mqttjs_1256b3a5 (p2, c1, k60).
+1764362159: New connection from 172.19.0.11:52964 on port 1883.
+1764362159: New client connected from 172.19.0.11:52964 as pub_sensor-005_488 (p2, c1, k60).
+1764362159: New connection from 172.19.0.12:40832 on port 1883.
+1764362159: New client connected from 172.19.0.12:40832 as pub_sensor-001_f1f (p2, c1, k60).
+1764362159: New connection from 172.19.0.15:49676 on port 1883.
+1764362159: New client connected from 172.19.0.15:49676 as pub_sensor-002_c81 (p2, c1, k60).
+1764362159: New connection from 172.19.0.14:34016 on port 1883.
+1764362159: New client connected from 172.19.0.14:34016 as pub_sensor-004_7c2 (p2, c1, k60).
+1764362159: New connection from 172.19.0.13:52526 on port 1883.
+1764362159: New client connected from 172.19.0.13:52526 as pub_sensor-003_9f3 (p2, c1, k60).
+1764362159: Client pub_sensor-001_f1f closed its connection.
+1764362159: Client pub_sensor-005_488 closed its connection.
+1764362159: Client pub_sensor-002_c81 closed its connection.
+1764362159: Client pub_sensor-004_7c2 closed its connection.
+1764362159: Client pub_sensor-003_9f3 closed its connection.
+1764362160: New connection from 172.19.0.12:40840 on port 1883.
+1764362160: New connection from 172.19.0.11:52974 on port 1883.
+1764362160: New client connected from 172.19.0.11:52974 as pub_sensor-002_104 (p2, c1, k60).
+1764362160: New client connected from 172.19.0.12:40840 as pub_sensor-001_068 (p2, c1, k60).
+1764362160: New connection from 172.19.0.13:52542 on port 1883.
+1764362160: New client connected from 172.19.0.13:52542 as pub_sensor-005_174 (p2, c1, k60).
+1764362160: New connection from 172.19.0.14:34032 on port 1883.
+1764362160: New client connected from 172.19.0.14:34032 as pub_sensor-004_82b (p2, c1, k60).
+1764362160: New connection from 172.19.0.15:49684 on port 1883.
+1764362160: New client connected from 172.19.0.15:49684 as pub_sensor-003_7c7 (p2, c1, k60).
+1764362160: Client pub_sensor-002_104 closed its connection.
+1764362160: Client pub_sensor-001_068 closed its connection.
+1764362160: Client pub_sensor-005_174 closed its connection.
+1764362160: Client pub_sensor-004_82b closed its connection.
+1764362160: Client pub_sensor-003_7c7 closed its connection.
+1764362160: New connection from 172.19.0.11:52976 on port 1883.
+1764362160: New client connected from 172.19.0.11:52976 as pub_sensor-002_d92 (p2, c1, k60).
+1764362160: New connection from 172.19.0.12:40846 on port 1883.
+1764362160: New client connected from 172.19.0.12:40846 as pub_sensor-005_72b (p2, c1, k60).
+1764362160: New connection from 172.19.0.14:34044 on port 1883.
+1764362160: New client connected from 172.19.0.14:34044 as pub_sensor-004_5ef (p2, c1, k60).
+1764362160: New connection from 172.19.0.13:52546 on port 1883.
+1764362160: New client connected from 172.19.0.13:52546 as pub_sensor-001_c31 (p2, c1, k60).
+1764362160: New connection from 172.19.0.15:49692 on port 1883.
+1764362160: New client connected from 172.19.0.15:49692 as pub_sensor-003_1c4 (p2, c1, k60).
+1764362160: Client pub_sensor-002_d92 closed its connection.
+1764362160: Client pub_sensor-005_72b closed its connection.
+1764362160: Client pub_sensor-004_5ef closed its connection.
+1764362160: Client pub_sensor-001_c31 closed its connection.
+1764362160: Client pub_sensor-003_1c4 closed its connection.
+1764362161: New connection from 172.19.0.11:52992 on port 1883.
+1764362161: New client connected from 172.19.0.11:52992 as pub_sensor-004_5ba (p2, c1, k60).
+1764362161: New connection from 172.19.0.12:40850 on port 1883.
+1764362161: New client connected from 172.19.0.12:40850 as pub_sensor-002_0a4 (p2, c1, k60).
+1764362161: New connection from 172.19.0.14:34052 on port 1883.
+1764362161: New connection from 172.19.0.13:52560 on port 1883.
+1764362161: New client connected from 172.19.0.14:34052 as pub_sensor-001_ef0 (p2, c1, k60).
+1764362161: New client connected from 172.19.0.13:52560 as pub_sensor-005_554 (p2, c1, k60).
+1764362161: New connection from 172.19.0.15:49704 on port 1883.
+1764362161: New client connected from 172.19.0.15:49704 as pub_sensor-003_8de (p2, c1, k60).
+1764362161: Client pub_sensor-004_5ba closed its connection.
+1764362161: Client pub_sensor-002_0a4 closed its connection.
+1764362161: Client pub_sensor-005_554 closed its connection.
+1764362161: Client pub_sensor-001_ef0 closed its connection.
+1764362161: Client pub_sensor-003_8de closed its connection.
+1764362162: New connection from 172.19.0.11:53002 on port 1883.
+1764362162: New client connected from 172.19.0.11:53002 as pub_sensor-005_eb4 (p2, c1, k60).
+1764362162: New connection from 172.19.0.12:40852 on port 1883.
+1764362162: New client connected from 172.19.0.12:40852 as pub_sensor-001_89b (p2, c1, k60).
+1764362162: New connection from 172.19.0.14:34054 on port 1883.
+1764362162: New client connected from 172.19.0.14:34054 as pub_sensor-002_18a (p2, c1, k60).
+1764362162: New connection from 172.19.0.13:52574 on port 1883.
+1764362162: New client connected from 172.19.0.13:52574 as pub_sensor-004_93f (p2, c1, k60).
+1764362162: New connection from 172.19.0.15:49710 on port 1883.
+1764362162: New client connected from 172.19.0.15:49710 as pub_sensor-003_506 (p2, c1, k60).
+1764362162: Client pub_sensor-005_eb4 closed its connection.
+1764362162: Client pub_sensor-001_89b closed its connection.
+1764362162: Client pub_sensor-002_18a closed its connection.
+1764362162: Client pub_sensor-004_93f closed its connection.
+1764362162: Client pub_sensor-003_506 closed its connection.
+1764362163: New client connected from ::ffff:192.168.65.1:60620 as titan_ops_560ba6 (p2, c1, k60).
+1764362164: New connection from 172.19.0.11:53018 on port 1883.
+1764362164: New client connected from 172.19.0.11:53018 as pub_sensor-005_885 (p2, c1, k60).
+1764362164: New connection from 172.19.0.13:52586 on port 1883.
+1764362164: New connection from 172.19.0.12:40858 on port 1883.
+1764362164: New client connected from 172.19.0.13:52586 as pub_sensor-003_2a7 (p2, c1, k60).
+1764362164: New client connected from 172.19.0.12:40858 as pub_sensor-001_fa3 (p2, c1, k60).
+1764362164: New connection from 172.19.0.15:49716 on port 1883.
+1764362164: New connection from 172.19.0.14:34064 on port 1883.
+1764362164: New client connected from 172.19.0.15:49716 as pub_sensor-004_810 (p2, c1, k60).
+1764362164: New client connected from 172.19.0.14:34064 as pub_sensor-002_991 (p2, c1, k60).
+1764362164: Client pub_sensor-005_885 closed its connection.
+1764362164: Client pub_sensor-003_2a7 closed its connection.
+1764362164: Client pub_sensor-001_fa3 closed its connection.
+1764362164: Client pub_sensor-002_991 closed its connection.
+1764362164: Client pub_sensor-004_810 closed its connection.
+1764362167: New connection from 172.19.0.11:37294 on port 1883.
+1764362167: New client connected from 172.19.0.11:37294 as pub_sensor-002_5b3 (p2, c1, k60).
+1764362167: New connection from 172.19.0.12:34214 on port 1883.
+1764362167: New client connected from 172.19.0.12:34214 as pub_sensor-001_c4c (p2, c1, k60).
+1764362167: New connection from 172.19.0.13:44906 on port 1883.
+1764362167: New client connected from 172.19.0.13:44906 as pub_sensor-005_6aa (p2, c1, k60).
+1764362167: New connection from 172.19.0.14:37390 on port 1883.
+1764362167: New client connected from 172.19.0.14:37390 as pub_sensor-003_f1f (p2, c1, k60).
+1764362167: New connection from 172.19.0.15:44456 on port 1883.
+1764362167: New client connected from 172.19.0.15:44456 as pub_sensor-004_c4b (p2, c1, k60).
+1764362167: Client pub_sensor-002_5b3 closed its connection.
+1764362167: Client pub_sensor-001_c4c closed its connection.
+1764362167: Client pub_sensor-005_6aa closed its connection.
+1764362167: Client pub_sensor-004_c4b closed its connection.
+1764362167: Client pub_sensor-003_f1f closed its connection.
+1764362174: New connection from 172.19.0.11:37306 on port 1883.
+1764362174: New client connected from 172.19.0.11:37306 as pub_sensor-004_e0d (p2, c1, k60).
+1764362174: New connection from 172.19.0.12:34216 on port 1883.
+1764362174: New client connected from 172.19.0.12:34216 as pub_sensor-002_aae (p2, c1, k60).
+1764362174: New connection from 172.19.0.13:44914 on port 1883.
+1764362174: New connection from 172.19.0.14:37396 on port 1883.
+1764362174: New client connected from 172.19.0.14:37396 as pub_sensor-005_88f (p2, c1, k60).
+1764362174: New client connected from 172.19.0.13:44914 as pub_sensor-001_b2c (p2, c1, k60).
+1764362174: New connection from 172.19.0.15:44470 on port 1883.
+1764362174: New client connected from 172.19.0.15:44470 as pub_sensor-003_0b0 (p2, c1, k60).
+1764362174: Client pub_sensor-002_aae closed its connection.
+1764362174: Client pub_sensor-004_e0d closed its connection.
+1764362174: Client pub_sensor-005_88f closed its connection.
+1764362174: Client pub_sensor-001_b2c closed its connection.
+1764362174: Client pub_sensor-003_0b0 closed its connection.
+1764362187: New connection from 172.19.0.11:58434 on port 1883.
+1764362187: New client connected from 172.19.0.11:58434 as pub_sensor-004_612 (p2, c1, k60).
+1764362187: New connection from 172.19.0.13:51250 on port 1883.
+1764362187: New connection from 172.19.0.12:40194 on port 1883.
+1764362187: New client connected from 172.19.0.13:51250 as pub_sensor-003_c8a (p2, c1, k60).
+1764362187: New client connected from 172.19.0.12:40194 as pub_sensor-002_a2c (p2, c1, k60).
+1764362187: New connection from 172.19.0.14:35176 on port 1883.
+1764362187: New client connected from 172.19.0.14:35176 as pub_sensor-005_a05 (p2, c1, k60).
+1764362187: New connection from 172.19.0.15:38988 on port 1883.
+1764362187: New client connected from 172.19.0.15:38988 as pub_sensor-001_3e6 (p2, c1, k60).
+1764362187: Client pub_sensor-004_612 closed its connection.
+1764362187: Client pub_sensor-002_a2c closed its connection.
+1764362187: Client pub_sensor-003_c8a closed its connection.
+1764362187: Client pub_sensor-005_a05 closed its connection.
+1764362187: Client pub_sensor-001_3e6 closed its connection.
+1764362213: New connection from 172.19.0.11:60772 on port 1883.
+1764362213: New client connected from 172.19.0.11:60772 as pub_sensor-004_61e (p2, c1, k60).
+1764362213: New connection from 172.19.0.12:35870 on port 1883.
+1764362213: New connection from 172.19.0.13:59602 on port 1883.
+1764362213: New client connected from 172.19.0.13:59602 as pub_sensor-002_dad (p2, c1, k60).
+1764362213: New client connected from 172.19.0.12:35870 as pub_sensor-005_ac4 (p2, c1, k60).
+1764362213: New connection from 172.19.0.14:46202 on port 1883.
+1764362213: New client connected from 172.19.0.14:46202 as pub_sensor-003_350 (p2, c1, k60).
+1764362213: New connection from 172.19.0.15:56964 on port 1883.
+1764362213: New client connected from 172.19.0.15:56964 as pub_sensor-001_0af (p2, c1, k60).
+1764362213: Client pub_sensor-004_61e closed its connection.
+1764362213: Client pub_sensor-002_dad closed its connection.
+1764362213: Client pub_sensor-005_ac4 closed its connection.
+1764362213: Client pub_sensor-001_0af closed its connection.
+1764362213: Client pub_sensor-003_350 closed its connection.
+1764362264: New connection from 172.19.0.11:33492 on port 1883.
+1764362264: New client connected from 172.19.0.11:33492 as pub_sensor-004_0ff (p2, c1, k60).
+1764362264: New connection from 172.19.0.13:34310 on port 1883.
+1764362264: New client connected from 172.19.0.13:34310 as pub_sensor-002_d62 (p2, c1, k60).
+1764362264: New connection from 172.19.0.14:45112 on port 1883.
+1764362264: New connection from 172.19.0.12:56776 on port 1883.
+1764362264: New client connected from 172.19.0.12:56776 as pub_sensor-003_901 (p2, c1, k60).
+1764362264: New client connected from 172.19.0.14:45112 as pub_sensor-001_a5a (p2, c1, k60).
+1764362264: New connection from 172.19.0.15:42192 on port 1883.
+1764362264: New client connected from 172.19.0.15:42192 as pub_sensor-005_7f1 (p2, c1, k60).
+1764362264: Client pub_sensor-004_0ff closed its connection.
+1764362264: Client pub_sensor-002_d62 closed its connection.
+1764362264: Client pub_sensor-003_901 closed its connection.
+1764362264: Client pub_sensor-001_a5a closed its connection.
+1764362264: Client pub_sensor-005_7f1 closed its connection.
+1764362324: New connection from 172.19.0.11:52798 on port 1883.
+1764362324: New client connected from 172.19.0.11:52798 as pub_sensor-002_14d (p2, c1, k60).
+1764362324: New connection from 172.19.0.12:34818 on port 1883.
+1764362324: New client connected from 172.19.0.12:34818 as pub_sensor-001_bdf (p2, c1, k60).
+1764362324: New connection from 172.19.0.13:57576 on port 1883.
+1764362324: New client connected from 172.19.0.13:57576 as pub_sensor-003_7cd (p2, c1, k60).
+1764362324: New connection from 172.19.0.14:39580 on port 1883.
+1764362324: New client connected from 172.19.0.14:39580 as pub_sensor-005_3bc (p2, c1, k60).
+1764362324: New connection from 172.19.0.15:56436 on port 1883.
+1764362324: New client connected from 172.19.0.15:56436 as pub_sensor-004_77c (p2, c1, k60).
+1764362325: Client pub_sensor-002_14d closed its connection.
+1764362325: Client pub_sensor-001_bdf closed its connection.
+1764362325: Client pub_sensor-003_7cd closed its connection.
+1764362325: Client pub_sensor-005_3bc closed its connection.
+1764362325: Client pub_sensor-004_77c closed its connection.
+1764362385: New connection from 172.19.0.11:35148 on port 1883.
+1764362385: New client connected from 172.19.0.11:35148 as pub_sensor-002_52c (p2, c1, k60).
+1764362385: New connection from 172.19.0.12:43938 on port 1883.
+1764362385: New client connected from 172.19.0.12:43938 as pub_sensor-001_07e (p2, c1, k60).
+1764362385: New connection from 172.19.0.14:59750 on port 1883.
+1764362385: New client connected from 172.19.0.14:59750 as pub_sensor-005_928 (p2, c1, k60).
+1764362385: New connection from 172.19.0.13:42468 on port 1883.
+1764362385: New client connected from 172.19.0.13:42468 as pub_sensor-003_411 (p2, c1, k60).
+1764362385: New connection from 172.19.0.15:60830 on port 1883.
+1764362385: New client connected from 172.19.0.15:60830 as pub_sensor-004_372 (p2, c1, k60).
+1764362385: Client pub_sensor-002_52c closed its connection.
+1764362385: Client pub_sensor-001_07e closed its connection.
+1764362385: Client pub_sensor-003_411 closed its connection.
+1764362385: Client pub_sensor-005_928 closed its connection.
+1764362385: Client pub_sensor-004_372 closed its connection.
+1764362445: New connection from 172.19.0.11:38580 on port 1883.
+1764362445: New client connected from 172.19.0.11:38580 as pub_sensor-002_2ff (p2, c1, k60).
+1764362445: New connection from 172.19.0.12:43818 on port 1883.
+1764362445: New client connected from 172.19.0.12:43818 as pub_sensor-003_070 (p2, c1, k60).
+1764362445: New connection from 172.19.0.13:43608 on port 1883.
+1764362445: New client connected from 172.19.0.13:43608 as pub_sensor-001_081 (p2, c1, k60).
+1764362445: New connection from 172.19.0.15:45060 on port 1883.
+1764362445: New client connected from 172.19.0.15:45060 as pub_sensor-005_256 (p2, c1, k60).
+1764362445: New connection from 172.19.0.14:48828 on port 1883.
+1764362445: New client connected from 172.19.0.14:48828 as pub_sensor-004_f3b (p2, c1, k60).
+1764362445: Client pub_sensor-002_2ff closed its connection.
+1764362445: Client pub_sensor-003_070 closed its connection.
+1764362445: Client pub_sensor-001_081 closed its connection.
+1764362445: Client pub_sensor-005_256 closed its connection.
+1764362445: Client pub_sensor-004_f3b closed its connection.
+1764362505: New connection from 172.19.0.11:60702 on port 1883.
+1764362505: New client connected from 172.19.0.11:60702 as pub_sensor-003_380 (p2, c1, k60).
+1764362505: New connection from 172.19.0.12:52822 on port 1883.
+1764362505: New client connected from 172.19.0.12:52822 as pub_sensor-002_23d (p2, c1, k60).
+1764362505: New connection from 172.19.0.13:59108 on port 1883.
+1764362505: New connection from 172.19.0.14:52146 on port 1883.
+1764362505: New client connected from 172.19.0.14:52146 as pub_sensor-005_219 (p2, c1, k60).
+1764362505: New client connected from 172.19.0.13:59108 as pub_sensor-004_b8b (p2, c1, k60).
+1764362505: New connection from 172.19.0.15:32838 on port 1883.
+1764362505: New client connected from 172.19.0.15:32838 as pub_sensor-001_da5 (p2, c1, k60).
+1764362505: Client pub_sensor-003_380 closed its connection.
+1764362505: Client pub_sensor-002_23d closed its connection.
+1764362505: Client pub_sensor-005_219 closed its connection.
+1764362505: Client pub_sensor-004_b8b closed its connection.
+1764362505: Client pub_sensor-001_da5 closed its connection.
+1764362565: New connection from 172.19.0.11:49824 on port 1883.
+1764362565: New client connected from 172.19.0.11:49824 as pub_sensor-005_aa8 (p2, c1, k60).
+1764362565: New connection from 172.19.0.12:36784 on port 1883.
+1764362565: New client connected from 172.19.0.12:36784 as pub_sensor-003_c0b (p2, c1, k60).
+1764362566: New connection from 172.19.0.13:33190 on port 1883.
+1764362566: New client connected from 172.19.0.13:33190 as pub_sensor-004_9e0 (p2, c1, k60).
+1764362566: New connection from 172.19.0.14:54688 on port 1883.
+1764362566: New connection from 172.19.0.15:46710 on port 1883.
+1764362566: New client connected from 172.19.0.14:54688 as pub_sensor-001_803 (p2, c1, k60).
+1764362566: New client connected from 172.19.0.15:46710 as pub_sensor-002_5c4 (p2, c1, k60).
+1764362566: Client pub_sensor-005_aa8 closed its connection.
+1764362566: Client pub_sensor-003_c0b closed its connection.
+1764362566: Client pub_sensor-004_9e0 closed its connection.
+1764362566: Client pub_sensor-001_803 closed its connection.
+1764362566: Client pub_sensor-002_5c4 closed its connection.
+1764362626: New connection from 172.19.0.11:46318 on port 1883.
+1764362626: New client connected from 172.19.0.11:46318 as pub_sensor-003_c4e (p2, c1, k60).
+1764362626: New connection from 172.19.0.12:48702 on port 1883.
+1764362626: New client connected from 172.19.0.12:48702 as pub_sensor-004_fa8 (p2, c1, k60).
+1764362626: New connection from 172.19.0.13:42470 on port 1883.
+1764362626: New client connected from 172.19.0.13:42470 as pub_sensor-005_018 (p2, c1, k60).
+1764362626: New connection from 172.19.0.14:46242 on port 1883.
+1764362626: New client connected from 172.19.0.14:46242 as pub_sensor-002_497 (p2, c1, k60).
+1764362626: New connection from 172.19.0.15:55250 on port 1883.
+1764362626: New client connected from 172.19.0.15:55250 as pub_sensor-001_c78 (p2, c1, k60).
+1764362626: Client pub_sensor-003_c4e closed its connection.
+1764362626: Client pub_sensor-004_fa8 closed its connection.
+1764362626: Client pub_sensor-005_018 closed its connection.
+1764362626: Client pub_sensor-002_497 closed its connection.
+1764362626: Client pub_sensor-001_c78 closed its connection.
+1764362686: New connection from 172.19.0.11:57018 on port 1883.
+1764362686: New client connected from 172.19.0.11:57018 as pub_sensor-003_6e6 (p2, c1, k60).
+1764362686: New connection from 172.19.0.13:39186 on port 1883.
+1764362686: New connection from 172.19.0.12:57530 on port 1883.
+1764362686: New client connected from 172.19.0.13:39186 as pub_sensor-001_b98 (p2, c1, k60).
+1764362686: New client connected from 172.19.0.12:57530 as pub_sensor-005_2d0 (p2, c1, k60).
+1764362686: New connection from 172.19.0.14:45762 on port 1883.
+1764362686: New client connected from 172.19.0.14:45762 as pub_sensor-004_196 (p2, c1, k60).
+1764362686: New connection from 172.19.0.15:37542 on port 1883.
+1764362686: New client connected from 172.19.0.15:37542 as pub_sensor-002_a53 (p2, c1, k60).
+1764362686: Client pub_sensor-003_6e6 closed its connection.
+1764362686: Client pub_sensor-001_b98 closed its connection.
+1764362686: Client pub_sensor-005_2d0 closed its connection.
+1764362686: Client pub_sensor-004_196 closed its connection.
+1764362686: Client pub_sensor-002_a53 closed its connection.
+1764362746: New connection from 172.19.0.11:47208 on port 1883.
+1764362746: New client connected from 172.19.0.11:47208 as pub_sensor-003_5f1 (p2, c1, k60).
+1764362746: New connection from 172.19.0.12:36958 on port 1883.
+1764362746: New client connected from 172.19.0.12:36958 as pub_sensor-001_cf1 (p2, c1, k60).
+1764362746: New connection from 172.19.0.13:54640 on port 1883.
+1764362746: New connection from 172.19.0.14:49754 on port 1883.
+1764362746: New client connected from 172.19.0.13:54640 as pub_sensor-005_0a2 (p2, c1, k60).
+1764362746: New client connected from 172.19.0.14:49754 as pub_sensor-004_ae3 (p2, c1, k60).
+1764362746: New connection from 172.19.0.15:46004 on port 1883.
+1764362746: New client connected from 172.19.0.15:46004 as pub_sensor-002_458 (p2, c1, k60).
+1764362746: Client pub_sensor-003_5f1 closed its connection.
+1764362746: Client pub_sensor-001_cf1 closed its connection.
+1764362746: Client pub_sensor-004_ae3 closed its connection.
+1764362746: Client pub_sensor-005_0a2 closed its connection.
+1764362746: Client pub_sensor-002_458 closed its connection.
+1764362807: New connection from 172.19.0.11:49200 on port 1883.
+1764362807: New connection from 172.19.0.12:56582 on port 1883.
+1764362807: New client connected from 172.19.0.12:56582 as pub_sensor-004_9fb (p2, c1, k60).
+1764362807: New connection from 172.19.0.13:49178 on port 1883.
+1764362807: New client connected from 172.19.0.13:49178 as pub_sensor-003_4da (p2, c1, k60).
+1764362807: New client connected from 172.19.0.11:49200 as pub_sensor-005_1cd (p2, c1, k60).
+1764362807: New connection from 172.19.0.14:60076 on port 1883.
+1764362807: New client connected from 172.19.0.14:60076 as pub_sensor-001_736 (p2, c1, k60).
+1764362807: New connection from 172.19.0.15:54714 on port 1883.
+1764362807: New client connected from 172.19.0.15:54714 as pub_sensor-002_fec (p2, c1, k60).
+1764362807: Client pub_sensor-004_9fb closed its connection.
+1764362807: Client pub_sensor-005_1cd closed its connection.
+1764362807: Client pub_sensor-003_4da closed its connection.
+1764362807: Client pub_sensor-001_736 closed its connection.
+1764362807: Client pub_sensor-002_fec closed its connection.
+1764362867: New connection from 172.19.0.12:38802 on port 1883.
+1764362867: New client connected from 172.19.0.12:38802 as pub_sensor-005_f6d (p2, c1, k60).
+1764362867: New connection from 172.19.0.13:60274 on port 1883.
+1764362867: New client connected from 172.19.0.13:60274 as pub_sensor-001_9e0 (p2, c1, k60).
+1764362867: New connection from 172.19.0.11:40536 on port 1883.
+1764362867: New client connected from 172.19.0.11:40536 as pub_sensor-004_f6a (p2, c1, k60).
+1764362867: New connection from 172.19.0.14:36948 on port 1883.
+1764362867: New client connected from 172.19.0.14:36948 as pub_sensor-002_585 (p2, c1, k60).
+1764362867: New connection from 172.19.0.15:47684 on port 1883.
+1764362867: New client connected from 172.19.0.15:47684 as pub_sensor-003_ea9 (p2, c1, k60).
+1764362867: Client pub_sensor-005_f6d closed its connection.
+1764362867: Client pub_sensor-001_9e0 closed its connection.
+1764362867: Client pub_sensor-004_f6a closed its connection.
+1764362867: Client pub_sensor-002_585 closed its connection.
+1764362867: Client pub_sensor-003_ea9 closed its connection.
+1764362927: New connection from 172.19.0.11:34580 on port 1883.
+1764362927: New client connected from 172.19.0.11:34580 as pub_sensor-003_f6c (p2, c1, k60).
+1764362927: New connection from 172.19.0.12:48624 on port 1883.
+1764362927: New client connected from 172.19.0.12:48624 as pub_sensor-001_a7a (p2, c1, k60).
+1764362927: New connection from 172.19.0.14:41636 on port 1883.
+1764362927: New client connected from 172.19.0.14:41636 as pub_sensor-002_932 (p2, c1, k60).
+1764362927: New connection from 172.19.0.13:52188 on port 1883.
+1764362927: New connection from 172.19.0.15:59274 on port 1883.
+1764362927: New client connected from 172.19.0.13:52188 as pub_sensor-005_7b7 (p2, c1, k60).
+1764362927: New client connected from 172.19.0.15:59274 as pub_sensor-004_0a4 (p2, c1, k60).
+1764362927: Client pub_sensor-003_f6c closed its connection.
+1764362927: Client pub_sensor-001_a7a closed its connection.
+1764362927: Client pub_sensor-002_932 closed its connection.
+1764362927: Client pub_sensor-005_7b7 closed its connection.
+1764362927: Client pub_sensor-004_0a4 closed its connection.
+1764362934: Client persistence_sub_5fab9d closed its connection.
+1764362934: Client unicast_sensor-001_10d256 closed its connection.
+1764362934: Client mqttjs_275ba75e closed its connection.
+1764362934: Client mqttjs_1256b3a5 closed its connection.
+1764362934: Client mqttjs_d55a26c5 closed its connection.
+1764362934: Client time_server_01 closed its connection.
+1764362934: mosquitto version 2.0.22 terminating
+1764362934: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764362934: Client titan_ops_560ba6 closed its connection.
+1764362953: mosquitto version 2.0.22 starting
+1764362953: Config loaded from /mosquitto/config/mosquitto.conf.
+1764362953: Opening ipv4 listen socket on port 1883.
+1764362953: Opening ipv6 listen socket on port 1883.
+1764362953: Opening websockets listen socket on port 9001.
+1764362953: mosquitto version 2.0.22 running
+1764362953: New connection from 172.19.0.6:58320 on port 1883.
+1764362953: New client connected from 172.19.0.6:58320 as mqttjs_4ddf503d (p2, c1, k60).
+1764362953: New connection from 172.19.0.7:39478 on port 1883.
+1764362953: New connection from 172.19.0.5:33290 on port 1883.
+1764362953: New client connected from 172.19.0.7:39478 as mqttjs_73d5f8f7 (p2, c1, k60).
+1764362953: New client connected from 172.19.0.5:33290 as time_server_01 (p2, c1, k60).
+1764362953: New connection from 172.19.0.4:44986 on port 1883.
+1764362953: New connection from 172.19.0.8:48942 on port 1883.
+1764362953: New client connected from 172.19.0.4:44986 as mqttjs_4b572132 (p2, c1, k60).
+1764362953: New client connected from 172.19.0.8:48942 as unicast_sensor-001_7916f0 (p2, c1, k60).
+1764362953: New connection from 172.19.0.10:53342 on port 1883.
+1764362953: New client connected from 172.19.0.10:53342 as persistence_sub_7798c3 (p2, c1, k60).
+1764362953: New connection from 172.19.0.11:47016 on port 1883.
+1764362953: New client connected from 172.19.0.11:47016 as pub_sensor-001_0fe (p2, c1, k60).
+1764362953: New connection from 172.19.0.12:60026 on port 1883.
+1764362953: New connection from 172.19.0.13:54014 on port 1883.
+1764362953: New client connected from 172.19.0.13:54014 as pub_sensor-005_f0c (p2, c1, k60).
+1764362953: New client connected from 172.19.0.12:60026 as pub_sensor-004_8fd (p2, c1, k60).
+1764362953: New connection from 172.19.0.14:47436 on port 1883.
+1764362953: New client connected from 172.19.0.14:47436 as pub_sensor-002_20a (p2, c1, k60).
+1764362953: New connection from 172.19.0.15:48630 on port 1883.
+1764362953: New client connected from 172.19.0.15:48630 as pub_sensor-003_a0f (p2, c1, k60).
+1764362955: New client connected from ::ffff:192.168.65.1:28719 as titan_ops_560ba6 (p2, c1, k60).
+1764362995: Client titan_ops_560ba6 closed its connection.
+1764363001: New client connected from ::ffff:192.168.65.1:30339 as titan_ops_7d3a98 (p2, c1, k60).
+1764363003: Client titan_ops_7d3a98 closed its connection.
+1764363003: New client connected from ::ffff:192.168.65.1:53494 as titan_ops_1a2b04 (p2, c1, k60).
+1764363011: Client titan_ops_1a2b04 closed its connection.
+1764363011: New client connected from ::ffff:192.168.65.1:18310 as titan_ops_3a5301 (p2, c1, k60).
+1764363297: New client connected from ::ffff:192.168.65.1:33321 as titan_ops_26f2c4 (p2, c1, k60).
+1764363303: Client titan_ops_26f2c4 closed its connection.
+1764363303: New client connected from ::ffff:192.168.65.1:18575 as titan_ops_b8e526 (p2, c1, k60).
+1764363317: New client connected from ::ffff:192.168.65.1:40399 as titan_ops_2f068d (p2, c1, k60).
+1764363319: Client titan_ops_2f068d closed its connection.
+1764363319: New client connected from ::ffff:192.168.65.1:32953 as titan_ops_8ff7c6 (p2, c1, k60).
+1764363319: Client titan_ops_8ff7c6 closed its connection.
+1764363319: Client <unknown> closed its connection.
+1764363319: New client connected from ::ffff:192.168.65.1:58100 as titan_ops_d7d305 (p2, c1, k60).
+1764363319: Client titan_ops_d7d305 closed its connection.
+1764363319: New client connected from ::ffff:192.168.65.1:65282 as titan_ops_8c8c8f (p2, c1, k60).
+1764363319: Client titan_ops_8c8c8f closed its connection.
+1764363320: New client connected from ::ffff:192.168.65.1:36973 as titan_ops_a5b546 (p2, c1, k60).
+1764363320: Client titan_ops_a5b546 closed its connection.
+1764363320: New client connected from ::ffff:192.168.65.1:23257 as titan_ops_596640 (p2, c1, k60).
+1764363320: Client titan_ops_596640 closed its connection.
+1764363320: New client connected from ::ffff:192.168.65.1:48528 as titan_ops_12bf64 (p2, c1, k60).
+1764363320: Client titan_ops_12bf64 closed its connection.
+1764363320: New client connected from ::ffff:192.168.65.1:52213 as titan_ops_efe031 (p2, c1, k60).
+1764363320: Client titan_ops_efe031 closed its connection.
+1764363321: New client connected from ::ffff:192.168.65.1:37483 as titan_ops_cac426 (p2, c1, k60).
+1764363321: Client titan_ops_cac426 closed its connection.
+1764363321: New client connected from ::ffff:192.168.65.1:48938 as titan_ops_b2c6e4 (p2, c1, k60).
+1764363321: Client titan_ops_b2c6e4 closed its connection.
+1764363321: Client <unknown> closed its connection.
+1764363321: New client connected from ::ffff:192.168.65.1:35664 as titan_ops_451183 (p2, c1, k60).
+1764363727: Client titan_ops_b8e526 closed its connection.
+1764363727: New client connected from ::ffff:192.168.65.1:19872 as titan_ops_f15ca9 (p2, c1, k60).
+1764363748: Client titan_ops_3a5301 closed its connection.
+1764363749: New client connected from ::ffff:192.168.65.1:35296 as titan_ops_399427 (p2, c1, k60).
+1764363752: Client titan_ops_399427 closed its connection.
+1764363752: New client connected from ::ffff:192.168.65.1:17649 as titan_ops_05eae0 (p2, c1, k60).
+1764363753: Client titan_ops_05eae0 closed its connection.
+1764363753: New client connected from ::ffff:192.168.65.1:31100 as titan_ops_a3568d (p2, c1, k60).
+1764363753: Client titan_ops_a3568d closed its connection.
+1764363753: New client connected from ::ffff:192.168.65.1:17660 as titan_ops_25be61 (p2, c1, k60).
+1764363754: Client titan_ops_25be61 closed its connection.
+1764363754: New client connected from ::ffff:192.168.65.1:55762 as titan_ops_0985d1 (p2, c1, k60).
+1764363756: Client titan_ops_0985d1 closed its connection.
+1764363756: New client connected from ::ffff:192.168.65.1:20315 as titan_ops_ebdd55 (p2, c1, k60).
+1764363765: Client titan_ops_ebdd55 closed its connection.
+1764363769: New client connected from ::ffff:192.168.65.1:16029 as titan_ops_4e0028 (p2, c1, k60).
+1764363895: Client titan_ops_f15ca9 closed its connection.
+1764363895: Client <unknown> closed its connection.
+1764363895: New client connected from ::ffff:192.168.65.1:20772 as titan_ops_da00fe (p2, c1, k60).
+1764363895: Client titan_ops_da00fe closed its connection.
+1764363895: Client <unknown> closed its connection.
+1764363895: New client connected from ::ffff:192.168.65.1:50086 as titan_ops_c5208f (p2, c1, k60).
+1764363896: Client titan_ops_c5208f closed its connection.
+1764363896: Client <unknown> closed its connection.
+1764363896: New client connected from ::ffff:192.168.65.1:45495 as titan_ops_23e938 (p2, c1, k60).
+1764363896: Client titan_ops_23e938 closed its connection.
+1764363896: New client connected from ::ffff:192.168.65.1:57377 as titan_ops_e6d44a (p2, c1, k60).
+1764363896: Client titan_ops_e6d44a closed its connection.
+1764363896: Client <unknown> closed its connection.
+1764363896: New client connected from ::ffff:192.168.65.1:45568 as titan_ops_33ee19 (p2, c1, k60).
+1764363896: Client titan_ops_33ee19 closed its connection.
+1764363897: New client connected from ::ffff:192.168.65.1:54798 as titan_ops_e5dc8b (p2, c1, k60).
+1764363897: Client titan_ops_e5dc8b closed its connection.
+1764363897: New client connected from ::ffff:192.168.65.1:26367 as titan_ops_0dd960 (p2, c1, k60).
+1764363897: Client titan_ops_0dd960 closed its connection.
+1764363897: New client connected from ::ffff:192.168.65.1:31797 as titan_ops_26f0b6 (p2, c1, k60).
+1764363897: Client titan_ops_26f0b6 closed its connection.
+1764363897: New client connected from ::ffff:192.168.65.1:64599 as titan_ops_3109c1 (p2, c1, k60).
+1764363897: Client titan_ops_3109c1 closed its connection.
+1764363897: Client <unknown> closed its connection.
+1764363897: New client connected from ::ffff:192.168.65.1:55251 as titan_ops_d74dae (p2, c1, k60).
+1764363898: Client titan_ops_d74dae closed its connection.
+1764363898: New client connected from ::ffff:192.168.65.1:52066 as titan_ops_c1c314 (p2, c1, k60).
+1764363898: Client titan_ops_c1c314 closed its connection.
+1764363898: Client <unknown> closed its connection.
+1764363898: New client connected from ::ffff:192.168.65.1:56099 as titan_ops_56c2b5 (p2, c1, k60).
+1764363898: Client titan_ops_56c2b5 closed its connection.
+1764363898: Client <unknown> closed its connection.
+1764363898: New client connected from ::ffff:192.168.65.1:44921 as titan_ops_be8fea (p2, c1, k60).
+1764363911: Client titan_ops_451183 closed its connection.
+1764363912: New client connected from ::ffff:192.168.65.1:25328 as titan_ops_e0aaaf (p2, c1, k60).
+1764363912: Client titan_ops_e0aaaf closed its connection.
+1764363912: New client connected from ::ffff:192.168.65.1:43558 as titan_ops_aa64a1 (p2, c1, k60).
+1764364228: Client pub_sensor-003_a0f closed its connection.
+1764364228: Client mqttjs_73d5f8f7 closed its connection.
+1764364228: Client persistence_sub_7798c3 closed its connection.
+1764364228: Client unicast_sensor-001_7916f0 closed its connection.
+1764364228: Client mqttjs_4b572132 closed its connection.
+1764364228: Client pub_sensor-004_8fd closed its connection.
+1764364228: Client pub_sensor-001_0fe closed its connection.
+1764364228: Client pub_sensor-005_f0c closed its connection.
+1764364228: Client mqttjs_4ddf503d closed its connection.
+1764364228: Client pub_sensor-002_20a closed its connection.
+1764364229: Client time_server_01 closed its connection.
+1764364229: mosquitto version 2.0.22 terminating
+1764364229: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764364229: Client titan_ops_aa64a1 closed its connection.
+1764364229: Client titan_ops_be8fea closed its connection.
+1764364229: Client titan_ops_4e0028 closed its connection.
+1764375818: mosquitto version 2.0.22 starting
+1764375818: Config loaded from /mosquitto/config/mosquitto.conf.
+1764375818: Opening ipv4 listen socket on port 1883.
+1764375818: Opening ipv6 listen socket on port 1883.
+1764375818: Opening websockets listen socket on port 9001.
+1764375818: mosquitto version 2.0.22 running
+1764375818: New connection from 172.19.0.4:44306 on port 1883.
+1764375818: New client connected from 172.19.0.4:44306 as mqttjs_6cded96f (p2, c1, k60).
+1764375818: New connection from 172.19.0.5:48984 on port 1883.
+1764375818: New client connected from 172.19.0.5:48984 as time_server_01 (p2, c1, k60).
+1764375818: New connection from 172.19.0.8:53928 on port 1883.
+1764375818: New connection from 172.19.0.6:52658 on port 1883.
+1764375818: New client connected from 172.19.0.8:53928 as unicast_sensor-001_f9db1e (p2, c1, k60).
+1764375818: New connection from 172.19.0.7:39672 on port 1883.
+1764375818: New client connected from 172.19.0.6:52658 as mqttjs_4d314876 (p2, c1, k60).
+1764375818: New client connected from 172.19.0.7:39672 as mqttjs_88c1fbce (p2, c1, k60).
+1764375818: New connection from 172.19.0.10:57634 on port 1883.
+1764375818: New client connected from 172.19.0.10:57634 as persistence_sub_efa5ce (p2, c1, k60).
+1764375818: New connection from 172.19.0.11:52290 on port 1883.
+1764375818: New client connected from 172.19.0.11:52290 as pub_sensor-002_42d (p2, c1, k60).
+1764375818: New connection from 172.19.0.13:36174 on port 1883.
+1764375818: New connection from 172.19.0.12:37246 on port 1883.
+1764375818: New client connected from 172.19.0.13:36174 as pub_sensor-001_c2c (p2, c1, k60).
+1764375818: New client connected from 172.19.0.12:37246 as pub_sensor-004_fa8 (p2, c1, k60).
+1764375818: New connection from 172.19.0.14:34452 on port 1883.
+1764375818: New client connected from 172.19.0.14:34452 as pub_sensor-003_c63 (p2, c1, k60).
+1764375818: New connection from 172.19.0.15:42242 on port 1883.
+1764375818: New client connected from 172.19.0.15:42242 as pub_sensor-005_403 (p2, c1, k60).
+1764375819: New client connected from ::ffff:192.168.65.1:31766 as titan_ops_4e0028 (p2, c1, k60).
+1764375824: New client connected from ::ffff:192.168.65.1:43161 as titan_ops_be8fea (p2, c1, k60).
+1764375827: Client titan_ops_4e0028 closed its connection.
+1764375839: New client connected from ::ffff:192.168.65.1:43180 as titan_ops_d86269 (p2, c1, k60).
+1764377618: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764377788: Client titan_ops_be8fea closed its connection.
+1764377790: New client connected from ::ffff:192.168.65.1:26892 as titan_ops_be8fea (p2, c1, k60).
+1764379966: Client titan_ops_d86269 closed its connection.
+1764379966: New client connected from ::ffff:192.168.65.1:60855 as titan_ops_d6dbf4 (p2, c1, k60).
+1764379968: Client titan_ops_d6dbf4 closed its connection.
+1764379968: New client connected from ::ffff:192.168.65.1:45897 as titan_ops_cd1332 (p2, c1, k60).
+1764380544: Client titan_ops_cd1332 closed its connection.
+1764380893: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764382694: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764384115: New client connected from ::ffff:192.168.65.1:54381 as titan_ops_cd1332 (p2, c1, k60).
+1764384495: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764386296: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764386518: Client titan_ops_be8fea closed its connection.
+1764386520: New client connected from ::ffff:192.168.65.1:58200 as titan_ops_be8fea (p2, c1, k60).
+1764404754: Client titan_ops_be8fea closed its connection.
+1764416088: New client connected from ::ffff:192.168.65.1:43046 as titan_ops_be8fea (p2, c1, k60).
+1764416545: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764418023: Client titan_ops_cd1332 closed its connection.
+1764418187: New client connected from ::ffff:192.168.65.1:57972 as titan_ops_cd1332 (p2, c1, k60).
+1764418346: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764419750: Client titan_ops_be8fea closed its connection.
+1764419753: New client connected from ::ffff:192.168.65.1:24463 as titan_ops_be8fea (p2, c1, k60).
+1764420663: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764422438: Client titan_ops_cd1332 closed its connection.
+1764422464: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764422488: New client connected from ::ffff:192.168.65.1:22785 as titan_ops_7a4151 (p2, c1, k60).
+1764424265: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764426066: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764427867: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764429668: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764430963: Client persistence_sub_efa5ce closed its connection.
+1764430963: Client mqttjs_4d314876 closed its connection.
+1764430963: Client unicast_sensor-001_f9db1e closed its connection.
+1764430963: Client pub_sensor-005_403 closed its connection.
+1764430963: Client mqttjs_88c1fbce closed its connection.
+1764430963: Client pub_sensor-004_fa8 closed its connection.
+1764430963: Client mqttjs_6cded96f closed its connection.
+1764430963: Client pub_sensor-003_c63 closed its connection.
+1764430963: Client pub_sensor-002_42d closed its connection.
+1764430963: Client pub_sensor-001_c2c closed its connection.
+1764430965: Client time_server_01 closed its connection.
+1764430965: mosquitto version 2.0.22 terminating
+1764430965: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1764430965: Client titan_ops_7a4151 closed its connection.
+1764430965: Client titan_ops_be8fea closed its connection.
+1765387071: mosquitto version 2.0.22 starting
+1765387071: Config loaded from /mosquitto/config/mosquitto.conf.
+1765387071: Opening ipv4 listen socket on port 1883.
+1765387071: Opening ipv6 listen socket on port 1883.
+1765387071: Opening websockets listen socket on port 9001.
+1765387071: mosquitto version 2.0.22 running
+1765387071: New connection from 172.19.0.4:43792 on port 1883.
+1765387071: New client connected from 172.19.0.4:43792 as unicast_sensor-001_5c637d (p2, c1, k60).
+1765387071: New connection from 172.19.0.5:40702 on port 1883.
+1765387071: New client connected from 172.19.0.5:40702 as mqttjs_f539f4a3 (p2, c1, k60).
+1765387071: New connection from 172.19.0.8:43158 on port 1883.
+1765387071: New client connected from 172.19.0.8:43158 as mqttjs_d71d577c (p2, c1, k60).
+1765387071: New connection from 172.19.0.7:47050 on port 1883.
+1765387071: New client connected from 172.19.0.7:47050 as mqttjs_813e1733 (p2, c1, k60).
+1765387071: New connection from 172.19.0.10:57052 on port 1883.
+1765387071: New client connected from 172.19.0.10:57052 as time_server_01 (p2, c1, k60).
+1765387071: New connection from 172.19.0.9:45562 on port 1883.
+1765387071: New client connected from 172.19.0.9:45562 as persistence_sub_88e41f (p2, c1, k60).
+1765387071: New connection from 172.19.0.11:51512 on port 1883.
+1765387071: New client connected from 172.19.0.11:51512 as pub_sensor-003_803 (p2, c1, k60).
+1765387071: New connection from 172.19.0.13:57108 on port 1883.
+1765387071: New connection from 172.19.0.12:49350 on port 1883.
+1765387071: New client connected from 172.19.0.12:49350 as pub_sensor-005_8e6 (p2, c1, k60).
+1765387071: New client connected from 172.19.0.13:57108 as pub_sensor-001_c96 (p2, c1, k60).
+1765387071: New connection from 172.19.0.14:43516 on port 1883.
+1765387071: New client connected from 172.19.0.14:43516 as pub_sensor-004_99c (p2, c1, k60).
+1765387071: New connection from 172.19.0.15:37256 on port 1883.
+1765387071: New client connected from 172.19.0.15:37256 as pub_sensor-002_3f4 (p2, c1, k60).
+1765387102: New client connected from ::ffff:192.168.65.1:30287 as titan_ops_4a2680 (p2, c1, k60).
+1765387193: Client titan_ops_4a2680 closed its connection.
+1765387206: New client connected from ::ffff:192.168.65.1:64561 as titan_ops_358566 (p2, c1, k60).
+1765387829: Client titan_ops_358566 closed its connection.
+1765387830: New client connected from ::ffff:192.168.65.1:58721 as titan_ops_41cc14 (p2, c1, k60).
+1765388871: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765388968: Client titan_ops_41cc14 closed its connection.
+1765388968: New client connected from ::ffff:192.168.65.1:58273 as utp_ops_8fb8d9 (p2, c1, k60).
+1765388999: Client pub_sensor-004_99c closed its connection.
+1765388999: Client persistence_sub_88e41f closed its connection.
+1765388999: Client mqttjs_d71d577c closed its connection.
+1765388999: Client pub_sensor-003_803 closed its connection.
+1765388999: Client pub_sensor-001_c96 closed its connection.
+1765388999: Client pub_sensor-002_3f4 closed its connection.
+1765388999: Client unicast_sensor-001_5c637d closed its connection.
+1765388999: Client pub_sensor-005_8e6 closed its connection.
+1765388999: Client mqttjs_813e1733 closed its connection.
+1765388999: Client mqttjs_f539f4a3 closed its connection.
+1765389001: Client time_server_01 closed its connection.
+1765389001: mosquitto version 2.0.22 terminating
+1765389001: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765389001: Client utp_ops_8fb8d9 closed its connection.
+1765389024: mosquitto version 2.0.22 starting
+1765389024: Config loaded from /mosquitto/config/mosquitto.conf.
+1765389024: Opening ipv4 listen socket on port 1883.
+1765389024: Opening ipv6 listen socket on port 1883.
+1765389024: Opening websockets listen socket on port 9001.
+1765389024: mosquitto version 2.0.22 running
+1765389024: New connection from 172.19.0.5:42118 on port 1883.
+1765389024: New connection from 172.19.0.4:35088 on port 1883.
+1765389024: New client connected from 172.19.0.4:35088 as mqttjs_03ade1ae (p2, c1, k60).
+1765389024: New connection from 172.19.0.7:37168 on port 1883.
+1765389024: New client connected from 172.19.0.7:37168 as unicast_sensor-001_ec0d01 (p2, c1, k60).
+1765389024: New client connected from 172.19.0.5:42118 as time_server_01 (p2, c1, k60).
+1765389024: New connection from 172.19.0.6:39528 on port 1883.
+1765389024: New client connected from 172.19.0.6:39528 as mqttjs_1e2faddb (p2, c1, k60).
+1765389024: New connection from 172.19.0.9:51094 on port 1883.
+1765389024: New client connected from 172.19.0.9:51094 as persistence_sub_d4cd91 (p2, c1, k60).
+1765389024: New connection from 172.19.0.10:55212 on port 1883.
+1765389024: New client connected from 172.19.0.10:55212 as mqttjs_1863bc40 (p2, c1, k60).
+1765389024: New connection from 172.19.0.11:58912 on port 1883.
+1765389024: New client connected from 172.19.0.11:58912 as pub_sensor-001_57b (p2, c1, k60).
+1765389024: New connection from 172.19.0.13:55646 on port 1883.
+1765389024: New client connected from 172.19.0.13:55646 as pub_sensor-003_b99 (p2, c1, k60).
+1765389024: New connection from 172.19.0.12:40292 on port 1883.
+1765389024: New client connected from 172.19.0.12:40292 as pub_sensor-002_d64 (p2, c1, k60).
+1765389024: New connection from 172.19.0.14:44782 on port 1883.
+1765389024: New client connected from 172.19.0.14:44782 as pub_sensor-005_8ec (p2, c1, k60).
+1765389024: New connection from 172.19.0.15:55154 on port 1883.
+1765389024: New client connected from 172.19.0.15:55154 as pub_sensor-004_85d (p2, c1, k60).
+1765389053: New client connected from ::ffff:192.168.65.1:55515 as utp_ops_81f52c (p2, c1, k60).
+1765389337: Client utp_ops_81f52c closed its connection.
+1765389337: New client connected from ::ffff:192.168.65.1:55916 as utp_ops_e0dfc8 (p2, c1, k60).

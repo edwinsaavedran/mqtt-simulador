@@ -1,285 +1,356 @@
-// --- Configuración ---
+// --- CONFIGURACIÓN ---
 const MQTT_BROKER_URL = "ws://localhost:9001";
-const CLIENT_ID = `titan_monitor_${Math.random().toString(16).slice(2, 8)}`;
+const CLIENT_ID = `utp_ops_${Math.random().toString(16).slice(2, 8)}`;
 
-// --- Estado Global ---
+// --- ESTADO GLOBAL ---
 let client;
 let currentLeader = null;
-const devices = {}; // Almacén de datos de sensores
-let network; // Instancia de Vis.js
-let nodesDataSet, edgesDataSet; // DataSets de Vis.js
+const devices = {};
+let network;
+let nodesDataSet, edgesDataSet;
+const packets = [];
+let selectedNodeId = null;
 
 // ============================================================================
-// 1. INICIALIZACIÓN VISUAL (MAPA DE RED)
+// 1. INICIALIZACIÓN DE LA INTERFAZ (VIS.JS)
 // ============================================================================
 function initNetworkGraph() {
-  const container = document.getElementById("network-viz");
+  const container = document.getElementById('network-viz');
+  if (!container) return;
 
-  // Definición Inicial de Nodos (Estática por ahora, se podría hacer dinámica)
-  const nodesArray = [
-    {
-      id: "broker",
-      label: "MQTT Broker",
-      shape: "hexagon",
-      color: "#fff",
-      size: 40,
-      font: { color: "#000" },
-    },
-    { id: "sensor-001", label: "S1\n(10)", shape: "dot", color: "#238636" },
-    { id: "sensor-002", label: "S2\n(20)", shape: "dot", color: "#238636" },
-    { id: "sensor-003", label: "S3\n(30)", shape: "dot", color: "#238636" },
-    { id: "sensor-004", label: "S4\n(40)", shape: "dot", color: "#238636" },
-    { id: "sensor-005", label: "S5\n(50)", shape: "dot", color: "#238636" },
-  ];
-
-  const edgesArray = [
-    { id: "e1", from: "sensor-001", to: "broker" },
-    { id: "e2", from: "sensor-002", to: "broker" },
-    { id: "e3", from: "sensor-003", to: "broker" },
-    { id: "e4", from: "sensor-004", to: "broker" },
-    { id: "e5", from: "sensor-005", to: "broker" },
-  ];
-
-  nodesDataSet = new vis.DataSet(nodesArray);
-  edgesDataSet = new vis.DataSet(edgesArray);
+  nodesDataSet = new vis.DataSet([
+    { id: 'broker', label: 'MQTT\nBroker', shape: 'hexagon', color: '#fff', size: 40, font: { size: 16, color: 'black' } }
+  ]);
+  edgesDataSet = new vis.DataSet([]);
 
   const data = { nodes: nodesDataSet, edges: edgesDataSet };
   const options = {
-    physics: { stabilization: true, barnesHut: { springLength: 150 } },
+    physics: {
+      stabilization: false,
+      barnesHut: { gravitationalConstant: -2000, springConstant: 0.04, springLength: 150 }
+    },
     nodes: {
-      font: { color: "#ffffff", face: "JetBrains Mono", size: 14 },
+      font: { color: '#c9d1d9', face: 'JetBrains Mono' },
       borderWidth: 2,
+      shadow: true
     },
     edges: {
-      color: "#30363d",
       width: 2,
-      smooth: { type: "continuous" },
+      color: { color: '#30363d' },
+      smooth: { type: 'continuous' }
     },
-    interaction: { hover: true },
+    interaction: { hover: true }
   };
 
   network = new vis.Network(container, data, options);
+
+  // EVENTO DE CLIC: Seleccionar Nodo
+  network.on("click", function (params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      if (nodeId !== 'broker') {
+        openControlPanel(nodeId);
+      }
+    } else {
+      closeControlPanel();
+    }
+  });
+
+  // MOTOR DE PARTÍCULAS (ANIMACIÓN)
+  network.on("afterDrawing", (ctx) => {
+    const now = Date.now();
+    for (let i = packets.length - 1; i >= 0; i--) {
+      const p = packets[i];
+      const progress = (now - p.startTime) / p.duration;
+
+      if (progress >= 1) {
+        packets.splice(i, 1);
+        continue;
+      }
+
+      const posFrom = network.getPositions([p.from])[p.from];
+      const posTo = network.getPositions([p.to])[p.to];
+
+      if (posFrom && posTo) {
+        const x = posFrom.x + (posTo.x - posFrom.x) * progress;
+        const y = posFrom.y + (posTo.y - posFrom.y) * progress;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI, false);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+    if (packets.length > 0) {
+      network.redraw(); // CORRECCIÓN CRÍTICA APLICADA
+    }
+  });
 }
 
 // ============================================================================
-// 2. LÓGICA DE CONEXIÓN MQTT
+// 2. LÓGICA MQTT
 // ============================================================================
 function connectToMqtt() {
-  logEvent("SYSTEM", `Conectando a ${MQTT_BROKER_URL}...`);
+  logEvent('SYSTEM', `Conectando al Satélite ${MQTT_BROKER_URL}...`);
 
   client = mqtt.connect(MQTT_BROKER_URL, {
     clientId: CLIENT_ID,
     clean: true,
-    reconnectPeriod: 5000,
+    reconnectPeriod: 5000
   });
 
-  client.on("connect", () => {
-    document.getElementById("connection-status").innerText = "ONLINE";
-    document.getElementById("connection-status").style.backgroundColor =
-      "#238636"; // Green
-    logEvent("SYSTEM", " Conectado al Broker MQTT");
-
-    // Suscripciones
-    client.subscribe("utp/sistemas_distribuidos/grupo1/election/coordinator");
-    client.subscribe("utp/sistemas_distribuidos/grupo1/mutex/status");
-    client.subscribe("utp/sistemas_distribuidos/grupo1/+/telemetry");
-    client.subscribe("utp/sistemas_distribuidos/grupo1/election/lease");
+  client.on('connect', () => {
+    updateStatus(true);
+    logEvent('SYSTEM', 'Enlace MQTT Establecido');
+    client.subscribe('utp/sistemas_distribuidos/grupo1/#');
   });
 
-  client.on("message", (topic, message) => {
+  client.on('message', (topic, message) => {
     try {
       const payload = JSON.parse(message.toString());
+      const sensorId = payload.deviceId || payload.coordinatorId || payload.candidateId;
 
-      // A. Mensajes de Telemetría (Actualización frecuente)
-      if (topic.includes("/telemetry")) {
+      // 1. Auto-Descubrimiento
+      if (sensorId && sensorId !== 'broker' && !nodesDataSet.get(sensorId)) {
+        spawnNode(sensorId, payload.priority);
+      }
+
+      // 2. Animación
+      if (sensorId && sensorId !== 'broker') {
+        let color = '#238636';
+        if (topic.includes('election')) color = '#58a6ff';
+        if (topic.includes('mutex')) color = '#d29922';
+        spawnPacket(sensorId, 'broker', color);
+      }
+
+      // 3. Procesamiento de Datos
+      if (topic.includes('/telemetry')) {
         handleTelemetry(payload);
-      }
-      // B. Mensajes de Coordinador (Cambio de Líder)
-      else if (topic.includes("election/coordinator")) {
+      } else if (topic.includes('election/coordinator')) {
         handleLeaderChange(payload);
-      }
-      // C. Mensajes de Mutex (Cola)
-      else if (topic.includes("mutex/status")) {
+      } else if (topic.includes('mutex/status')) {
         updateVisualQueue(payload.queue, payload.holder);
+      } else if (topic.includes('/status')) {
+        if (payload.status === 'offline' && payload.deviceId) {
+          handleNodeDeath(payload.deviceId);
+        } else if (payload.status === 'online' && payload.deviceId) {
+          handleNodeRevival(payload.deviceId);
+        }
       }
-    } catch (e) {
-      console.error("Error parseando mensaje:", e);
-    }
+
+    } catch (e) { }
   });
 
-  client.on("offline", () => {
-    document.getElementById("connection-status").innerText = "OFFLINE";
-    document.getElementById("connection-status").style.backgroundColor =
-      "#da3633"; // Red
-  });
+  client.on('offline', () => updateStatus(false));
+  client.on('error', (err) => console.error('MQTT Error:', err));
 }
 
 // ============================================================================
-// 3. MANEJADORES DE EVENTOS
+// 3. FUNCIONES INTERACTIVAS (CONTROL PANEL)
 // ============================================================================
+
+function openControlPanel(nodeId) {
+  selectedNodeId = nodeId;
+  const panel = document.getElementById('node-control-panel');
+  if (!panel) return;
+
+  document.getElementById('cp-title').innerText = nodeId;
+  document.getElementById('cp-role').innerText = (nodeId === currentLeader) ? '[*] LÍDER' : 'SEGUIDOR';
+
+  const lastData = devices[nodeId];
+  let isDead = true;
+  if (lastData && (Date.now() - new Date(lastData.timestamp).getTime() < 6000)) {
+    isDead = false;
+  }
+  if (lastData && lastData.status === 'offline') isDead = true;
+
+  updatePanelButtons(isDead ? 'OFFLINE' : 'ONLINE');
+  panel.classList.remove('hidden');
+}
+
+function closeControlPanel() {
+  const panel = document.getElementById('node-control-panel');
+  if (panel) panel.classList.add('hidden');
+  selectedNodeId = null;
+}
+
+function updatePanelButtons(status) {
+  const statusEl = document.getElementById('cp-status');
+  const btnKill = document.getElementById('btn-kill');
+  const btnRevive = document.getElementById('btn-revive');
+
+  statusEl.innerText = status;
+  statusEl.style.color = (status === 'ONLINE') ? '#238636' : '#da3633';
+
+  btnKill.disabled = (status === 'OFFLINE');
+  btnRevive.disabled = (status === 'ONLINE');
+
+  btnKill.style.opacity = (status === 'OFFLINE') ? '0.5' : '1';
+  btnRevive.style.opacity = (status === 'ONLINE') ? '0.5' : '1';
+}
+
+function sendChaos(action) {
+  if (!selectedNodeId) return;
+
+  const topic = 'utp/sistemas_distribuidos/grupo1/chaos/control';
+  const payload = JSON.stringify({
+    targetId: selectedNodeId,
+    action: action
+  });
+
+  client.publish(topic, payload);
+  logEvent('CHAOS', `Comando ${action} enviado a ${selectedNodeId}`);
+
+  // Feedback Optimista
+  if (action === 'KILL') {
+    updatePanelButtons('OFFLINE');
+    nodesDataSet.update({ id: selectedNodeId, color: '#333333' });
+  } else {
+    updatePanelButtons('ONLINE');
+  }
+}
+
+// ============================================================================
+// 4. FUNCIONES VISUALES BASE
+// ============================================================================
+
+function updateStatus(isOnline) {
+  const el = document.getElementById('connection-status');
+  if (el) {
+    el.innerText = isOnline ? 'ONLINE' : 'OFFLINE';
+    el.className = isOnline ? 'status-online' : 'status-offline';
+  }
+}
+
+function spawnNode(id, priority) {
+  if (nodesDataSet.get(id)) return;
+  logEvent('DISCOVERY', `Nuevo nodo: ${id}`);
+  nodesDataSet.add({
+    id: id,
+    label: `${id}\n(P:${priority || '?'})`,
+    shape: 'dot',
+    color: '#238636',
+    size: 25
+  });
+  edgesDataSet.add({ from: id, to: 'broker' });
+}
+
+function spawnPacket(from, to, color) {
+  packets.push({ from, to, startTime: Date.now(), duration: 400, color });
+  network.redraw();
+}
 
 function handleTelemetry(data) {
   const id = data.deviceId;
-
-  // 1. Actualizar Datos en Memoria
   devices[id] = data;
-
-  // 2. Actualizar Tarjeta Visual (Nivel Operativo)
   updateSensorCard(id, data);
+}
 
-  // 3. Animar Grafo (Nivel Estratégico)
-  triggerTrafficAnimation(id);
+function handleNodeDeath(id) {
+  if (nodesDataSet.get(id)) {
+    nodesDataSet.update({ id: id, color: '#333333' });
+    logEvent('ALERT', `Nodo ${id} reporta OFFLINE`);
+  }
+}
+
+function handleNodeRevival(id) {
+  if (nodesDataSet.get(id)) {
+    nodesDataSet.update({ id: id, color: '#238636' });
+    logEvent('INFO', `Nodo ${id} ha revivido`);
+  }
 }
 
 function handleLeaderChange(payload) {
   const newLeader = payload.coordinatorId;
   if (currentLeader !== newLeader) {
-    logEvent(
-      "ELECTION",
-      ` NUEVO LÍDER: ${newLeader} (Prio: ${payload.priority})`,
-    );
+    logEvent('ELECTION', `[*] Consenso: ${newLeader} es el LÍDER.`);
     currentLeader = newLeader;
 
-    // Actualizar Colores en Grafo
-    const updates = nodesDataSet.get().map((node) => {
-      if (node.id === "broker") return node;
-      const isLeader = node.id === newLeader;
+    const allNodes = nodesDataSet.getIds();
+    const updates = allNodes.map(nodeId => {
+      if (nodeId === 'broker') return null;
+      const isLeader = (nodeId === newLeader);
       return {
-        id: node.id,
-        color: isLeader ? "#d29922" : "#238636", // Gold vs Green
-        borderWidth: isLeader ? 4 : 2,
-        size: isLeader ? 35 : 25,
-        label: isLeader
-          ? node.label.replace("", "") + "\n"
-          : node.label.replace("\n", ""), // Hack simple para label
+        id: nodeId,
+        color: isLeader ? '#d29922' : '#238636',
+        size: isLeader ? 40 : 25,
+        borderWidth: isLeader ? 4 : 2
       };
-    });
+    }).filter(n => n);
     nodesDataSet.update(updates);
 
-    // Actualizar Borde en Tarjetas
-    document.querySelectorAll(".sensor-card").forEach((card) => {
-      card.classList.remove("leader");
-    });
-    const card = document.getElementById(`card-${newLeader}`);
-    if (card) card.classList.add("leader");
+    document.querySelectorAll('.sensor-card').forEach(c => c.classList.remove('leader'));
+    const leaderCard = document.getElementById(`card-${newLeader}`);
+    if (leaderCard) leaderCard.classList.add('leader');
   }
 }
-
-function triggerTrafficAnimation(sensorId) {
-  // Buscar el edge conectado a este sensor (asumimos ID sensor -> ID edge simple)
-  // En nuestra config estática: 'sensor-001' -> edge index 0? No, busquemos por 'from'
-  const edges = edgesDataSet.get({ filter: (item) => item.from === sensorId });
-  if (edges.length > 0) {
-    const edge = edges[0];
-
-    // Efecto "Flash" en el enlace
-    edgesDataSet.update({ id: edge.id, color: "#58a6ff", width: 5 }); // Azul brillante
-
-    setTimeout(() => {
-      edgesDataSet.update({ id: edge.id, color: "#30363d", width: 2 }); // Restaurar
-    }, 150);
-  }
-}
-
-// ============================================================================
-// 4. COMPONENTES UI (RENDERIZADO)
-// ============================================================================
 
 function updateSensorCard(id, data) {
-  const container = document.getElementById("sensor-grid");
-  let card = document.getElementById(`card-${id}`);
+  const grid = document.getElementById('sensor-grid');
+  if (!grid) return;
 
-  // Crear tarjeta si no existe
+  let card = document.getElementById(`card-${id}`);
   if (!card) {
-    card = document.createElement("div");
+    card = document.createElement('div');
     card.id = `card-${id}`;
-    card.className = "sensor-card";
-    container.appendChild(card);
+    card.className = 'sensor-card';
+    card.onclick = () => openControlPanel(id);
+    card.style.cursor = 'pointer';
+    grid.appendChild(card);
   }
 
-  // Calcular Delta de Tiempo (Drift)
-  const now = Date.now();
-  const msgTime = new Date(data.timestamp).getTime();
-  const delta = (now - msgTime) / 1000; // segundos
-  const deltaColor = Math.abs(delta) > 2 ? "#da3633" : "#238636";
+  const isLeader = (id === currentLeader);
+  if (isLeader) card.classList.add('leader');
 
-  // Estado del Mutex (si el sensor lo reporta)
-  const mutexState = data.sensor_state || "IDLE";
+  const delta = (Date.now() - new Date(data.timestamp).getTime()) / 1000;
+  const deltaColor = Math.abs(delta) > 2 ? '#da3633' : '#8b949e';
 
-  // Renderizar Contenido
   card.innerHTML = `
-        <div class="sensor-header">
-            <span>${id}</span>
-            <span style="font-size: 0.8em; color: #8b949e">${mutexState}</span>
+        <div style="border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between;">
+            <strong>${id}</strong>
+            <small style="color:${isLeader ? '#d29922' : '#8b949e'}">${isLeader ? '[*] LEADER' : 'FOLLOWER'}</small>
         </div>
-
-        <div class="sensor-metric">
-            <span class="metric-label">Temp</span>
-            <span class="metric-value">${Number(data.temperatura).toFixed(1)}°C</span>
-        </div>
-        <div class="sensor-metric">
-            <span class="metric-label">Hum</span>
-            <span class="metric-value">${Number(data.humedad).toFixed(1)}%</span>
-        </div>
-        <div class="sensor-metric">
-            <span class="metric-label">Latency</span>
-            <span class="metric-value" style="color: ${deltaColor}">${delta.toFixed(2)}s</span>
-        </div>
-
-        <div class="vector-clock">
-            L:${data.lamport_ts} | V:[${data.vector_clock.join(",")}]
+        <div class="metric-row"><span class="metric-label">Temp:</span> <span class="metric-val">${Number(data.temperatura).toFixed(1)}°C</span></div>
+        <div class="metric-row"><span class="metric-label">Lag:</span> <span class="metric-val" style="color:${deltaColor}">${delta.toFixed(2)}s</span></div>
+        <div style="margin-top:8px; font-size:0.8em; color:#58a6ff; text-align:center;">
+            L:${data.lamport_ts} | V:[${data.vector_clock.slice(0, 3).join(',')}]
         </div>
     `;
 
-  // Efecto visual de actualización
-  card.classList.add("flash-update");
-  setTimeout(() => card.classList.remove("flash-update"), 500);
+  card.classList.remove('flash-update');
+  void card.offsetWidth;
+  card.classList.add('flash-update');
 }
 
 function updateVisualQueue(queue, holder) {
-  const track = document.getElementById("mutex-queue-track");
+  const track = document.getElementById('mutex-queue-track');
   if (!track) return;
-  track.innerHTML = "";
+  track.innerHTML = '';
 
-  // 1. Holder (Quien tiene el recurso)
   if (holder) {
-    const node = document.createElement("div");
-    node.className = "queue-node active-lock";
-    node.innerHTML = ` <strong>${holder}</strong><br><small>EN SECCIÓN CRÍTICA</small>`;
-    track.appendChild(node);
-
-    // Flecha
-    const arrow = document.createElement("div");
-    arrow.innerText = "⬅";
-    arrow.style.color = "#58a6ff";
-    track.appendChild(arrow);
-  } else {
-    const empty = document.createElement("div");
-    empty.innerText = " Recurso Libre";
-    empty.style.color = "#238636";
-    track.appendChild(empty);
+    track.innerHTML += `<div class="queue-node active-lock">[@] ${holder}</div>`;
+    track.innerHTML += `<div style="color:#58a6ff; font-size:1.5em;">←</div>`;
   }
-
-  // 2. Cola de Espera
   if (queue && queue.length > 0) {
-    queue.forEach((waiter) => {
-      const node = document.createElement("div");
-      node.className = "queue-node";
-      node.innerText = ` ${waiter}`;
-      track.appendChild(node);
-    });
+    queue.forEach(id => { track.innerHTML += `<div class="queue-node"> ${id}</div>`; });
+  } else if (!holder) {
+    track.innerHTML = `<div class="empty-state">Recurso libre</div>`;
   }
 }
 
 function logEvent(type, msg) {
-  const list = document.getElementById("messages");
-  const li = document.createElement("li");
-  const time = new Date().toLocaleTimeString();
-  li.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-type" style="color: var(--accent-color)">${type}:</span> ${msg}`;
+  const list = document.getElementById('messages');
+  if (!list) return;
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> <strong style="color:var(--accent)">${type}:</strong> ${msg}`;
   list.prepend(li);
-  if (list.children.length > 15) list.removeChild(list.lastChild);
+  if (list.children.length > 12) list.removeChild(list.lastChild);
 }
 
-// --- Arranque ---
-initNetworkGraph();
-connectToMqtt();
+document.addEventListener('DOMContentLoaded', () => {
+  initNetworkGraph();
+  connectToMqtt();
+});

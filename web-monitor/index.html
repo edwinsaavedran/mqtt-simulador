@@ -1,82 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Centro de Mando TITÁN</title>
-        <script
-            type="text/javascript"
-            src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
-        ></script>
-        <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-        <link
-            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <header
-            style="
-                margin-bottom: 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            "
-        >
-            <h1 style="margin: 0; color: white">
-                PROYECTO UTP
-                <span style="color: var(--text-secondary); font-size: 0.6em"
-                    >SISTEMA DE DEFENSA DISTRIBUIDA</span
-                >
-            </h1>
-            <div
-                id="connection-status"
-                style="
-                    background: var(--danger-color);
-                    padding: 5px 10px;
-                    border-radius: 4px;
-                    font-weight: bold;
-                    font-size: 0.8em;
-                "
-            >
-                OFFLINE
+
+<head>
+    <meta charset="UTF-8">
+    <title>Centro de Mando UTP</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo-area">
+            <h1>[D] PROYECTO UTP</h1>
+            <span class="subtitle">SISTEMA DE DEFENSA DISTRIBUIDA</span>
+        </div>
+        <div id="connection-status" class="status-offline">OFFLINE</div>
+    </header>
+
+    <div class="dashboard-grid">
+        <section class="panel map-panel">
+            <div class="panel-header">
+                <h2>[w] Topología Táctica (Live)</h2>
+                <span class="badge">VISUALIZACIÓN ACTIVA</span>
             </div>
-        </header>
-
-        <div class="dashboard-grid">
-            <section class="panel">
-                <h2>Topología del Clúster (Live)</h2>
-                <div id="network-viz"></div>
-            </section>
-
-            <section class="panel">
-                <h2>Bitácora de Eventos</h2>
-                <ul id="messages" class="terminal-logs"></ul>
-            </section>
-        </div>
-
-        <div class="full-width-panel" style="margin-bottom: 20px">
-            <section class="panel">
-                <h2>Pipeline de Sección Crítica (Mutex Queue)</h2>
-                <div id="mutex-queue-track" class="queue-track">
-                    <div
-                        style="
-                            color: var(--text-secondary);
-                            width: 100%;
-                            text-align: center;
-                        "
-                    >
-                        Esperando sincronización de coordinador...
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <section class="panel full-width-panel">
-            <h2>Matriz de Sensores (Telemetría & Vectores)</h2>
-            <div id="sensor-grid"></div>
+            <div id="network-viz"></div>
         </section>
 
-        <script src="app.js"></script>
-    </body>
+        <section class="panel logs-panel">
+            <h2> Bitácora de Eventos</h2>
+            <ul id="messages" class="terminal-logs"></ul>
+        </section>
+    </div>
+
+    <section class="panel queue-panel">
+        <h2> Pipeline de Sección Crítica (Mutex Queue)</h2>
+        <div id="mutex-queue-track" class="queue-track">
+            <div class="empty-state">Esperando datos...</div>
+        </div>
+    </section>
+
+    <section class="panel sensors-panel">
+        <h2> Matriz de Sensores (Telemetría & Vectores)</h2>
+        <div id="sensor-grid"></div>
+    </section>
+
+    <div id="node-control-panel" class="control-panel hidden">
+        <div class="panel-header">
+            <h3 id="cp-title">SENSOR-00X</h3>
+            <button onclick="closeControlPanel()" class="close-btn">×</button>
+        </div>
+        <div class="panel-body">
+            <div class="stat-box">
+                <label>Rol Actual:</label>
+                <span id="cp-role">FOLLOWER</span>
+            </div>
+            <div class="stat-box">
+                <label>Estado:</label>
+                <span id="cp-status">ONLINE</span>
+            </div>
+            <hr>
+            <div class="chaos-controls">
+                <h4>[CHAOS] INYECCIÓN DE FALLOS</h4>
+                <p>Simular caída del nodo para forzar elección.</p>
+                <div class="btn-group">
+                    <button id="btn-kill" class="btn-danger" onclick="sendChaos('KILL')">[-] MATAR NODO</button>
+                    <button id="btn-revive" class="btn-success" onclick="sendChaos('REVIVE')">[+] REVIVIR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
 </html>

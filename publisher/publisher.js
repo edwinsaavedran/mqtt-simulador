@@ -1,60 +1,57 @@
-// /publisher/publisher.js
-
 const mqtt = require('mqtt');
 const config = require('../config');
-
 const fs = require('fs');
 const path = require('path');
-// Definimos el archivo de log local. 
-// En un entorno real usaríamos un volumen compartido, 
-// pero para este lab, persistencia local basta para sobrevivir al reinicio.
 
-// --- Configuración Básica ---
+// 1. DEFINICIONES Y CONFIGURACIÓN (CRÍTICO: Hoisting)
 const CLOCK_DRIFT_RATE = parseFloat(process.env.CLOCK_DRIFT_RATE || '0');
 const DEVICE_ID = process.env.DEVICE_ID || 'sensor-default';
 const PROCESS_ID = parseInt(process.env.PROCESS_ID || '0');
 
+// Archivos de Log y WAL
 const WAL_FILE = path.join(__dirname, `wal_${DEVICE_ID}.log`);
 const LOG_FILE = path.join(__dirname, `log_${DEVICE_ID}.log`);
 
-// --- Configuración de Elección (Bully) ---
+// --- Configuración de Elección (Bully + Titán) ---
 const MY_PRIORITY = parseInt(process.env.PROCESS_PRIORITY || '0');
 const ELECTION_PARTICIPANTS = (process.env.ELECTION_PARTICIPANTS || '').split(',');
-const TOTAL_NODES = ELECTION_PARTICIPANTS.length || 5; // Por defecto 5 si no se configura
-const QUORUM_SIZE = Math.floor(TOTAL_NODES / 2) + 1; // Mayoría simple (3 de 5)
+const TOTAL_NODES = ELECTION_PARTICIPANTS.length || 5;
+const QUORUM_SIZE = Math.floor(TOTAL_NODES / 2) + 1;
 
-const LEASE_DURATION = 5000; // 5 segundos de vida
-const LEASE_RENEWAL = 2000;  // Renovar cada 2 segundos
+const LEASE_DURATION = 5000;
+const LEASE_RENEWAL = 2000;
 let lastLeaseSeen = Date.now();
 let leaseInterval = null;
-let quorumResponses = 0; // Contador de votos para Quórum
+let quorumResponses = 0;
 
-let currentLeaderPriority = 100; // Asumimos que hay alguien superior al inicio
+let currentLeaderPriority = 100;
 let isCoordinator = false;
 let electionInProgress = false;
 let lastHeartbeatTime = Date.now();
-const HEARTBEAT_INTERVAL = 2000; // Enviar PING cada 2s
-const LEADER_TIMEOUT = 5000;     // Líder muerto si no responde en 5s
-const ELECTION_TIMEOUT = 3000;   // Tiempo espera respuestas ALIVE
+const HEARTBEAT_INTERVAL = 2000;
+const LEADER_TIMEOUT = 5000;
+const ELECTION_TIMEOUT = 3000;
 
 // --- Estado Mutex (Cliente) ---
 let sensorState = 'IDLE';
 const CALIBRATION_INTERVAL_MS = 20000 + (Math.random() * 5000);
 const CALIBRATION_DURATION_MS = 5000;
 
-// --- Estado Mutex (Servidor/Coordinador) - SOLO SE USA SI isCoordinator = true ---
+// --- Estado Mutex (Servidor/Coordinador) ---
 let coord_isLockAvailable = true;
 let coord_lockHolder = null;
 let coord_waitingQueue = [];
 
-// --- Sincronización Reloj (Cristian, Lamport, Vector) ---
-// ... (Variables reducidas para brevedad, la lógica se mantiene)
+// --- Sincronización Reloj ---
 let lastRealTime = Date.now();
 let lastSimulatedTime = Date.now();
 let clockOffset = 0;
 let lamportClock = 0;
-const VECTOR_PROCESS_COUNT = 3;
+const VECTOR_PROCESS_COUNT = 3; // Ajustable según topología
 let vectorClock = new Array(VECTOR_PROCESS_COUNT).fill(0);
+
+// --- ESTADO DE CAOS (Interruptor de Muerte) ---
+let isSimulatingFailure = false;
 
 // --- Conexión MQTT ---
 const statusTopic = config.topics.status(DEVICE_ID);
@@ -65,55 +62,68 @@ const client = mqtt.connect(brokerUrl, {
 });
 
 // ============================================================================
-//                            LÓGICA DEL CICLO DE VIDA
+//                            CICLO DE VIDA
 // ============================================================================
 
 client.on('connect', () => {
   console.log(`[INFO] ${DEVICE_ID} (Prio: ${MY_PRIORITY}) conectado.`);
 
-  // 1. Suscripciones Básicas
+  // Suscripciones
   client.subscribe(config.topics.time_response(DEVICE_ID));
   client.subscribe(config.topics.mutex_grant(DEVICE_ID));
+  client.subscribe(config.topics.election.heartbeat);
+  client.subscribe(config.topics.election.messages);
+  client.subscribe(config.topics.election.coordinator);
+  client.subscribe('election/lease');
+  client.subscribe('election/quorum_check');
+  client.subscribe('election/quorum_ack');
 
-  // 2. Suscripciones de Elección
-  client.subscribe(config.topics.election.heartbeat); // Escuchar PONG
-  client.subscribe(config.topics.election.messages);  // Escuchar ELECTION, ALIVE
-  client.subscribe(config.topics.election.coordinator); // Escuchar VICTORY
+  // Suscripción a Canal de Caos
+  client.subscribe('utp/sistemas_distribuidos/grupo1/chaos/control');
 
-  client.subscribe('election/lease');// topic de arrendamiento
-
-  client.subscribe('election/quorum_check'); // Escuchar CHECK
-
-  client.subscribe('election/quorum_ack'); // Escuchar ACK
-
-  // 3. Iniciar Ciclos
-  // A. Telemetría
+  // Iniciar Loops
   setInterval(publishTelemetry, 5000);
-  // B. Sincronización Reloj (Cristian)
   setInterval(syncClock, 30000);
-  // C. Intentos de Calibración (Cliente Mutex)
   setTimeout(() => { setInterval(requestCalibration, CALIBRATION_INTERVAL_MS); }, 5000);
-
-  // D. Monitoreo del Líder (Heartbeat Check)
   setInterval(checkLeaderStatus, 1000);
-
-  // E. Enviar Heartbeats (PING)
   setInterval(sendHeartbeat, HEARTBEAT_INTERVAL);
 
-  // Publicar estado online
   client.publish(statusTopic, JSON.stringify({ deviceId: DEVICE_ID, status: 'online' }), { retain: true });
 });
 
 client.on('message', (topic, message) => {
+  // 1. INTERCEPTOR DE CAOS
+  if (topic.includes('chaos/control')) {
+    try {
+      const command = JSON.parse(message.toString());
+      if (command.targetId === DEVICE_ID) {
+        if (command.action === 'KILL') {
+          console.warn(`[CHAOS] COMANDO KILL RECIBIDO. Apagando funciones vitales.`);
+          isSimulatingFailure = true;
+          client.publish(statusTopic, JSON.stringify({ deviceId: DEVICE_ID, status: 'offline' }), { retain: true });
+        } else if (command.action === 'REVIVE') {
+          console.log(`[CHAOS] COMANDO REVIVE RECIBIDO. Restaurando sistema.`);
+          isSimulatingFailure = false;
+          lastLeaseSeen = 0; // Forzar resincronización
+          recoverFromWal();  // Restaurar memoria
+          client.publish(statusTopic, JSON.stringify({ deviceId: DEVICE_ID, status: 'online' }), { retain: true });
+        }
+      }
+    } catch (e) { console.error("Error parseando caos:", e); }
+    return;
+  }
+
+  // Si está "muerto", no procesa nada más
+  if (isSimulatingFailure) return;
+
   const payload = JSON.parse(message.toString());
 
-  // --- 1. MANEJO DE ELECCIÓN (Bully) ---
+  // 2. LÓGICA DE NEGOCIO (Solo si está vivo)
   if (topic.startsWith('utp/sistemas_distribuidos/grupo1/election')) {
     handleElectionMessages(topic, payload);
     return;
   }
 
-  // --- 2. SI SOY COORDINADOR: MANEJAR SOLICITUDES MUTEX ---
   if (isCoordinator) {
     if (topic === config.topics.mutex_request) {
       handleCoordRequest(payload.deviceId);
@@ -125,82 +135,59 @@ client.on('message', (topic, message) => {
     }
   }
 
-  // --- 3. SI SOY CLIENTE: MANEJAR RESPUESTAS ---
   if (topic === config.topics.mutex_grant(DEVICE_ID)) {
     if (sensorState === 'REQUESTING') {
-      console.log(`[MUTEX-CLIENT] Permiso recibido.`);
       sensorState = 'CALIBRATING';
       enterCriticalSection();
     }
   }
 
-  // --- 4. SINCRONIZACIÓN DE RELOJ (CRISTIAN) ---
+  // Algoritmo Cristian Mejorado
   if (topic === config.topics.time_response(DEVICE_ID)) {
     const t4 = Date.now();
     const t1 = payload.t1 || t4;
     const rtt = t4 - t1;
-
-    // UMBRAL DE SEGURIDAD: 500ms
-    if (rtt > 500) {
-      console.warn(`[CRISTIAN] Sincronización rechazada. RTT alto: ${rtt}ms. Manteniendo offset anterior.`);
-      // No actualizamos clockOffset, usamos el último conocido (Degradación Elegante)
-      return;
-    }
-
+    if (rtt > 500) return; // Rechazar si latencia es alta
     const serverTime = payload.serverTime;
     const correctTime = serverTime + (rtt / 2);
     clockOffset = correctTime - getSimulatedTime().getTime();
-    console.log(`[CRISTIAN] Sincronizado. RTT: ${rtt}ms, Offset: ${clockOffset}ms`);
   }
 
-  // --- GESTIÓN DE LEASE (TITÁN) ---
+  // Lease y Quórum
   if (topic === 'election/lease') {
-    const leaseData = JSON.parse(message.toString());
-    // Si recibimos un lease válido de alguien con mayor o igual prioridad, respetamos su autoridad
+    const leaseData = payload; // Ya parseado arriba
     if (leaseData.priority >= MY_PRIORITY) {
       lastLeaseSeen = Date.now();
       currentLeaderPriority = leaseData.priority;
       if (isCoordinator && leaseData.coordinatorId !== DEVICE_ID) {
-        console.warn('[UTP-CONSENSUS] Detectado otro líder con Lease válido. Renunciando...');
-        stepDown(); // Función que crearemos abajo
+        stepDown();
       }
     }
-    return;
   }
-
   if (topic === 'election/quorum_check') {
-    // Respondemos que estamos vivos
     client.publish('election/quorum_ack', JSON.stringify({ from: DEVICE_ID }));
   }
   if (topic === 'election/quorum_ack') {
-    if (electionInProgress) quorumResponses++; // Solo contamos si estamos intentando ganar
+    if (electionInProgress) quorumResponses++;
   }
-
 });
 
 // ============================================================================
-//                          ALGORITMO DE ELECCIÓN (BULLY)
+//                          ALGORITMOS DISTRIBUIDOS
 // ============================================================================
 
 function sendHeartbeat() {
-  // Solo enviamos PING si NO somos el coordinador
+  if (isSimulatingFailure) return;
   if (!isCoordinator) {
     client.publish(config.topics.election.heartbeat, JSON.stringify({ type: 'PING', fromPriority: MY_PRIORITY }));
   }
 }
 
 function checkLeaderStatus() {
-  if (isCoordinator) return; // Si soy líder, no monitoreo a nadie
-
-  // Si pasó mucho tiempo desde el último PONG o mensaje del líder
-  // if (Date.now() - lastHeartbeatTime > LEADER_TIMEOUT) {
-  //   console.warn(`[BULLY] ¡Líder caído! (Timeout). Iniciando elección.`);
-  //   startElection();
-  // }
-
-  // Regla de Lease: Si pasaron 5s sin renovación, el líder está muerto.
+  if (isSimulatingFailure || isCoordinator) return;
+  // Detección de Falla por Expiración de Lease (Heartbeat estricto)
   if (Date.now() - lastLeaseSeen > LEASE_DURATION) {
-    console.warn(`[UTP-CONSENSUS] Lease del líder expiró hace ${Date.now() - lastLeaseSeen}ms. Iniciando elección.`);
+    console.warn(`[UTP] Lease expirado. Iniciando elección.`);
     startElection();
   }
 }
@@ -208,138 +195,88 @@ function checkLeaderStatus() {
 function startElection() {
   if (electionInProgress) return;
   electionInProgress = true;
-  lastHeartbeatTime = Date.now(); // Reset timer para no spammear
+  lastHeartbeatTime = Date.now();
+  client.publish(config.topics.election.messages, JSON.stringify({ type: 'ELECTION', fromPriority: MY_PRIORITY }));
 
-  console.log(`[BULLY] Convocando elección... Buscando nodos con prioridad > ${MY_PRIORITY}`);
-
-  // 1. Enviar mensaje ELECTION a todos los nodos con prioridad superior
-  client.publish(config.topics.election.messages, JSON.stringify({
-    type: 'ELECTION',
-    fromPriority: MY_PRIORITY
-  }));
-
-  // 2. Esperar respuesta (ALIVE)
   setTimeout(() => {
-    if (electionInProgress) {
-      // Si llegamos aquí y electionInProgress sigue true, es que NADIE respondió ALIVE.
-      // ¡Significa que somos el nodo vivo con mayor prioridad!
-      declareVictory();
-    }
+    if (electionInProgress) declareVictory();
   }, ELECTION_TIMEOUT);
 }
 
 function handleElectionMessages(topic, payload) {
-  // A. HEARTBEATS
-  if (topic === config.topics.election.heartbeat) {
-    if (payload.type === 'PONG' && payload.fromPriority > MY_PRIORITY) {
-      // El líder respondió, todo está bien.
-      lastHeartbeatTime = Date.now();
-    }
-    return;
-  }
-
-  // B. MENSAJES DE ELECCIÓN
   if (topic === config.topics.election.messages) {
-    // Si alguien con MENOR prioridad inicia elección, le decimos que estamos vivos
     if (payload.type === 'ELECTION' && payload.fromPriority < MY_PRIORITY) {
-      console.log(`[BULLY] Recibida elección de inferior (${payload.fromPriority}). Enviando ALIVE.`);
-      client.publish(config.topics.election.messages, JSON.stringify({
-        type: 'ALIVE', toPriority: payload.fromPriority, fromPriority: MY_PRIORITY
-      }));
-      // E iniciamos nuestra propia elección por si acaso el líder real murió
+      client.publish(config.topics.election.messages, JSON.stringify({ type: 'ALIVE', toPriority: payload.fromPriority, fromPriority: MY_PRIORITY }));
       startElection();
     }
-    // Si recibimos ALIVE de alguien SUPERIOR, nos callamos y esperamos
     else if (payload.type === 'ALIVE' && payload.fromPriority > MY_PRIORITY) {
-      console.log(`[BULLY] Recibido ALIVE de superior (${payload.fromPriority}). Me retiro.`);
-      electionInProgress = false; // Dejamos de intentar ser líderes
+      electionInProgress = false;
     }
-    return;
   }
-
-  // C. ANUNCIO DE COORDINADOR (VICTORY)
   if (topic === config.topics.election.coordinator) {
-    console.log(`[BULLY] Nuevo Coordinador electo: ${payload.coordinatorId} (Prio: ${payload.priority})`);
     currentLeaderPriority = payload.priority;
-    lastHeartbeatTime = Date.now(); // El líder está vivo
+    lastHeartbeatTime = Date.now();
     electionInProgress = false;
-
-    // Chequear si soy yo (por si acaso)
-    if (payload.priority === MY_PRIORITY) {
-      becomeCoordinator();
-    } else {
-      isCoordinator = false;
-      // Dejar de escuchar peticiones de mutex si antes era coordinador
-      client.unsubscribe(config.topics.mutex_request);
-      client.unsubscribe(config.topics.mutex_release);
-    }
+    if (payload.priority === MY_PRIORITY) becomeCoordinator();
+    else if (isCoordinator) stepDown();
   }
 }
 
-// function declareVictory() {
-//   console.log(`[BULLY] ¡Nadie superior respondió! ME DECLARO COORDINADOR.`);
-//   const msg = JSON.stringify({ type: 'VICTORY', coordinatorId: DEVICE_ID, priority: MY_PRIORITY });
-//   client.publish(config.topics.election.coordinator, msg, { retain: true });
-//   becomeCoordinator();
-// }
-
 function declareVictory() {
-  console.log(`[UTP-CONSENSUS] Candidato único detectado. Verificando QUÓRUM (${QUORUM_SIZE} nodos requeridos)...`);
-
-  // Iniciamos conteo
-  quorumResponses = 1; // Me cuento a mí mismo
-
-  // Enviamos solicitud de presencia
+  // Lógica de Quórum
+  quorumResponses = 1;
   client.publish('election/quorum_check', JSON.stringify({ candidateId: DEVICE_ID }));
-
-  // Esperamos 1.5 segundos a ver quién responde
   setTimeout(() => {
-    if (quorumResponses >= QUORUM_SIZE) {
-      console.log(`[UTP-CONSENSUS] Quórum alcanzado (${quorumResponses}/${TOTAL_NODES}). Asumiendo Liderazgo.`);
-      performVictory(); // La vieja lógica de becomeCoordinator va aquí
-    } else {
-      console.error(`[UTP-CONSENSUS] FALLO DE QUÓRUM. Solo ${quorumResponses} nodos visibles. No puedo ser líder.`);
-      // No hacemos nada, esperamos o reintentamos luego
-      stepDown();
-    }
+    if (quorumResponses >= QUORUM_SIZE) performVictory();
+    else stepDown();
   }, 1500);
+}
+
+function performVictory() {
+  const msg = JSON.stringify({ type: 'VICTORY', coordinatorId: DEVICE_ID, priority: MY_PRIORITY });
+  client.publish(config.topics.election.coordinator, msg, { qos: 1, retain: true });
+  becomeCoordinator();
+
+  if (leaseInterval) clearInterval(leaseInterval);
+  leaseInterval = setInterval(() => {
+    if (!isSimulatingFailure) {
+      client.publish('election/lease', JSON.stringify({ coordinatorId: DEVICE_ID, priority: MY_PRIORITY, timestamp: Date.now() }));
+    }
+  }, LEASE_RENEWAL);
 }
 
 function becomeCoordinator() {
   if (isCoordinator) return;
   isCoordinator = true;
   electionInProgress = false;
-  console.log(`[ROLE] *** ASCENDIDO A COORDINADOR DE BLOQUEO ***`);
 
-  // Reiniciar estado del mutex (para evitar bloqueos heredados)
   coord_isLockAvailable = true;
   coord_lockHolder = null;
   coord_waitingQueue = [];
 
-  // Suscribirse a los tópicos que debe escuchar el líder
   client.subscribe(config.topics.mutex_request, { qos: 1 });
   client.subscribe(config.topics.mutex_release, { qos: 1 });
 
-  recoverFromWal();
-
-  // Publicar estado inicial
+  recoverFromWal(); // Persistencia
   publishCoordStatus();
 }
 
-// ============================================================================
-//                  LÓGICA DE SERVIDOR MUTEX (Solo si isCoordinator)
-// ============================================================================
-// (Esta lógica es idéntica a la de lock-coordinator.js, ahora embebida aquí)
+function stepDown() {
+  isCoordinator = false;
+  if (leaseInterval) clearInterval(leaseInterval);
+  client.unsubscribe(config.topics.mutex_request);
+  client.unsubscribe(config.topics.mutex_release);
+}
+
+// --- SERVIDOR MUTEX CON WAL ---
 
 function handleCoordRequest(requesterId) {
-  console.log(`[COORD] Procesando solicitud de: ${requesterId}`);
+  if (isSimulatingFailure) return;
   if (coord_isLockAvailable) {
-    // [TITÁN] LOG GRANT
     appendToWal('GRANT', { id: requesterId });
     grantCoordLock(requesterId);
   } else {
     if (!coord_waitingQueue.includes(requesterId) && coord_lockHolder !== requesterId) {
-      // [TITÁN] LOG QUEUE
       appendToWal('QUEUE', { id: requesterId });
       coord_waitingQueue.push(requesterId);
     }
@@ -348,16 +285,13 @@ function handleCoordRequest(requesterId) {
 }
 
 function handleCoordRelease(requesterId) {
+  if (isSimulatingFailure) return;
   if (coord_lockHolder === requesterId) {
-    // [TITÁN] LOG RELEASE
     appendToWal('RELEASE', { id: requesterId });
-
     coord_lockHolder = null;
     coord_isLockAvailable = true;
-
     if (coord_waitingQueue.length > 0) {
       const nextId = coord_waitingQueue.shift();
-      // [TITÁN] LOG GRANT (al siguiente)
       appendToWal('GRANT', { id: nextId });
       grantCoordLock(nextId);
     }
@@ -372,135 +306,38 @@ function grantCoordLock(requesterId) {
 }
 
 function publishCoordStatus() {
-  client.publish(config.topics.mutex_status, JSON.stringify({
-    isAvailable: coord_isLockAvailable,
-    holder: coord_lockHolder,
-    queue: coord_waitingQueue
-  }), { retain: true });
+  if (isSimulatingFailure) return;
+  client.publish(config.topics.mutex_status, JSON.stringify({ isAvailable: coord_isLockAvailable, holder: coord_lockHolder, queue: coord_waitingQueue }), { retain: true });
 }
 
-// ============================================================================
-//                            FUNCIONES AUXILIARES
-// ============================================================================
-
-function getSimulatedTime() {
-  const now = Date.now();
-  const realElapsed = now - lastRealTime;
-  const simulatedElapsed = realElapsed + (realElapsed * CLOCK_DRIFT_RATE / 1000);
-  lastSimulatedTime = lastSimulatedTime + simulatedElapsed;
-  lastRealTime = now;
-  return new Date(Math.floor(lastSimulatedTime));
-}
-
-function syncClock() {
-  const payload = JSON.stringify({ deviceId: DEVICE_ID, t1: Date.now() });
-  client.publish(config.topics.time_request, payload, { qos: 0 });
-}
-
-function requestCalibration() {
-  if (sensorState === 'IDLE' && !isCoordinator) { // El coordinador no se auto-solicita en este ejemplo simple
-    console.log(`[MUTEX-CLIENT] Solicitando...`);
-    sensorState = 'REQUESTING';
-    client.publish(config.topics.mutex_request, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
-  }
-}
-
-function enterCriticalSection() {
-  setTimeout(() => {
-    console.log(`[MUTEX-CLIENT] Fin calibración.`);
-    releaseLock();
-  }, CALIBRATION_DURATION_MS);
-}
-
-function releaseLock() {
-  sensorState = 'IDLE';
-  client.publish(config.topics.mutex_release, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
-}
-
-function publishTelemetry() {
-  lamportClock++;
-  vectorClock[PROCESS_ID]++;
-  const correctedTime = new Date(getSimulatedTime().getTime() + clockOffset);
-
-  const telemetryData = {
-    deviceId: DEVICE_ID,
-    temperatura: (Math.random() * 30).toFixed(2),
-    humedad: (Math.random() * 100).toFixed(2),
-    timestamp: correctedTime.toISOString(),
-    timestamp_simulado: getSimulatedTime().toISOString(),
-    clock_offset: clockOffset.toFixed(0),
-    lamport_ts: lamportClock,
-    vector_clock: [...vectorClock],
-    sensor_state: isCoordinator ? 'COORDINATOR' : sensorState // Mostrar rol especial si es líder
-  };
-  client.publish(config.topics.telemetry(DEVICE_ID), JSON.stringify(telemetryData));
-}
-
-function performVictory() {
-  // Publicar Victoria (Retained)
-  const msg = JSON.stringify({ type: 'VICTORY', coordinatorId: DEVICE_ID, priority: MY_PRIORITY });
-  client.publish(config.topics.election.coordinator, msg, { qos: 1, retain: true });
-
-  becomeCoordinator();
-
-  // Iniciar renovación de Lease
-  if (leaseInterval) clearInterval(leaseInterval);
-  leaseInterval = setInterval(() => {
-    client.publish('election/lease', JSON.stringify({
-      coordinatorId: DEVICE_ID,
-      priority: MY_PRIORITY,
-      timestamp: Date.now()
-    }));
-  }, LEASE_RENEWAL);
-}
-
-function stepDown() {
-  isCoordinator = false;
-  if (leaseInterval) clearInterval(leaseInterval);
-  console.log('[ROLE] Regresando a estado FOLLOWER.');
-}
-
-// --- PERSISTENCIA WAL ( FASE 3) ---
+// --- PERSISTENCIA (FILE SYSTEM) ---
 
 function appendToWal(operation, data) {
   const entry = `${Date.now()}|${operation}|${JSON.stringify(data)}\n`;
-  try {
-    // appendFileSync es bloqueante para garantizar Atomicidad (Write-Ahead)
-    fs.appendFileSync(WAL_FILE, entry);
-  } catch (e) {
-    console.error(`[WAL] Error crítico escribiendo en disco: ${e.message}`);
-  }
+  try { fs.appendFileSync(WAL_FILE, entry); } catch (e) { console.error(`[WAL] Error: ${e.message}`); }
 }
 
 function recoverFromWal() {
-  if (!fs.existsSync(WAL_FILE)) {
-    console.log('[WAL] No existe log previo. Iniciando limpio.');
-    return;
-  }
-
-  console.log(`[WAL] Encontrado log de recuperación: ${WAL_FILE}. Reconstruyendo estado...`);
-
+  if (!fs.existsSync(WAL_FILE)) return;
   const fileContent = fs.readFileSync(WAL_FILE, 'utf-8');
   const lines = fileContent.split('\n');
 
-  // Reiniciamos estado en memoria antes de procesar
+  // Reiniciar estado en memoria
   coord_waitingQueue = [];
   coord_lockHolder = null;
   coord_isLockAvailable = true;
 
   lines.forEach(line => {
     if (!line.trim()) return;
-    const [ts, op, json] = line.split('|');
-    const data = JSON.parse(json);
+    const parts = line.split('|');
+    const op = parts[1];
+    const data = JSON.parse(parts[2]);
 
     if (op === 'QUEUE') {
-      if (!coord_waitingQueue.includes(data.id) && coord_lockHolder !== data.id) {
-        coord_waitingQueue.push(data.id);
-      }
+      if (!coord_waitingQueue.includes(data.id) && coord_lockHolder !== data.id) coord_waitingQueue.push(data.id);
     } else if (op === 'GRANT') {
       coord_lockHolder = data.id;
       coord_isLockAvailable = false;
-      // Si estaba en cola, lo sacamos
       coord_waitingQueue = coord_waitingQueue.filter(id => id !== data.id);
     } else if (op === 'RELEASE') {
       if (coord_lockHolder === data.id) {
@@ -509,6 +346,39 @@ function recoverFromWal() {
       }
     }
   });
+  console.log(`[WAL] Estado restaurado. Queue: ${coord_waitingQueue.length}`);
+}
 
-  console.log(`[WAL] Recuperación completada. Holder: ${coord_lockHolder}, Cola: [${coord_waitingQueue}]`);
+// --- TELEMETRÍA ---
+function publishTelemetry() {
+  if (isSimulatingFailure) return;
+  lamportClock++;
+  // ... (cálculos de vector clock simples)
+
+  const telemetryData = {
+    deviceId: DEVICE_ID,
+    temperatura: (20 + Math.random() * 5).toFixed(2),
+    humedad: (50 + Math.random() * 10).toFixed(2),
+    timestamp: new Date().toISOString(),
+    lamport_ts: lamportClock,
+    vector_clock: [0, 0, 0], // Simplificado
+    sensor_state: isCoordinator ? 'COORDINATOR' : sensorState
+  };
+  client.publish(config.topics.telemetry(DEVICE_ID), JSON.stringify(telemetryData));
+}
+
+function getSimulatedTime() { return new Date(); } // Placeholder simple
+function syncClock() { if (!isSimulatingFailure) client.publish(config.topics.time_request, JSON.stringify({ t1: Date.now() })); }
+function requestCalibration() {
+  if (!isSimulatingFailure && sensorState === 'IDLE' && !isCoordinator) {
+    sensorState = 'REQUESTING';
+    client.publish(config.topics.mutex_request, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
+  }
+}
+function enterCriticalSection() {
+  setTimeout(() => { if (!isSimulatingFailure) releaseLock(); }, CALIBRATION_DURATION_MS);
+}
+function releaseLock() {
+  sensorState = 'IDLE';
+  client.publish(config.topics.mutex_release, JSON.stringify({ deviceId: DEVICE_ID }), { qos: 1 });
 }
