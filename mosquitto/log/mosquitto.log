@@ -3618,3 +3618,49 @@
 1765389053: New client connected from ::ffff:192.168.65.1:55515 as utp_ops_81f52c (p2, c1, k60).
 1765389337: Client utp_ops_81f52c closed its connection.
 1765389337: New client connected from ::ffff:192.168.65.1:55916 as utp_ops_e0dfc8 (p2, c1, k60).
+1765390824: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765391687: Client pub_sensor-005_8ec closed its connection.
+1765391687: Client pub_sensor-003_b99 closed its connection.
+1765391687: Client pub_sensor-002_d64 closed its connection.
+1765391687: Client mqttjs_1e2faddb disconnected: Broken pipe.
+1765391687: Client mqttjs_03ade1ae disconnected: Broken pipe.
+1765391687: Client unicast_sensor-001_ec0d01 closed its connection.
+1765391687: Client persistence_sub_d4cd91 closed its connection.
+1765391687: Client mqttjs_1863bc40 closed its connection.
+1765391687: Client pub_sensor-004_85d closed its connection.
+1765391687: Client pub_sensor-001_57b closed its connection.
+1765391689: Client time_server_01 closed its connection.
+1765391689: mosquitto version 2.0.22 terminating
+1765391689: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765391689: Client utp_ops_e0dfc8 closed its connection.
+1765392511: mosquitto version 2.0.22 starting
+1765392511: Config loaded from /mosquitto/config/mosquitto.conf.
+1765392511: Opening ipv4 listen socket on port 1883.
+1765392511: Opening ipv6 listen socket on port 1883.
+1765392511: Opening websockets listen socket on port 9001.
+1765392511: mosquitto version 2.0.22 running
+1765392511: New connection from 172.19.0.11:56576 on port 1883.
+1765392511: New connection from 172.19.0.13:39368 on port 1883.
+1765392511: New connection from 172.19.0.9:53974 on port 1883.
+1765392511: New connection from 172.19.0.8:59476 on port 1883.
+1765392511: New connection from 172.19.0.12:47596 on port 1883.
+1765392511: New connection from 172.19.0.10:45150 on port 1883.
+1765392511: New client connected from 172.19.0.13:39368 as pub_sensor-001_2dd (p2, c1, k60).
+1765392511: New client connected from 172.19.0.9:53974 as persistence_sub_77feb7 (p2, c1, k60).
+1765392511: New client connected from 172.19.0.11:56576 as pub_sensor-004_e5f (p2, c1, k60).
+1765392511: New client connected from 172.19.0.8:59476 as mqttjs_f9845510 (p2, c1, k60).
+1765392511: New connection from 172.19.0.14:41238 on port 1883.
+1765392511: New client connected from 172.19.0.12:47596 as pub_sensor-003_3c7 (p2, c1, k60).
+1765392511: New connection from 172.19.0.4:54562 on port 1883.
+1765392511: New client connected from 172.19.0.10:45150 as mqttjs_adce92f9 (p2, c1, k60).
+1765392511: New client connected from 172.19.0.4:54562 as time_server_01 (p2, c1, k60).
+1765392511: New connection from 172.19.0.15:57030 on port 1883.
+1765392511: New connection from 172.19.0.6:41670 on port 1883.
+1765392511: New client connected from 172.19.0.14:41238 as pub_sensor-005_ad0 (p2, c1, k60).
+1765392511: New client connected from 172.19.0.6:41670 as unicast_sensor-001_ed9e21 (p2, c1, k60).
+1765392511: New client connected from 172.19.0.15:57030 as pub_sensor-002_c5f (p2, c1, k60).
+1765392511: New connection from 172.19.0.7:36268 on port 1883.
+1765392511: New client connected from 172.19.0.7:36268 as mqttjs_8c67f5ca (p2, c1, k60).
+1765392549: New client connected from ::ffff:192.168.65.1:48912 as utp_ops_a20aa8 (p2, c1, k60).
+1765394311: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765396112: Saving in-memory database to /mosquitto/data//mosquitto.db.

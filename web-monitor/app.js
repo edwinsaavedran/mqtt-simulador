@@ -311,7 +311,7 @@ function updateSensorCard(id, data) {
   card.innerHTML = `
         <div style="border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between;">
             <strong>${id}</strong>
-            <small style="color:${isLeader ? '#d29922' : '#8b949e'}">${isLeader ? '[*] LEADER' : 'FOLLOWER'}</small>
+            <small style="color:${isLeader ? '#d29922' : '#8b949e'}">${isLeader ? '[*] LÍDER' : 'SEGUIDOR'}</small>
         </div>
         <div class="metric-row"><span class="metric-label">Temp:</span> <span class="metric-val">${Number(data.temperatura).toFixed(1)}°C</span></div>
         <div class="metric-row"><span class="metric-label">Lag:</span> <span class="metric-val" style="color:${deltaColor}">${delta.toFixed(2)}s</span></div>

@@ -302,6 +302,15 @@ function handleCoordRelease(requesterId) {
 function grantCoordLock(requesterId) {
   coord_isLockAvailable = false;
   coord_lockHolder = requesterId;
+
+  // --- Timeout de seguridad ---
+  setTimeout(() => {
+    if (coord_lockHolder === requesterId) {
+      console.warn(`[WATCHDOG] El nodo ${requesterId} tardó demasiado. Revocando Lock.`);
+      handleCoordRelease(requesterId); // Forzar liberación
+    }
+  }, CALIBRATION_DURATION_MS + 2000); // Dar un margen de seguridad
+
   client.publish(config.topics.mutex_grant(requesterId), JSON.stringify({ status: 'granted' }), { qos: 1 });
 }
 
@@ -353,7 +362,10 @@ function recoverFromWal() {
 function publishTelemetry() {
   if (isSimulatingFailure) return;
   lamportClock++;
-  // ... (cálculos de vector clock simples)
+
+  // Actualizar mi propia posición en el vector
+  if (vectorClock[PROCESS_ID]) vectorClock[PROCESS_ID]++;
+  else vectorClock[PROCESS_ID] = 1;
 
   const telemetryData = {
     deviceId: DEVICE_ID,
@@ -361,7 +373,7 @@ function publishTelemetry() {
     humedad: (50 + Math.random() * 10).toFixed(2),
     timestamp: new Date().toISOString(),
     lamport_ts: lamportClock,
-    vector_clock: [0, 0, 0], // Simplificado
+    vector_clock: vectorClock,
     sensor_state: isCoordinator ? 'COORDINATOR' : sensorState
   };
   client.publish(config.topics.telemetry(DEVICE_ID), JSON.stringify(telemetryData));
