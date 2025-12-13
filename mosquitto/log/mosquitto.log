@@ -3664,3 +3664,29 @@
 1765392549: New client connected from ::ffff:192.168.65.1:48912 as utp_ops_a20aa8 (p2, c1, k60).
 1765394311: Saving in-memory database to /mosquitto/data//mosquitto.db.
 1765396112: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765397913: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765399714: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765404770: Client utp_ops_a20aa8 closed its connection.
+1765405745: New client connected from ::ffff:192.168.65.1:55361 as utp_ops_a20aa8 (p2, c1, k60).
+1765407902: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765409703: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765411504: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765413305: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765415107: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765417061: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765418862: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765423088: Client utp_ops_a20aa8 closed its connection.
+1765423694: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1765424471: Client mqttjs_adce92f9 closed its connection.
+1765424471: Client pub_sensor-002_c5f closed its connection.
+1765424471: Client pub_sensor-004_e5f closed its connection.
+1765424471: Client mqttjs_f9845510 closed its connection.
+1765424471: Client mqttjs_8c67f5ca closed its connection.
+1765424471: Client pub_sensor-003_3c7 closed its connection.
+1765424471: Client pub_sensor-001_2dd closed its connection.
+1765424471: Client pub_sensor-005_ad0 closed its connection.
+1765424471: Client unicast_sensor-001_ed9e21 closed its connection.
+1765424471: Client persistence_sub_77feb7 closed its connection.
+1765424473: Client time_server_01 closed its connection.
+1765424473: mosquitto version 2.0.22 terminating
+1765424473: Saving in-memory database to /mosquitto/data//mosquitto.db.
