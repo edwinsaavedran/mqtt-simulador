@@ -19,13 +19,39 @@ let network;
 let nodesDataSet, edgesDataSet;
 const packets = [];
 const observableEvents = [];
+const MAX_LOG_MESSAGES = 30;
+const MAX_PACKETS = 80;
 const MAX_OBSERVABLE_EVENTS = 80;
 const DEFAULT_OBSERVABLE_LIMIT = 40;
+const SENSOR_RENDER_INTERVAL_MS = 200;
+const QUEUE_RENDER_INTERVAL_MS = 150;
+const TIMELINE_RENDER_INTERVAL_MS = 120;
+const GAUGE_RENDER_INTERVAL_MS = 250;
+const LIVE_BADGE_RENDER_INTERVAL_MS = 500;
+const NODE_FILTER_RENDER_INTERVAL_MS = 1000;
+const MAX_QUEUE_NODES = 24;
 const OBSERVABILITY_FILTERS = {
   algorithm: 'all',
   severity: 'all',
   node: 'all',
   limit: DEFAULT_OBSERVABLE_LIMIT,
+};
+const perfState = {
+  pendingTelemetry: new Map(),
+  sensorRenderScheduled: false,
+  timelineRenderScheduled: false,
+  queueRenderScheduled: false,
+  gaugesRenderScheduled: false,
+  networkRedrawScheduled: false,
+  liveBadgeScheduled: false,
+  lastSensorRenderAt: 0,
+  lastQueueRenderAt: 0,
+  lastTimelineRenderAt: 0,
+  lastGaugeRenderAt: 0,
+  lastLiveBadgeAt: 0,
+  lastNodeFilterUpdateAt: 0,
+  knownObservableNodes: new Set(),
+  pendingQueueState: null,
 };
 const ALGORITHM_META = {
   'physical-clock': { label: 'Clock Sync', description: 'Cristian / reloj físico', icon: 'CLK', color: '#58a6ff' },
@@ -204,6 +230,13 @@ function initNetworkGraph() {
   // MOTOR DE PARTÍCULAS (ANIMACIÓN)
   network.on("afterDrawing", (ctx) => {
     const now = Date.now();
+    const packetNodes = new Set();
+    packets.forEach(packet => {
+      packetNodes.add(packet.from);
+      packetNodes.add(packet.to);
+    });
+    const positions = network.getPositions(Array.from(packetNodes));
+
     for (let i = packets.length - 1; i >= 0; i--) {
       const p = packets[i];
       const progress = (now - p.startTime) / p.duration;
@@ -213,8 +246,8 @@ function initNetworkGraph() {
         continue;
       }
 
-      const posFrom = network.getPositions([p.from])[p.from];
-      const posTo = network.getPositions([p.to])[p.to];
+      const posFrom = positions[p.from];
+      const posTo = positions[p.to];
 
       if (posFrom && posTo) {
         const x = posFrom.x + (posTo.x - posFrom.x) * progress;
@@ -230,7 +263,7 @@ function initNetworkGraph() {
       }
     }
     if (packets.length > 0) {
-      network.redraw(); // CORRECCIÓN CRÍTICA APLICADA
+      requestNetworkRedraw();
     }
   });
 }
@@ -282,7 +315,7 @@ function connectToMqtt() {
       } else if (topic === MQTT_TOPICS.electionCoordinator) {
         handleLeaderChange(payload);
       } else if (topic === MQTT_TOPICS.mutexStatus) {
-        updateVisualQueue(payload.queue, payload.holder);
+        scheduleVisualQueue(payload.queue, payload.holder);
       } else if (topic.includes('/status')) {
         if (payload.status === 'offline' && payload.deviceId) {
           handleNodeDeath(payload.deviceId);
@@ -390,13 +423,41 @@ function spawnNode(id, priority) {
 
 function spawnPacket(from, to, color) {
   packets.push({ from, to, startTime: Date.now(), duration: 400, color });
-  network.redraw();
+  if (packets.length > MAX_PACKETS) packets.splice(0, packets.length - MAX_PACKETS);
+  requestNetworkRedraw();
+}
+
+function requestNetworkRedraw() {
+  if (!network || perfState.networkRedrawScheduled) return;
+  perfState.networkRedrawScheduled = true;
+  requestAnimationFrame(() => {
+    perfState.networkRedrawScheduled = false;
+    network.redraw();
+  });
 }
 
 function handleTelemetry(data) {
   const id = data.deviceId;
   devices[id] = data;
-  updateSensorCard(id, data);
+  perfState.pendingTelemetry.set(id, data);
+  scheduleSensorRender();
+}
+
+function scheduleSensorRender() {
+  if (perfState.sensorRenderScheduled) return;
+
+  const elapsed = Date.now() - perfState.lastSensorRenderAt;
+  const delay = Math.max(0, SENSOR_RENDER_INTERVAL_MS - elapsed);
+  perfState.sensorRenderScheduled = true;
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      perfState.sensorRenderScheduled = false;
+      perfState.lastSensorRenderAt = Date.now();
+      const pending = Array.from(perfState.pendingTelemetry.entries());
+      perfState.pendingTelemetry.clear();
+      pending.forEach(([id, data]) => updateSensorCard(id, data));
+    });
+  }, delay);
 }
 
 function handleNodeDeath(id) {
@@ -450,6 +511,41 @@ function updateSensorCard(id, data) {
     card.className = 'sensor-card';
     card.onclick = () => openControlPanel(id);
     card.style.cursor = 'pointer';
+    card.dataset.lastFlash = '0';
+
+    const header = document.createElement('div');
+    header.className = 'sensor-card-header';
+
+    const title = document.createElement('strong');
+    title.className = 'sensor-card-title';
+    title.textContent = id;
+
+    const role = document.createElement('small');
+    role.className = 'sensor-card-role';
+
+    const temperature = document.createElement('div');
+    temperature.className = 'metric-row';
+    const temperatureLabel = document.createElement('span');
+    temperatureLabel.className = 'metric-label';
+    temperatureLabel.textContent = 'Temp:';
+    const temperatureValue = document.createElement('span');
+    temperatureValue.className = 'metric-val sensor-temp';
+
+    const lag = document.createElement('div');
+    lag.className = 'metric-row';
+    const lagLabel = document.createElement('span');
+    lagLabel.className = 'metric-label';
+    lagLabel.textContent = 'Lag:';
+    const lagValue = document.createElement('span');
+    lagValue.className = 'metric-val sensor-lag';
+
+    const vector = document.createElement('div');
+    vector.className = 'sensor-vector';
+
+    header.append(title, role);
+    temperature.append(temperatureLabel, document.createTextNode(' '), temperatureValue);
+    lag.append(lagLabel, document.createTextNode(' '), lagValue);
+    card.append(header, temperature, lag, vector);
     grid.appendChild(card);
   }
 
@@ -458,48 +554,24 @@ function updateSensorCard(id, data) {
 
   const delta = (Date.now() - new Date(data.timestamp).getTime()) / 1000;
   const deltaColor = Math.abs(delta) > 2 ? '#da3633' : '#8b949e';
+  const role = card.querySelector('.sensor-card-role');
+  const temperatureValue = card.querySelector('.sensor-temp');
+  const lagValue = card.querySelector('.sensor-lag');
+  const vector = card.querySelector('.sensor-vector');
 
-  const header = document.createElement('div');
-  header.style.cssText = 'border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between;';
-
-  const title = document.createElement('strong');
-  title.textContent = id;
-
-  const role = document.createElement('small');
   role.style.color = isLeader ? '#d29922' : '#8b949e';
   role.textContent = isLeader ? '[*] LÍDER' : 'SEGUIDOR';
-
-  const temperature = document.createElement('div');
-  temperature.className = 'metric-row';
-  const temperatureLabel = document.createElement('span');
-  temperatureLabel.className = 'metric-label';
-  temperatureLabel.textContent = 'Temp:';
-  const temperatureValue = document.createElement('span');
-  temperatureValue.className = 'metric-val';
   temperatureValue.textContent = `${Number(data.temperatura).toFixed(1)}°C`;
-
-  const lag = document.createElement('div');
-  lag.className = 'metric-row';
-  const lagLabel = document.createElement('span');
-  lagLabel.className = 'metric-label';
-  lagLabel.textContent = 'Lag:';
-  const lagValue = document.createElement('span');
-  lagValue.className = 'metric-val';
   lagValue.style.color = deltaColor;
   lagValue.textContent = `${delta.toFixed(2)}s`;
+  vector.textContent = `L:${data.lamport_ts} | V:[${(data.vector_clock || []).slice(0, 3).join(',')}]`;
 
-  const vector = document.createElement('div');
-  vector.style.cssText = 'margin-top:8px; font-size:0.8em; color:#58a6ff; text-align:center;';
-  vector.textContent = `L:${data.lamport_ts} | V:[${data.vector_clock.slice(0, 3).join(',')}]`;
-
-  header.append(title, role);
-  temperature.append(temperatureLabel, document.createTextNode(' '), temperatureValue);
-  lag.append(lagLabel, document.createTextNode(' '), lagValue);
-  card.replaceChildren(header, temperature, lag, vector);
-
-  card.classList.remove('flash-update');
-  void card.offsetWidth;
-  card.classList.add('flash-update');
+  const now = Date.now();
+  if (now - Number(card.dataset.lastFlash) >= SENSOR_RENDER_INTERVAL_MS) {
+    card.dataset.lastFlash = String(now);
+    card.classList.add('flash-update');
+    setTimeout(() => card.classList.remove('flash-update'), 500);
+  }
 }
 
 function updateVisualQueue(queue, holder) {
@@ -517,18 +589,42 @@ function updateVisualQueue(queue, holder) {
     track.append(activeHolder, arrow);
   }
   if (queue && queue.length > 0) {
-    queue.forEach(id => {
+    queue.slice(0, MAX_QUEUE_NODES).forEach(id => {
       const node = document.createElement('div');
       node.className = 'queue-node';
       node.textContent = ` ${id}`;
       track.appendChild(node);
     });
+    if (queue.length > MAX_QUEUE_NODES) {
+      const overflow = document.createElement('div');
+      overflow.className = 'queue-node queue-overflow';
+      overflow.textContent = `+${queue.length - MAX_QUEUE_NODES} en cola`;
+      track.appendChild(overflow);
+    }
   } else if (!holder) {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
     empty.textContent = 'Recurso libre';
     track.appendChild(empty);
   }
+}
+
+function scheduleVisualQueue(queue, holder) {
+  perfState.pendingQueueState = { queue, holder };
+  if (perfState.queueRenderScheduled) return;
+
+  const elapsed = Date.now() - perfState.lastQueueRenderAt;
+  const delay = Math.max(0, QUEUE_RENDER_INTERVAL_MS - elapsed);
+  perfState.queueRenderScheduled = true;
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      perfState.queueRenderScheduled = false;
+      perfState.lastQueueRenderAt = Date.now();
+      const pending = perfState.pendingQueueState;
+      perfState.pendingQueueState = null;
+      if (pending) updateVisualQueue(pending.queue, pending.holder);
+    });
+  }, delay);
 }
 
 function logEvent(type, msg) {
@@ -544,7 +640,7 @@ function logEvent(type, msg) {
 
   li.append(time, document.createTextNode(' '), label, document.createTextNode(` ${msg}`));
   list.prepend(li);
-  if (list.children.length > 12) list.removeChild(list.lastChild);
+  while (list.children.length > MAX_LOG_MESSAGES) list.removeChild(list.lastChild);
 }
 
 function handleObservableEvent(event) {
@@ -554,8 +650,53 @@ function handleObservableEvent(event) {
   if (observableEvents.length > MAX_OBSERVABLE_EVENTS) observableEvents.pop();
 
   updateCockpitFromObservableEvent(event);
-  updateLiveBadge(true);
-  renderObservableTimeline();
+  scheduleLiveBadge(true);
+  scheduleObservableTimelineRender();
+}
+
+function scheduleObservableTimelineRender() {
+  if (perfState.timelineRenderScheduled) return;
+
+  const elapsed = Date.now() - perfState.lastTimelineRenderAt;
+  const delay = Math.max(0, TIMELINE_RENDER_INTERVAL_MS - elapsed);
+  perfState.timelineRenderScheduled = true;
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      perfState.timelineRenderScheduled = false;
+      perfState.lastTimelineRenderAt = Date.now();
+      renderObservableTimeline();
+    });
+  }, delay);
+}
+
+function scheduleCockpitGauges() {
+  if (perfState.gaugesRenderScheduled) return;
+
+  const elapsed = Date.now() - perfState.lastGaugeRenderAt;
+  const delay = Math.max(0, GAUGE_RENDER_INTERVAL_MS - elapsed);
+  perfState.gaugesRenderScheduled = true;
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      perfState.gaugesRenderScheduled = false;
+      perfState.lastGaugeRenderAt = Date.now();
+      updateCockpitGauges();
+    });
+  }, delay);
+}
+
+function scheduleLiveBadge(hasEvents) {
+  if (perfState.liveBadgeScheduled) return;
+
+  const elapsed = Date.now() - perfState.lastLiveBadgeAt;
+  const delay = Math.max(0, LIVE_BADGE_RENDER_INTERVAL_MS - elapsed);
+  perfState.liveBadgeScheduled = true;
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      perfState.liveBadgeScheduled = false;
+      perfState.lastLiveBadgeAt = Date.now();
+      updateLiveBadge(hasEvents);
+    });
+  }, delay);
 }
 
 function initCockpitControls() {
@@ -760,7 +901,7 @@ function updateCockpitFromObservableEvent(event) {
   if (eventType === 'wal-restored') cockpitState.walRestored += 1;
   if (eventType === 'leader-elected' && event.data?.leaderId) currentLeader = event.data.leaderId;
 
-  updateCockpitGauges();
+  scheduleCockpitGauges();
 }
 
 function updateCockpitGauges() {
@@ -795,7 +936,7 @@ function initObservabilityControls() {
     renderObservableTimeline();
   });
   limitFilter?.addEventListener('change', event => {
-    OBSERVABILITY_FILTERS.limit = Number(event.target.value) || DEFAULT_OBSERVABLE_LIMIT;
+    OBSERVABILITY_FILTERS.limit = Math.min(Number(event.target.value) || DEFAULT_OBSERVABLE_LIMIT, MAX_OBSERVABLE_EVENTS);
     renderObservableTimeline();
   });
   clearButton?.addEventListener('click', () => {
@@ -837,8 +978,18 @@ function updateNodeFilterOptions() {
   if (!select) return;
 
   const currentValue = select.value;
-  const nodeIds = Array.from(new Set(observableEvents.map(event => getObservableNode(event)))).sort();
-  select.innerHTML = '<option value="all">Todos</option>';
+  const now = Date.now();
+  const nextNodeIds = new Set(observableEvents.map(event => getObservableNode(event)));
+  const changed = nextNodeIds.size !== perfState.knownObservableNodes.size
+    || Array.from(nextNodeIds).some(nodeId => !perfState.knownObservableNodes.has(nodeId));
+
+  if (!changed && now - perfState.lastNodeFilterUpdateAt < NODE_FILTER_RENDER_INTERVAL_MS) return;
+
+  perfState.lastNodeFilterUpdateAt = now;
+  perfState.knownObservableNodes = nextNodeIds;
+
+  const nodeIds = Array.from(nextNodeIds).sort();
+  select.replaceChildren(new Option('Todos', 'all'));
   nodeIds.forEach(nodeId => {
     const option = document.createElement('option');
     option.value = nodeId;
@@ -862,27 +1013,35 @@ function renderObservableTimeline() {
   if (!list) return;
 
   updateNodeFilterOptions();
-  list.innerHTML = '';
+  list.replaceChildren();
 
   if (observableEvents.length === 0) {
-    list.innerHTML = '<li class="empty-state">Esperando eventos observables...</li>';
+    const empty = document.createElement('li');
+    empty.className = 'empty-state';
+    empty.textContent = 'Esperando eventos observables...';
+    list.appendChild(empty);
     updateObservabilityMetrics([]);
     return;
   }
 
+  const visibleLimit = Math.min(OBSERVABILITY_FILTERS.limit, MAX_OBSERVABLE_EVENTS);
   const filteredEvents = observableEvents
     .filter(event => OBSERVABILITY_FILTERS.algorithm === 'all' || getObservableAlgorithm(event) === OBSERVABILITY_FILTERS.algorithm)
     .filter(event => OBSERVABILITY_FILTERS.severity === 'all' || getObservableSeverity(event) === OBSERVABILITY_FILTERS.severity)
     .filter(event => OBSERVABILITY_FILTERS.node === 'all' || getObservableNode(event) === OBSERVABILITY_FILTERS.node)
-    .slice(0, OBSERVABILITY_FILTERS.limit);
+    .slice(0, visibleLimit);
 
   updateObservabilityMetrics(filteredEvents);
 
   if (filteredEvents.length === 0) {
-    list.innerHTML = '<li class="empty-state">No hay eventos para los filtros actuales.</li>';
+    const empty = document.createElement('li');
+    empty.className = 'empty-state';
+    empty.textContent = 'No hay eventos para los filtros actuales.';
+    list.appendChild(empty);
     return;
   }
 
+  const fragment = document.createDocumentFragment();
   filteredEvents.forEach(event => {
     const item = document.createElement('li');
     const severity = getObservableSeverity(event);
@@ -914,9 +1073,10 @@ function renderObservableTimeline() {
 
     main.append(time, algorithmEl, eventTypeEl, nodeIdEl);
     item.append(main, summaryEl);
-    item.title = JSON.stringify(event, null, 2);
-    list.appendChild(item);
+    item.title = `${eventType} | ${nodeId} | ${summary}`;
+    fragment.appendChild(item);
   });
+  list.appendChild(fragment);
 }
 
 function updateObservabilityMetrics(visibleEvents) {
