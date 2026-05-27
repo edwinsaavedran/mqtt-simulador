@@ -27,17 +27,27 @@ client.on('message', (topic, message) => {
     try {
       const request = JSON.parse(message.toString());
       const deviceId = request.deviceId;
+      const t1 = Number(request.t1);
       
       if (!deviceId) {
         console.warn('[WARN] Solicitud de tiempo sin deviceId:', message.toString());
         return;
       }
 
+      if (!Number.isFinite(t1)) {
+        console.warn(`[WARN] Solicitud de tiempo inválida para ${deviceId}: t1 ausente o no numérico.`);
+        return;
+      }
+
+      const serverReceivedAt = Date.now();
       const serverTime = Date.now();
       const responseTopic = config.topics.time_response(deviceId);
       
       const responsePayload = JSON.stringify({
-        serverTime: serverTime
+        deviceId,
+        t1,
+        serverReceivedAt,
+        serverTime
       });
 
       client.publish(responseTopic, responsePayload, { qos: 0 }, () => {

@@ -1,6 +1,13 @@
 // --- CONFIGURACIÓN ---
 const MQTT_BROKER_URL = "ws://localhost:9001";
 const CLIENT_ID = `utp_ops_${Math.random().toString(16).slice(2, 8)}`;
+const MQTT_TOPIC_BASE = 'utp/sistemas_distribuidos/grupo1';
+const MQTT_TOPICS = {
+  all: `${MQTT_TOPIC_BASE}/#`,
+  chaosControl: `${MQTT_TOPIC_BASE}/chaos/control`,
+  electionCoordinator: `${MQTT_TOPIC_BASE}/election/coordinator`,
+  mutexStatus: `${MQTT_TOPIC_BASE}/mutex/status`,
+};
 
 // --- ESTADO GLOBAL ---
 let client;
@@ -105,7 +112,7 @@ function connectToMqtt() {
   client.on('connect', () => {
     updateStatus(true);
     logEvent('SYSTEM', 'Enlace MQTT Establecido');
-    client.subscribe('utp/sistemas_distribuidos/grupo1/#');
+    client.subscribe(MQTT_TOPICS.all);
   });
 
   client.on('message', (topic, message) => {
@@ -129,9 +136,9 @@ function connectToMqtt() {
       // 3. Procesamiento de Datos
       if (topic.includes('/telemetry')) {
         handleTelemetry(payload);
-      } else if (topic.includes('election/coordinator')) {
+      } else if (topic === MQTT_TOPICS.electionCoordinator) {
         handleLeaderChange(payload);
-      } else if (topic.includes('mutex/status')) {
+      } else if (topic === MQTT_TOPICS.mutexStatus) {
         updateVisualQueue(payload.queue, payload.holder);
       } else if (topic.includes('/status')) {
         if (payload.status === 'offline' && payload.deviceId) {
@@ -195,7 +202,7 @@ function updatePanelButtons(status) {
 function sendChaos(action) {
   if (!selectedNodeId) return;
 
-  const topic = 'utp/sistemas_distribuidos/grupo1/chaos/control';
+  const topic = MQTT_TOPICS.chaosControl;
   const payload = JSON.stringify({
     targetId: selectedNodeId,
     action: action
