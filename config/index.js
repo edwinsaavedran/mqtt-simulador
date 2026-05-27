@@ -63,6 +63,12 @@ module.exports = {
     // Tópico catch-all para monitores de auditoría dentro del namespace del proyecto
     all: 'utp/sistemas_distribuidos/grupo1/#',
 
+    // --- Tópicos de observabilidad estructurada ---
+    observability: {
+      all: 'utp/sistemas_distribuidos/grupo1/observability/events/#',
+      events: (algorithm, eventType) => `utp/sistemas_distribuidos/grupo1/observability/events/${algorithm}/${eventType}`,
+    },
+
     // Tópico de control operativo para simular fallos de publishers
     chaos_control: 'utp/sistemas_distribuidos/grupo1/chaos/control',
 
