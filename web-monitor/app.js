@@ -6,6 +6,7 @@ const MQTT_TOPICS = {
   all: `${MQTT_TOPIC_BASE}/#`,
   chaosControl: `${MQTT_TOPIC_BASE}/chaos/control`,
   electionCoordinator: `${MQTT_TOPIC_BASE}/election/coordinator`,
+  labControl: `${MQTT_TOPIC_BASE}/observability/control/lab`,
   mutexStatus: `${MQTT_TOPIC_BASE}/mutex/status`,
   observabilityEvents: `${MQTT_TOPIC_BASE}/observability/events/`,
 };
@@ -28,12 +29,130 @@ const OBSERVABILITY_FILTERS = {
 };
 const ALGORITHM_META = {
   'physical-clock': { label: 'Clock Sync', description: 'Cristian / reloj físico', icon: 'CLK', color: '#58a6ff' },
+  lamport: { label: 'Lamport', description: 'Reloj lógico escalar', icon: 'LAM', color: '#79c0ff' },
+  'vector-clock': { label: 'Vector Clocks', description: 'Causalidad distribuida', icon: 'VEC', color: '#bc8cff' },
   election: { label: 'Election', description: 'Coordinador y líder', icon: 'LEAD', color: '#d29922' },
   'lease-quorum': { label: 'Lease', description: 'Quorum y expiración', icon: 'LEASE', color: '#a371f7' },
   mutex: { label: 'Mutex', description: 'Sección crítica', icon: 'LOCK', color: '#f0883e' },
   'wal-recovery': { label: 'WAL / Recovery', description: 'Persistencia y reinicio', icon: 'WAL', color: '#3fb950' },
   recovery: { label: 'Recovery', description: 'Recuperación de nodo', icon: 'REC', color: '#3fb950' },
   system: { label: 'System', description: 'Infraestructura', icon: 'SYS', color: '#8b949e' },
+};
+const COCKPIT_ALGORITHMS = [
+  {
+    id: 'physical-clock',
+    title: 'Cristian / physical clock',
+    detail: 'Drift, RTT y aceptación/rechazo de sincronización.',
+    focusAlgorithms: ['physical-clock'],
+    dependencies: [],
+    compatibleWith: ['lamport', 'vector-clock'],
+    guidance: 'Ideal para observar cuánto se desvía cada nodo y cuándo Cristian acepta o rechaza una corrección.'
+  },
+  {
+    id: 'lamport',
+    title: 'Lamport / logical clock',
+    detail: 'Orden lógico sin depender del reloj físico.',
+    focusAlgorithms: ['lamport'],
+    dependencies: [],
+    compatibleWith: ['vector-clock', 'physical-clock'],
+    guidance: 'Usalo para comparar progreso lógico entre publishers aunque el tiempo físico tenga drift.'
+  },
+  {
+    id: 'vector-clock',
+    title: 'Vector clocks / causality',
+    detail: 'Relaciones causales y eventos concurrentes.',
+    focusAlgorithms: ['vector-clock'],
+    dependencies: ['Lamport helps compare ordering pressure.'],
+    compatibleWith: ['lamport'],
+    guidance: 'Resalta causalidad observable; si no llegan eventos específicos, el monitor sigue mostrando vectores en tarjetas de sensores.'
+  },
+  {
+    id: 'election',
+    title: 'Bully + quorum lease / election',
+    detail: 'Líder, quorum, lease y fencing contra split-brain.',
+    focusAlgorithms: ['election', 'lease-quorum'],
+    dependencies: ['Quorum + lease are bundled with election focus.'],
+    compatibleWith: ['mutex', 'wal-recovery'],
+    guidance: 'Para split-brain/election se enfatiza quorum, lease y mutex fencing. No es consenso fuerte tipo Raft/Paxos.'
+  },
+  {
+    id: 'mutex',
+    title: 'Mutex / critical section',
+    detail: 'Acceso exclusivo, grants, rejects y cola.',
+    focusAlgorithms: ['mutex', 'election', 'lease-quorum'],
+    dependencies: ['Election selects the coordinator.', 'Lease fences stale leaders.', 'WAL is optional recovery evidence.'],
+    compatibleWith: ['election', 'wal-recovery'],
+    guidance: 'Mutex se guía como bundle: Election + Lease activos visualmente; WAL queda recomendado para recuperación.'
+  },
+  {
+    id: 'wal-recovery',
+    title: 'WAL / recovery',
+    detail: 'Replay local de cola/holder tras reinicio.',
+    focusAlgorithms: ['wal-recovery', 'mutex'],
+    dependencies: ['Mutex state must exist before WAL recovery is meaningful.', 'Same coordinator restart is required for local WAL evidence.'],
+    compatibleWith: ['mutex', 'election'],
+    guidance: 'WAL actual es local al coordinador; el cockpit no promete WAL replicado ni transferencia cross-leader.'
+  }
+];
+const LOAD_PROFILES = {
+  normal: {
+    label: 'Normal',
+    detail: 'Telemetría pedagógica, baja presión mutex, volumen legible.',
+    telemetryRate: 'baseline',
+    mutexPressure: 'low',
+    eventVolume: 'low'
+  },
+  high: {
+    label: 'High',
+    detail: 'Más muestras y más contención para observar colas y leases.',
+    telemetryRate: 'elevated',
+    mutexPressure: 'medium',
+    eventVolume: 'medium'
+  },
+  stress: {
+    label: 'Stress',
+    detail: 'Intención de prueba masiva: alto volumen y presión de sección crítica.',
+    telemetryRate: 'burst',
+    mutexPressure: 'high',
+    eventVolume: 'high'
+  }
+};
+const SCENARIOS = [
+  {
+    id: 'clock-drift-cristian-sync',
+    title: 'Clock drift / Cristian sync',
+    focus: 'physical-clock',
+    detail: 'Observar drift, RTT y sync accepted/rejected.'
+  },
+  {
+    id: 'leader-failover-bully-election',
+    title: 'Leader failover / Bully election',
+    focus: 'election',
+    detail: 'Guiar failover con quorum + lease visible.'
+  },
+  {
+    id: 'mutex-pressure',
+    title: 'Mutex pressure',
+    focus: 'mutex',
+    detail: 'Elevar atención sobre grants, rejects, holder y cola.'
+  },
+  {
+    id: 'wal-recovery',
+    title: 'WAL recovery',
+    focus: 'wal-recovery',
+    detail: 'Emitir intención de replay local del mismo coordinador.'
+  }
+];
+const cockpitState = {
+  activeAlgorithm: 'physical-clock',
+  activeLoadProfile: 'normal',
+  activeScenario: null,
+  lastIntent: 'Esperando acción del usuario.',
+  eventTimestamps: [],
+  latestClockSync: 'Waiting',
+  mutexGranted: 0,
+  mutexRejected: 0,
+  walRestored: 0,
 };
 let selectedNodeId = null;
 
@@ -317,6 +436,7 @@ function handleLeaderChange(payload) {
     const leaderCard = document.getElementById(`card-${newLeader}`);
     if (leaderCard) leaderCard.classList.add('leader');
   }
+  updateCockpitGauges();
 }
 
 function updateSensorCard(id, data) {
@@ -433,8 +553,223 @@ function handleObservableEvent(event) {
   observableEvents.unshift(event);
   if (observableEvents.length > MAX_OBSERVABLE_EVENTS) observableEvents.pop();
 
+  updateCockpitFromObservableEvent(event);
   updateLiveBadge(true);
   renderObservableTimeline();
+}
+
+function initCockpitControls() {
+  renderCockpitAlgorithmCards();
+  renderLoadProfileControls();
+  renderScenarioLauncher();
+  syncCockpitState();
+}
+
+function renderCockpitAlgorithmCards() {
+  const container = document.getElementById('cockpit-algorithm-cards');
+  if (!container) return;
+
+  container.replaceChildren();
+  COCKPIT_ALGORITHMS.forEach(algorithm => {
+    const button = document.createElement('button');
+    const title = document.createElement('strong');
+    const detail = document.createElement('span');
+    const meta = ALGORITHM_META[algorithm.id] || ALGORITHM_META.system;
+
+    button.type = 'button';
+    button.className = 'algorithm-card';
+    button.dataset.algorithm = algorithm.id;
+    button.style.setProperty('--algo-color', meta.color);
+    button.addEventListener('click', () => selectCockpitAlgorithm(algorithm.id));
+    title.textContent = algorithm.title;
+    detail.textContent = algorithm.detail;
+    button.append(title, detail);
+    container.appendChild(button);
+  });
+}
+
+function renderLoadProfileControls() {
+  const container = document.getElementById('load-profile-controls');
+  if (!container) return;
+
+  container.replaceChildren();
+  Object.entries(LOAD_PROFILES).forEach(([profileId, profile]) => {
+    const button = document.createElement('button');
+    const title = document.createElement('strong');
+    const detail = document.createElement('span');
+    const hint = document.createElement('small');
+
+    button.type = 'button';
+    button.className = 'load-profile-card';
+    button.dataset.profile = profileId;
+    button.addEventListener('click', () => startLoadProfile(profileId));
+    title.textContent = profile.label;
+    detail.textContent = profile.detail;
+    hint.textContent = `${profile.telemetryRate} telemetry / ${profile.mutexPressure} mutex / ${profile.eventVolume} events`;
+    button.append(title, detail, hint);
+    container.appendChild(button);
+  });
+}
+
+function renderScenarioLauncher() {
+  const container = document.getElementById('scenario-launcher');
+  if (!container) return;
+
+  container.replaceChildren();
+  SCENARIOS.forEach(scenario => {
+    const button = document.createElement('button');
+    const title = document.createElement('strong');
+    const detail = document.createElement('span');
+    const status = document.createElement('small');
+
+    button.type = 'button';
+    button.className = 'scenario-card';
+    button.dataset.scenario = scenario.id;
+    button.addEventListener('click', () => launchScenario(scenario.id));
+    title.textContent = scenario.title;
+    detail.textContent = scenario.detail;
+    status.textContent = 'Publishes guided intent; automated runner pending.';
+    button.append(title, detail, status);
+    container.appendChild(button);
+  });
+}
+
+function selectCockpitAlgorithm(algorithmId) {
+  cockpitState.activeAlgorithm = algorithmId;
+  cockpitState.activeScenario = null;
+  applyFocusFilter(algorithmId);
+  syncCockpitState();
+}
+
+function startLoadProfile(profileId) {
+  if (!LOAD_PROFILES[profileId]) return;
+
+  cockpitState.activeLoadProfile = profileId;
+  publishLabControlIntent('load-profile-started', {
+    loadProfile: profileId,
+    activeAlgorithm: cockpitState.activeAlgorithm,
+    conceptualProfile: LOAD_PROFILES[profileId],
+  });
+  cockpitState.lastIntent = `Load profile '${LOAD_PROFILES[profileId].label}' emitted as control intent.`;
+  syncCockpitState();
+}
+
+function launchScenario(scenarioId) {
+  const scenario = SCENARIOS.find(candidate => candidate.id === scenarioId);
+  if (!scenario) return;
+
+  cockpitState.activeScenario = scenario;
+  cockpitState.activeAlgorithm = scenario.focus;
+  applyFocusFilter(scenario.focus);
+  publishLabControlIntent('scenario-intent-issued', {
+    scenarioId,
+    activeAlgorithm: scenario.focus,
+    loadProfile: cockpitState.activeLoadProfile,
+    automationStatus: 'intent-only-runner-pending',
+  });
+  cockpitState.lastIntent = `Scenario '${scenario.title}' intent emitted; automated scenario runner is not implemented yet.`;
+  syncCockpitState();
+}
+
+function publishLabControlIntent(eventType, data) {
+  const payload = {
+    schemaVersion: 'lab-control-intent/v1',
+    eventType,
+    emittedAt: new Date().toISOString(),
+    source: 'web-monitor-cockpit',
+    data,
+  };
+
+  if (client && client.connected) {
+    client.publish(MQTT_TOPICS.labControl, JSON.stringify(payload), { qos: 0, retain: false });
+  }
+  logEvent('COCKPIT', `${eventType} -> ${MQTT_TOPICS.labControl}`);
+}
+
+function applyFocusFilter(algorithmId) {
+  const algorithm = COCKPIT_ALGORITHMS.find(candidate => candidate.id === algorithmId);
+  const firstFocus = algorithm?.focusAlgorithms[0] || 'all';
+  OBSERVABILITY_FILTERS.algorithm = firstFocus;
+
+  const select = document.getElementById('filter-algorithm');
+  if (select) select.value = firstFocus;
+  renderObservableTimeline();
+}
+
+function syncCockpitState() {
+  const algorithm = COCKPIT_ALGORITHMS.find(candidate => candidate.id === cockpitState.activeAlgorithm) || COCKPIT_ALGORITHMS[0];
+  const activeProfile = LOAD_PROFILES[cockpitState.activeLoadProfile];
+
+  setText('cockpit-active-focus', algorithm.title);
+  setText('cockpit-active-load', activeProfile.label);
+  setText('cockpit-active-scenario', cockpitState.activeScenario?.title || 'Ninguno');
+  setText('cockpit-last-intent', cockpitState.lastIntent);
+  setText('cockpit-control-topic', MQTT_TOPICS.labControl.replace(`${MQTT_TOPIC_BASE}/`, ''));
+  setText('cockpit-bundle-badge', algorithm.focusAlgorithms.length > 1 ? 'Guided bundle' : 'Solo focus');
+
+  document.querySelectorAll('.algorithm-card').forEach(card => {
+    const isActive = card.dataset.algorithm === algorithm.id;
+    const isCompatible = algorithm.compatibleWith.includes(card.dataset.algorithm);
+    card.classList.toggle('is-active', isActive);
+    card.classList.toggle('is-compatible', !isActive && isCompatible);
+    card.classList.toggle('is-muted', !isActive && !isCompatible);
+  });
+  document.querySelectorAll('.load-profile-card').forEach(card => {
+    card.classList.toggle('is-active', card.dataset.profile === cockpitState.activeLoadProfile);
+  });
+  document.querySelectorAll('.scenario-card').forEach(card => {
+    card.classList.toggle('is-active', card.dataset.scenario === cockpitState.activeScenario?.id);
+  });
+  renderCockpitGuidance(algorithm);
+  updateCockpitGauges();
+}
+
+function renderCockpitGuidance(algorithm) {
+  const box = document.getElementById('cockpit-guidance');
+  if (!box) return;
+
+  const title = document.createElement('strong');
+  const summary = document.createElement('p');
+  const list = document.createElement('ul');
+  const honesty = document.createElement('small');
+
+  title.textContent = 'Guidance';
+  summary.textContent = algorithm.guidance;
+  algorithm.dependencies.forEach(dependency => {
+    const item = document.createElement('li');
+    item.textContent = dependency;
+    list.appendChild(item);
+  });
+  honesty.textContent = 'Focus mode filters and guides observability; algorithms continue running in simulator.';
+  box.replaceChildren(title, summary, list, honesty);
+}
+
+function updateCockpitFromObservableEvent(event) {
+  const now = Date.now();
+  const eventType = event.eventType || event.type || '';
+  const algorithm = getObservableAlgorithm(event);
+
+  cockpitState.eventTimestamps.push(now);
+  cockpitState.eventTimestamps = cockpitState.eventTimestamps.filter(timestamp => now - timestamp <= 60000);
+
+  if (algorithm === 'physical-clock' && eventType.includes('cristian-sync')) {
+    cockpitState.latestClockSync = eventType.includes('rejected') ? 'Rejected' : 'Accepted';
+  }
+  if (eventType === 'mutex-granted') cockpitState.mutexGranted += 1;
+  if (eventType === 'mutex-grant-rejected') cockpitState.mutexRejected += 1;
+  if (eventType === 'wal-restored') cockpitState.walRestored += 1;
+  if (eventType === 'leader-elected' && event.data?.leaderId) currentLeader = event.data.leaderId;
+
+  updateCockpitGauges();
+}
+
+function updateCockpitGauges() {
+  setText('gauge-leader', currentLeader || '-');
+  setText('gauge-event-rate', `${cockpitState.eventTimestamps.length}/min`);
+  setText('gauge-clock-sync', cockpitState.latestClockSync);
+  setText('gauge-mutex', `${cockpitState.mutexGranted} / ${cockpitState.mutexRejected}`);
+  setText('gauge-wal', cockpitState.walRestored);
+  setText('gauge-focus', cockpitState.activeAlgorithm);
 }
 
 function initObservabilityControls() {
@@ -613,6 +948,7 @@ function setText(id, value) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initNetworkGraph();
+  initCockpitControls();
   initObservabilityControls();
   connectToMqtt();
   renderObservableTimeline();

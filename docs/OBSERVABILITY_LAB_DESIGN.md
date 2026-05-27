@@ -474,6 +474,31 @@ Validacion rapida:
 
 Objetivo: introducir el bus de eventos sin cambiar comportamiento de algoritmos.
 
+### Slice UX: Distributed Algorithms Cockpit
+
+Estado: implementado como capa guiada del `web-monitor` sobre el timeline existente.
+
+Implementado:
+
+- Area prominente `Distributed Algorithms Cockpit` con selector de foco para Cristian, Lamport, vector clocks, Bully + quorum lease, mutex y WAL/recovery.
+- Logica de dependencia solo en UI: mutex resalta Election + Lease y WAL opcional; WAL avisa que requiere mutex y reinicio del mismo coordinador; election/split-brain enfatiza quorum + lease + mutex fencing.
+- Controles de carga `Normal`, `High` y `Stress` con significado conceptual de telemetria, presion mutex y volumen de eventos.
+- Lanzadores de escenario para clock drift/Cristian, leader failover/Bully, mutex pressure y WAL recovery.
+- Publicacion de intencion estructurada en `utp/sistemas_distribuidos/grupo1/observability/control/lab` con sobre `lab-control-intent/v1`.
+- Gauges derivados de eventos existentes: lider observado, tasa de eventos por minuto, ultimo estado Cristian, grants/rejects mutex, restores WAL y foco activo.
+
+Linea honesta de alcance:
+
+- El cockpit filtra y guia observabilidad; los algoritmos siguen corriendo en el simulador.
+- Los botones de carga y escenarios publican intencion de control, pero el `scenario-runner` automatico queda pendiente.
+- Este slice no cambia semantica backend, quorum, lease, mutex ni WAL.
+
+Siguiente backend runner:
+
+- Consumir `observability/control/lab`.
+- Traducir `load-profile-started` a cambios reales de tasa/presion si el simulador expone esos knobs.
+- Traducir `scenario-intent-issued` a pasos verificables con `scenarioId`, eventos `scenario-*` y evidencia exportable.
+
 PR recomendado:
 
 - Agregar topicos `observability` en `config/index.js`.

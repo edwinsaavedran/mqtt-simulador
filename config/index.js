@@ -67,6 +67,7 @@ module.exports = {
     observability: {
       all: 'utp/sistemas_distribuidos/grupo1/observability/events/#',
       events: (algorithm, eventType) => `utp/sistemas_distribuidos/grupo1/observability/events/${algorithm}/${eventType}`,
+      lab_control: 'utp/sistemas_distribuidos/grupo1/observability/control/lab',
     },
 
     // Tópico de control operativo para simular fallos de publishers
