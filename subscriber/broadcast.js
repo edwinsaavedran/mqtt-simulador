@@ -6,7 +6,7 @@ const config = require('../config');
 const brokerUrl = `mqtt://${config.broker.address}:${config.broker.port}`;
 const client = mqtt.connect(brokerUrl);
 
-const topic = `${config.topics.base}/#`; // El tópico "catch-all"
+const topic = config.topics.all;
 
 client.on('connect', () => {
   console.log(`[INFO] Suscriptor BROADCAST conectado al broker en ${brokerUrl}`);

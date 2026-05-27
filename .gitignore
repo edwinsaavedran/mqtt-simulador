@@ -1,7 +1,36 @@
-# Dependencias de Node.js
-node_modules/
-
-# Dependencias del sistema operativo
+# OS and editor artifacts
 .DS_Store
 Thumbs.db
 desktop.ini
+.idea/
+.vscode/
+.atl/
+*.swp
+*.swo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs and runtime output
+logs/
+*.log
+
+# Docker and Mosquitto generated state
+mosquitto/data/
+mosquitto/log/
+
+# Coverage and build outputs
+coverage/
+dist/
+build/
+.next/
+.cache/

@@ -6,7 +6,7 @@ const config = require('../config'); // Nuestra config MQTT
 
 // --- Configuración InfluxDB (leída desde variables de entorno) ---
 const influxUrl = process.env.INFLUXDB_URL || 'http://localhost:8086';
-const influxToken = process.env.INFLUXDB_TOKEN || 'mySuperSecretToken123!';
+const influxToken = process.env.INFLUXDB_TOKEN || 'change-me-local-token';
 const influxOrg = process.env.INFLUXDB_ORG || 'utp';
 const influxBucket = process.env.INFLUXDB_BUCKET || 'sensors';
 
@@ -16,9 +16,9 @@ const topic = config.topics.telemetry('+'); // Escucha telemetría de todos los 
 const clientId = `persistence_sub_${Math.random().toString(16).slice(2, 8)}`;
 
 // --- Configuración Reloj Vectorial ---
-const VECTOR_PROCESS_COUNT = 3;
-const PROCESS_ID = parseInt(process.env.PROCESS_ID || '2'); // Nuestro ID es 2
+const VECTOR_PROCESS_COUNT = config.topology.getTotalNodes();
 let vectorClock = new Array(VECTOR_PROCESS_COUNT).fill(0);
+const MAX_SKEW_ALLOWED_MS = 2000;
 
 // --- Reloj Lógico de Lamport para el suscriptor ---
 let lamportClock = 0;
@@ -51,32 +51,34 @@ mqttClient.on('error', (error) => {
 
 // --- Procesamiento de Mensajes ---
 mqttClient.on('message', (receivedTopic, message) => {
-  // --- REGLA 3 (LAMPORT): Parte 1 (Evento Interno) ---
-  // Incrementamos nuestro reloj local por el evento de "recibir mensaje".
-  lamportClock++;
-
-  // --- REGLA 1 (VECTORIAL): Evento interno ---
-  // El evento de "recibir" incrementa nuestro propio reloj (P_2)
-  vectorClock[PROCESS_ID]++;
-
   console.log(`\n[MSG] Mensaje recibido en [${receivedTopic}]`);
   try {
     const data = JSON.parse(message.toString());
     const deviceId = data.deviceId;
+    const previousLamportClock = lamportClock;
+    const senderVectorIndex = config.topology.getVectorIndex(deviceId);
 
-    // --- REGLA 3 (LAMPORT): Parte 2 (Fusión) ---
-    const receivedLamportTS = data.lamport_ts || 0;
-    lamportClock = Math.max(lamportClock, receivedLamportTS);
-    console.log(`[LAMPORT] Reloj local actualizado a: ${lamportClock} (recibido: ${receivedLamportTS})`);
-
-    // --- REGLA 3 (VECTORIAL): Parte 2 (Fusión) ---
-    const receivedVectorClock = data.vector_clock || new Array(VECTOR_PROCESS_COUNT).fill(0);
-    // Fusionamos los relojes: tomamos el máximo de cada posición
-    for (let i = 0; i < VECTOR_PROCESS_COUNT; i++) {
-      vectorClock[i] = Math.max(vectorClock[i], receivedVectorClock[i]);
+    const receivedLamportTS = Number(data.lamport_ts || 0);
+    if (!Number.isFinite(receivedLamportTS)) {
+      console.warn('[WARN] Mensaje con lamport_ts inválido, ignorando:', data);
+      return;
     }
 
-    console.log(`[VECTOR] Reloj local actualizado a: [${vectorClock.join(',')}] (recibido: [${receivedVectorClock.join(',')}])`);
+    const receivedVectorClock = data.vector_clock;
+    if (!isValidVectorClock(receivedVectorClock)) {
+      console.warn('[WARN] Mensaje con vector_clock inválido, ignorando:', data);
+      return;
+    }
+
+    if (senderVectorIndex === -1) {
+      console.warn(`[WARN] Mensaje de ${deviceId} rechazado: deviceId sin indice vectorial auditable.`);
+      return;
+    }
+
+    if (!isValidSenderVectorMetadata(data, senderVectorIndex)) {
+      console.warn(`[WARN] Mensaje de ${deviceId} rechazado: metadata vectorial inconsistente.`);
+      return;
+    }
 
     if (!deviceId || data.temperatura === undefined || data.humedad === undefined) {
       console.warn('[WARN] Mensaje incompleto recibido, ignorando:', data);
@@ -85,20 +87,47 @@ mqttClient.on('message', (receivedTopic, message) => {
 
     // --- FILTRO : VALIDACIÓN TEMPORAL ---
     const now = Date.now();
-    const msgTime = new Date(data.timestamp).getTime();
-    const diff = Math.abs(now - msgTime);
-    const MAX_SKEW_ALLOWED = 2000; // 2 segundos de tolerancia
+    const msgTime = parseTimestamp(data.timestamp);
+    if (msgTime === null) {
+      console.warn(`[WARN] Mensaje con timestamp inválido de ${deviceId}, ignorando.`);
+      return;
+    }
+
+    const skew = msgTime - now;
+    const diff = Math.abs(skew);
+    let acceptedTimestampMs = msgTime;
 
     // Caso 1: El mensaje viene del futuro o pasado lejano
-    if (diff > MAX_SKEW_ALLOWED) {
+    if (diff > MAX_SKEW_ALLOWED_MS) {
+      const direction = skew > 0 ? 'future' : 'past';
+      if (direction === 'future') {
+        console.error(`Rejected future packet from ${deviceId}. Skew: ${diff}ms > ${MAX_SKEW_ALLOWED_MS}ms.`);
+      } else {
+        console.error(`[UTP-DEFENSE] Rejected past packet from ${deviceId}. Skew: ${diff}ms > ${MAX_SKEW_ALLOWED_MS}ms.`);
+      }
 
-      // Excepción: Si el reloj lógico dice que es consistente, lo salvamos con una etiqueta
-      // (Verificamos si receivedLamportTS > lamportClock local antes de actualizar)
-      // Nota: Aquí simplificamos la lógica de rescate para no complicar.
+      const canRescue = receivedLamportTS > previousLamportClock
+        && isSenderVectorProgress(receivedVectorClock, senderVectorIndex);
 
-      console.error(`[UTP-DEFENSE] Paquete RECHAZADO de ${deviceId}. Skew: ${diff}ms > 2000ms.`);
-      return; // <--- AQUÍ DETENEMOS EL PROCESAMIENTO. NO GUARDA EN DB.
+      if (!canRescue) {
+        console.warn(`[UTP-DEFENSE] Temporal rescue rejected for ${deviceId}: Lamport/vector conditions not satisfied.`);
+        return; // NO GUARDA EN DB.
+      }
+
+      acceptedTimestampMs = now;
+      console.warn(`[UTP-DEFENSE] Temporal rescue accepted for ${deviceId}: skew=${diff}ms, lamport=${receivedLamportTS}, vectorIndex=${senderVectorIndex}. Timestamp forced to local persistence time.`);
     }
+
+    // --- REGLA LAMPORT: recepción ---
+    lamportClock = Math.max(lamportClock, receivedLamportTS) + 1;
+    console.log(`[LAMPORT] Reloj local actualizado a: ${lamportClock} (recibido: ${receivedLamportTS})`);
+
+    // --- REGLA VECTORIAL: fusión observada de relojes de publishers ---
+    for (let i = 0; i < VECTOR_PROCESS_COUNT; i++) {
+      vectorClock[i] = Math.max(vectorClock[i], receivedVectorClock[i]);
+    }
+
+    console.log(`[VECTOR] Reloj local actualizado a: [${vectorClock.join(',')}] (recibido: [${receivedVectorClock.join(',')}])`);
     // --------------------------------------------
 
     // Crear un punto de datos para InfluxDB
@@ -110,13 +139,13 @@ mqttClient.on('message', (receivedTopic, message) => {
       // Relojes Lógicos (Lamport)
       .intField('lamport_ts_sensor', receivedLamportTS)
       .tag('lamport_ts_persistence', lamportClock.toString())
+      .tag('vector_index_sensor', senderVectorIndex.toString())
 
-      // --- NUEVO: Añadimos relojes vectoriales a InfluxDB ---
-      // (InfluxDB no soporta arrays nativos, los guardamos como strings)
+      // InfluxDB no soporta arrays nativos, los guardamos como strings.
       .tag('vector_clock_sensor', JSON.stringify(receivedVectorClock))
       .tag('vector_clock_persistence', JSON.stringify(vectorClock))
 
-      .timestamp(new Date(data.timestamp || Date.now()));
+      .timestamp(new Date(acceptedTimestampMs));
 
     console.log(`[DB] Preparando punto para InfluxDB: ${point.toString()}`);
 
@@ -137,6 +166,31 @@ mqttClient.on('message', (receivedTopic, message) => {
     console.error('[ERROR] Error al procesar mensaje MQTT o escribir en DB:', error);
   }
 });
+
+function parseTimestamp(timestamp) {
+  try {
+    const time = new Date(timestamp).getTime();
+    return Number.isFinite(time) ? time : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function isValidVectorClock(candidate) {
+  return Array.isArray(candidate)
+    && candidate.length === VECTOR_PROCESS_COUNT
+    && candidate.every(value => Number.isInteger(value) && value >= 0);
+}
+
+function isValidSenderVectorMetadata(data, senderVectorIndex) {
+  if (data.vectorIndex !== undefined && data.vectorIndex !== senderVectorIndex) return false;
+  if (data.processId !== undefined && !Number.isInteger(data.processId)) return false;
+  return data.vector_clock[senderVectorIndex] > 0;
+}
+
+function isSenderVectorProgress(receivedVectorClock, senderVectorIndex) {
+  return receivedVectorClock[senderVectorIndex] > vectorClock[senderVectorIndex];
+}
 
 // --- Manejo de Cierre Limpio ---
 process.on('SIGINT', async () => {
