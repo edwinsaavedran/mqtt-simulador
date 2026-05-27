@@ -15,6 +15,8 @@ const MQTT_TOPICS = {
 let client;
 let currentLeader = null;
 const devices = {};
+const nodeRuntimeStatus = new Map();
+const nodeRuntimeStatusChangedAt = new Map();
 let network;
 let nodesDataSet, edgesDataSet;
 const packets = [];
@@ -30,6 +32,7 @@ const GAUGE_RENDER_INTERVAL_MS = 250;
 const LIVE_BADGE_RENDER_INTERVAL_MS = 500;
 const NODE_FILTER_RENDER_INTERVAL_MS = 1000;
 const MAX_QUEUE_NODES = 24;
+const CONTROL_PANEL_REFRESH_MS = 1000;
 const OBSERVABILITY_FILTERS = {
   algorithm: 'all',
   severity: 'all',
@@ -181,6 +184,7 @@ const cockpitState = {
   walRestored: 0,
 };
 let selectedNodeId = null;
+let controlPanelRefreshTimer = null;
 
 // ============================================================================
 // 1. INICIALIZACIÓN DE LA INTERFAZ (VIS.JS)
@@ -340,24 +344,29 @@ function openControlPanel(nodeId) {
   const panel = document.getElementById('node-control-panel');
   if (!panel) return;
 
-  document.getElementById('cp-title').innerText = nodeId;
-  document.getElementById('cp-role').innerText = (nodeId === currentLeader) ? '[*] LÍDER' : 'SEGUIDOR';
-
-  const lastData = devices[nodeId];
-  let isDead = true;
-  if (lastData && (Date.now() - new Date(lastData.timestamp).getTime() < 6000)) {
-    isDead = false;
-  }
-  if (lastData && lastData.status === 'offline') isDead = true;
-
-  updatePanelButtons(isDead ? 'OFFLINE' : 'ONLINE');
+  renderControlPanel(nodeId);
+  startControlPanelRefresh();
   panel.classList.remove('hidden');
 }
 
 function closeControlPanel() {
   const panel = document.getElementById('node-control-panel');
   if (panel) panel.classList.add('hidden');
+  stopControlPanelRefresh();
   selectedNodeId = null;
+}
+
+function startControlPanelRefresh() {
+  stopControlPanelRefresh();
+  controlPanelRefreshTimer = setInterval(() => {
+    if (selectedNodeId) renderControlPanel(selectedNodeId);
+  }, CONTROL_PANEL_REFRESH_MS);
+}
+
+function stopControlPanelRefresh() {
+  if (!controlPanelRefreshTimer) return;
+  clearInterval(controlPanelRefreshTimer);
+  controlPanelRefreshTimer = null;
 }
 
 function updatePanelButtons(status) {
@@ -375,6 +384,43 @@ function updatePanelButtons(status) {
   btnRevive.style.opacity = (status === 'ONLINE') ? '0.5' : '1';
 }
 
+function getNodeOperationalStatus(nodeId) {
+  const explicitStatus = nodeRuntimeStatus.get(nodeId);
+  if (explicitStatus === 'OFFLINE') return 'OFFLINE';
+  if (explicitStatus === 'ONLINE') {
+    const changedAt = nodeRuntimeStatusChangedAt.get(nodeId) || 0;
+    if (Date.now() - changedAt < 6000) return 'ONLINE';
+  }
+
+  const lastData = devices[nodeId];
+  if (!lastData) return 'OFFLINE';
+  if (lastData.status === 'offline') return 'OFFLINE';
+
+  const lastTimestamp = new Date(lastData.timestamp).getTime();
+  if (Number.isFinite(lastTimestamp) && Date.now() - lastTimestamp < 6000) {
+    return 'ONLINE';
+  }
+
+  return 'OFFLINE';
+}
+
+function setNodeOperationalStatus(nodeId, status) {
+  nodeRuntimeStatus.set(nodeId, status);
+  nodeRuntimeStatusChangedAt.set(nodeId, Date.now());
+  if (devices[nodeId]) {
+    devices[nodeId] = { ...devices[nodeId], status: status.toLowerCase() };
+  }
+  if (selectedNodeId === nodeId) renderControlPanel(nodeId);
+}
+
+function renderControlPanel(nodeId) {
+  const titleEl = document.getElementById('cp-title');
+  const roleEl = document.getElementById('cp-role');
+  if (titleEl) titleEl.innerText = nodeId;
+  if (roleEl) roleEl.innerText = (nodeId === currentLeader) ? '[*] LÍDER' : 'SEGUIDOR';
+  updatePanelButtons(getNodeOperationalStatus(nodeId));
+}
+
 function sendChaos(action) {
   if (!selectedNodeId) return;
 
@@ -389,10 +435,12 @@ function sendChaos(action) {
 
   // Feedback Optimista
   if (action === 'KILL') {
-    updatePanelButtons('OFFLINE');
+    setNodeOperationalStatus(selectedNodeId, 'OFFLINE');
     nodesDataSet.update({ id: selectedNodeId, color: '#333333' });
   } else {
-    updatePanelButtons('ONLINE');
+    setNodeOperationalStatus(selectedNodeId, 'ONLINE');
+    const isLeader = selectedNodeId === currentLeader;
+    nodesDataSet.update({ id: selectedNodeId, color: isLeader ? '#d29922' : '#238636' });
   }
 }
 
@@ -439,6 +487,11 @@ function requestNetworkRedraw() {
 function handleTelemetry(data) {
   const id = data.deviceId;
   devices[id] = data;
+  if (id && nodeRuntimeStatus.get(id) !== 'OFFLINE') {
+    nodeRuntimeStatus.delete(id);
+    nodeRuntimeStatusChangedAt.delete(id);
+  }
+  if (selectedNodeId === id) renderControlPanel(id);
   perfState.pendingTelemetry.set(id, data);
   scheduleSensorRender();
 }
@@ -461,6 +514,7 @@ function scheduleSensorRender() {
 }
 
 function handleNodeDeath(id) {
+  setNodeOperationalStatus(id, 'OFFLINE');
   if (nodesDataSet.get(id)) {
     nodesDataSet.update({ id: id, color: '#333333' });
     logEvent('ALERT', `Nodo ${id} reporta OFFLINE`);
@@ -468,8 +522,10 @@ function handleNodeDeath(id) {
 }
 
 function handleNodeRevival(id) {
+  setNodeOperationalStatus(id, 'ONLINE');
   if (nodesDataSet.get(id)) {
-    nodesDataSet.update({ id: id, color: '#238636' });
+    const isLeader = id === currentLeader;
+    nodesDataSet.update({ id: id, color: isLeader ? '#d29922' : '#238636' });
     logEvent('INFO', `Nodo ${id} ha revivido`);
   }
 }
@@ -483,10 +539,11 @@ function handleLeaderChange(payload) {
     const allNodes = nodesDataSet.getIds();
     const updates = allNodes.map(nodeId => {
       if (nodeId === 'broker') return null;
+      const isOffline = getNodeOperationalStatus(nodeId) === 'OFFLINE';
       const isLeader = (nodeId === newLeader);
       return {
         id: nodeId,
-        color: isLeader ? '#d29922' : '#238636',
+        color: isOffline ? '#333333' : (isLeader ? '#d29922' : '#238636'),
         size: isLeader ? 40 : 25,
         borderWidth: isLeader ? 4 : 2
       };
@@ -497,6 +554,7 @@ function handleLeaderChange(payload) {
     const leaderCard = document.getElementById(`card-${newLeader}`);
     if (leaderCard) leaderCard.classList.add('leader');
   }
+  if (selectedNodeId) renderControlPanel(selectedNodeId);
   updateCockpitGauges();
 }
 
