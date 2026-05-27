@@ -31,6 +31,13 @@ Este documento audita los topicos MQTT usados por el simulador. La fuente centra
 | `utp/sistemas_distribuidos/grupo1/election/quorum/ack` | `publisher` receptor de quorum check | `publisher` candidato, `broadcast`, `web-monitor` via catch-all | `{ "term": number, "electionId": string, "candidateId": string, "voterId": string }` | El candidato solo cuenta votos para su `term`, `electionId`, `candidateId` y por `voterId` unico. |
 | `utp/sistemas_distribuidos/grupo1/chaos/control` | `web-monitor` | `publisher` | `{ "targetId": string, "action": "KILL" | "REVIVE" }` | Canal operativo para simular fallos. `publisher` solo procesa comandos dirigidos a su `DEVICE_ID`. |
 
+## Observabilidad estructurada
+
+| Topico | Direccion / publicador | Suscriptores | Payload | Notas de validacion / auditoria |
+|--------|-------------------------|--------------|---------|----------------------------------|
+| `utp/sistemas_distribuidos/grupo1/observability/events/<algorithm>/<eventType>` | `publisher` en decisiones de Cristian, eleccion, lease, mutex y WAL | `web-monitor`; futuros persistidores/exportadores | Sobre `observability-event/v1` definido en `docs/OBSERVABILITY_LAB_DESIGN.md` | Primer slice operativo. Eventos mutex/WAL activos: `mutex-grant-rejected`, `mutex-granted`, `wal-restored`. El helper publica fire-and-forget y nunca debe detener el algoritmo principal si falla la observabilidad. |
+| `utp/sistemas_distribuidos/grupo1/observability/control/lab` | `web-monitor` cockpit | Futuro `scenario-runner`; operadores con `mosquitto_sub` | Sobre `lab-control-intent/v1` con `eventType`, `emittedAt`, `source` y `data` | Slice de UX guiada. Publica intencion de perfil de carga o escenario; no implica que el backend ejecute automaticamente el escenario todavia. |
+
 ## Topicos legacy o inconsistentes en scripts
 
 | Archivo | Topico observado | Estado | Nota |

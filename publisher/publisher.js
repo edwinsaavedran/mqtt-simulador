@@ -1,5 +1,6 @@
 const mqtt = require('mqtt');
 const config = require('../config');
+const observability = require('../observability/events');
 const fs = require('fs');
 const path = require('path');
 
@@ -157,6 +158,12 @@ client.on('message', (topic, message) => {
   if (topic === config.topics.mutex_request) {
     if (!canGrantMutex()) {
       console.warn(`[MUTEX] grant rejected: no valid leadership node=${DEVICE_ID} requester=${payload.deviceId}`);
+      publishObservableEvent('mutex-grant-rejected', 'mutex', 'warn', `Mutex grant rejected for ${payload.deviceId}`, {
+        requesterId: payload.deviceId,
+        reason: 'no-valid-leadership',
+        role: leaderRole,
+        hasValidLease: hasValidLocalLease(),
+      });
       return;
     }
     handleCoordRequest(payload.deviceId);
@@ -184,6 +191,11 @@ client.on('message', (topic, message) => {
     const t4 = Date.now();
     if (payload.deviceId !== DEVICE_ID) {
       console.warn(`[TIME] Sincronización rechazada: respuesta para deviceId inválido (${payload.deviceId}).`);
+      publishObservableEvent('cristian-sync-rejected', 'physical-clock', 'warn', 'Cristian sync rejected: invalid deviceId', {
+        reason: 'invalid-device-id',
+        receivedDeviceId: payload.deviceId,
+        expectedDeviceId: DEVICE_ID,
+      });
       return;
     }
 
@@ -191,18 +203,38 @@ client.on('message', (topic, message) => {
     const serverTime = Number(payload.serverTime);
     if (!Number.isFinite(t1) || !Number.isFinite(serverTime)) {
       console.warn(`[TIME] Sincronización rechazada: payload incompleto o no numérico.`);
+      publishObservableEvent('cristian-sync-rejected', 'physical-clock', 'warn', 'Cristian sync rejected: invalid payload', {
+        reason: 'invalid-payload',
+        t1: payload.t1,
+        serverTime: payload.serverTime,
+      });
       return;
     }
 
     const rtt = t4 - t1;
     if (rtt < 0 || rtt > TIME_SYNC_MAX_RTT_MS) {
       console.warn(`[TIME] Sincronización rechazada: RTT=${rtt}ms supera umbral de ${TIME_SYNC_MAX_RTT_MS}ms.`);
+      publishObservableEvent('cristian-sync-rejected', 'physical-clock', 'warn', `Cristian sync rejected with RTT ${rtt}ms`, {
+        reason: 'rtt-out-of-range',
+        t1,
+        t4,
+        rttMs: rtt,
+        thresholdMs: TIME_SYNC_MAX_RTT_MS,
+      });
       return;
     }
 
     const correctTime = serverTime + (rtt / 2);
     clockOffset = correctTime - getSimulatedTime().getTime();
     console.log(`[TIME] Sincronización aceptada: RTT=${rtt}ms, offset=${Math.round(clockOffset)}ms.`);
+    publishObservableEvent('cristian-sync-accepted', 'physical-clock', 'info', `Cristian sync accepted with RTT ${rtt}ms`, {
+      t1,
+      t4,
+      serverTime,
+      rttMs: rtt,
+      offsetMs: Math.round(clockOffset),
+      thresholdMs: TIME_SYNC_MAX_RTT_MS,
+    });
   }
 
   if (topic === config.topics.election.quorum_check) {
@@ -261,6 +293,13 @@ function startElection() {
   currentTerm = Math.max(currentTerm + 1, Date.now());
   currentElectionId = `${DEVICE_ID}-${currentTerm}`;
   quorumVotes = new Set([DEVICE_ID]);
+
+  publishObservableEvent('election-started', 'election', 'info', `${DEVICE_ID} started election`, {
+    reason: 'lease-expired',
+    term: currentTerm,
+    electionId: currentElectionId,
+    candidatePriority: MY_PRIORITY,
+  });
 
   const electionPayload = {
     type: 'ELECTION',
@@ -340,6 +379,14 @@ function performVictory(electionId) {
   currentLeaderPriority = MY_PRIORITY;
   setLeaderRole(LEADER_ROLES.LEADER, 'quorum reached');
   console.log(`[ELECTION] won election with ${quorumVotes.size} votes: node=${DEVICE_ID} electionId=${electionId} required=${QUORUM_SIZE}`);
+  publishObservableEvent('leader-elected', 'election', 'info', `${DEVICE_ID} became leader after quorum ${quorumVotes.size}/${TOTAL_NODES}`, {
+    term: currentTerm,
+    electionId,
+    leaderId: DEVICE_ID,
+    priority: MY_PRIORITY,
+    votes: quorumVotes.size,
+    requiredQuorum: QUORUM_SIZE,
+  });
 
   client.publish(config.topics.election.coordinator, JSON.stringify({
     type: 'VICTORY',
@@ -376,6 +423,14 @@ function renewLease() {
     leaseUntil: localLeaseUntil,
   }), { qos: 1, retain: true });
   console.log(`[ELECTION] lease renewed: leader=${DEVICE_ID} term=${currentTerm} leaseUntil=${localLeaseUntil}`);
+  publishObservableEvent('lease-renewed', 'lease-quorum', 'info', `${DEVICE_ID} renewed leader lease`, {
+    term: currentTerm,
+    electionId: currentElectionId,
+    leaderId: DEVICE_ID,
+    issuedAt,
+    leaseUntil: localLeaseUntil,
+    durationMs: LEASE_DURATION,
+  });
 }
 
 function handleLease(leaseData) {
@@ -513,8 +568,18 @@ function setLeaderRole(nextRole, reason) {
 }
 
 function stepDown(reason = 'leadership revoked') {
+  const wasLeader = leaderRole === LEADER_ROLES.LEADER || isCoordinator;
+  const previousLeaseUntil = localLeaseUntil;
   if (isCoordinator) {
     console.warn(`[ELECTION] stepping down: node=${DEVICE_ID} reason=${reason}`);
+  }
+
+  if (wasLeader) {
+    publishObservableEvent('leader-stepped-down', 'election', 'warn', `${DEVICE_ID} stepped down as leader`, {
+      reason,
+      term: currentTerm,
+      lastLeaseUntil: previousLeaseUntil,
+    });
   }
 
   setLeaderRole(LEADER_ROLES.FOLLOWER, reason);
@@ -589,6 +654,12 @@ function grantCoordLock(requesterId) {
   }, CALIBRATION_DURATION_MS + CALIBRATION_RELEASE_GRACE_MS); // Dar un margen de seguridad
 
   client.publish(config.topics.mutex_grant(requesterId), JSON.stringify({ status: 'granted' }), { qos: 1 });
+  publishObservableEvent('mutex-granted', 'mutex', 'info', `Mutex granted to ${requesterId}`, {
+    requesterId,
+    resourceId: 'calibration',
+    leaseUntil: localLeaseUntil,
+    queueLength: coord_waitingQueue.length,
+  });
 }
 
 function publishCoordStatus() {
@@ -637,6 +708,30 @@ function recoverFromWal() {
     .filter(id => id !== undefined && id !== null);
 
   console.log(`[WAL] Estado restaurado. Queue: ${coord_waitingQueue.length} ids=${JSON.stringify(restoredQueueIds)}`);
+  publishObservableEvent('wal-restored', 'wal-recovery', 'info', `WAL restored with ${restoredQueueIds.length} queued request(s)`, {
+    walFile: WAL_FILE,
+    restoredHolder: coord_lockHolder,
+    restoredQueue: restoredQueueIds,
+    recordsRead: lines.filter(line => line.trim()).length,
+  });
+}
+
+function publishObservableEvent(eventType, algorithm, severity, message, metadata = {}) {
+  observability.publishEvent(client, {
+    eventType,
+    algorithm,
+    nodeId: DEVICE_ID,
+    processId: PROCESS_ID,
+    role: leaderRole,
+    severity,
+    message,
+    metadata,
+    lamport: lamportClock,
+    vector: vectorClock,
+    correlationId: metadata.electionId || metadata.requesterId || metadata.t1
+      ? `${algorithm}-${metadata.electionId || metadata.requesterId || metadata.t1}`
+      : undefined,
+  });
 }
 
 // --- TELEMETRÍA ---

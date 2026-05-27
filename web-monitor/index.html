@@ -43,6 +43,161 @@
         </div>
     </section>
 
+    <section class="panel cockpit-panel" aria-labelledby="cockpit-title">
+        <div class="cockpit-hero">
+            <div>
+                <p class="eyebrow">Guided lab mode</p>
+                <h2 id="cockpit-title">Distributed Algorithms Cockpit</h2>
+                <p>
+                    Seleccioná un algoritmo, activá foco observable y emití intención de carga/escenario por MQTT.
+                    Los algoritmos siguen corriendo en el simulador; este cockpit guía filtros, métricas y control.
+                </p>
+            </div>
+            <div class="cockpit-state-card" aria-label="Estado activo del cockpit">
+                <span>FOCUS</span>
+                <strong id="cockpit-active-focus">Cristian / physical clock</strong>
+                <small id="cockpit-mode-note">Focus mode filters and guides observability.</small>
+            </div>
+        </div>
+
+        <div class="cockpit-grid">
+            <div class="cockpit-section cockpit-algorithms">
+                <div class="cockpit-section-header">
+                    <h3>Algorithm Focus</h3>
+                    <span id="cockpit-bundle-badge">Solo focus</span>
+                </div>
+                <div id="cockpit-algorithm-cards" class="algorithm-card-grid" aria-label="Selector de algoritmos"></div>
+                <div id="cockpit-guidance" class="guidance-box" aria-live="polite"></div>
+            </div>
+
+            <div class="cockpit-section">
+                <div class="cockpit-section-header">
+                    <h3>Load Profile</h3>
+                    <span id="cockpit-active-load">Normal</span>
+                </div>
+                <div id="load-profile-controls" class="load-profile-grid" aria-label="Controles de carga"></div>
+                <div class="cockpit-intent-status">
+                    <span>Control topic</span>
+                    <code id="cockpit-control-topic">observability/control/lab</code>
+                    <small id="cockpit-last-intent">Esperando acción del usuario.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="cockpit-grid cockpit-grid-secondary">
+            <div class="cockpit-section">
+                <div class="cockpit-section-header">
+                    <h3>Scenario Launcher</h3>
+                    <span id="cockpit-active-scenario">Ninguno</span>
+                </div>
+                <div id="scenario-launcher" class="scenario-grid" aria-label="Lanzador de escenarios guiados"></div>
+            </div>
+
+            <div class="cockpit-section">
+                <div class="cockpit-section-header">
+                    <h3>Live Gauges</h3>
+                    <span>Derived from events</span>
+                </div>
+                <div class="cockpit-gauges" aria-label="Métricas de cockpit">
+                    <div class="gauge-tile">
+                        <span id="gauge-leader">-</span>
+                        <small>Latest leader</small>
+                    </div>
+                    <div class="gauge-tile">
+                        <span id="gauge-event-rate">0/min</span>
+                        <small>Event rate</small>
+                    </div>
+                    <div class="gauge-tile">
+                        <span id="gauge-clock-sync">Waiting</span>
+                        <small>Clock sync</small>
+                    </div>
+                    <div class="gauge-tile">
+                        <span id="gauge-mutex">0 / 0</span>
+                        <small>Mutex grants / rejects</small>
+                    </div>
+                    <div class="gauge-tile">
+                        <span id="gauge-wal">0</span>
+                        <small>WAL restored</small>
+                    </div>
+                    <div class="gauge-tile">
+                        <span id="gauge-focus">physical-clock</span>
+                        <small>Active focus</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel observability-panel">
+        <div class="observability-header">
+            <div>
+                <h2>Timeline Observable</h2>
+                <p>Eventos MQTT de algoritmos distribuidos en tiempo real</p>
+            </div>
+            <span id="observability-live-badge" class="live-badge is-idle">EN ESPERA</span>
+        </div>
+
+        <div class="observability-metrics" aria-label="Resumen de eventos observables">
+            <div class="metric-tile">
+                <span id="obs-total-count">0</span>
+                <small>Total</small>
+            </div>
+            <div class="metric-tile">
+                <span id="obs-visible-count">0</span>
+                <small>Visibles</small>
+            </div>
+            <div class="metric-tile metric-alert">
+                <span id="obs-alert-count">0</span>
+                <small>Alertas</small>
+            </div>
+            <div class="metric-tile">
+                <span id="obs-node-count">0</span>
+                <small>Nodos</small>
+            </div>
+        </div>
+
+        <div class="observability-controls" aria-label="Filtros de timeline observable">
+            <label>
+                Algoritmo
+                <select id="filter-algorithm">
+                    <option value="all">Todos</option>
+                </select>
+            </label>
+            <label>
+                Severidad
+                <select id="filter-severity">
+                    <option value="all">Todas</option>
+                    <option value="debug">Debug</option>
+                    <option value="info">Info</option>
+                    <option value="warn">Warn</option>
+                    <option value="error">Error</option>
+                    <option value="critical">Critical</option>
+                </select>
+            </label>
+            <label>
+                Nodo
+                <select id="filter-node">
+                    <option value="all">Todos</option>
+                </select>
+            </label>
+            <label>
+                Límite
+                <select id="filter-limit">
+                    <option value="20">20</option>
+                    <option value="40" selected>40</option>
+                    <option value="80">80</option>
+                </select>
+            </label>
+            <button id="clear-observability" type="button">Limpiar</button>
+        </div>
+
+        <div id="algorithm-legend" class="algorithm-legend" aria-label="Contexto visual por algoritmo"></div>
+
+        <ul id="observability-timeline" class="observability-timeline">
+            <li class="empty-state">Esperando eventos observables...</li>
+        </ul>
+    </section>
+
     <section class="panel sensors-panel">
         <h2> Matriz de Sensores (Telemetría & Vectores)</h2>
         <div id="sensor-grid"></div>
