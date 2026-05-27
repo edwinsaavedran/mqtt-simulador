@@ -33,7 +33,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}   * VICTORIA: Los tributos se han aliado. El mapa está completo.${NC}"
     SCORE=$((SCORE + 1))
 else
-    echo -e "${RED}   ☠ CAÑÓN: Un tributo está solo y perdido. Fallo de Gossip.${NC}"
+    echo -e "${RED}   CAÑÓN: Un tributo está solo y perdido. Fallo de Gossip.${NC}"
     echo "   (Consejo: Revisa si tu 'merge' de listas está funcionando)"
 fi
 sleep 2
@@ -49,7 +49,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}   * VICTORIA: El sistema resistió la partición. No hubo corrupción.${NC}"
     SCORE=$((SCORE + 1))
 else
-    echo -e "${RED}   ☠ CAÑÓN: El líder entró en pánico. Datos inconsistentes detectados.${NC}"
+    echo -e "${RED}   CAÑÓN: El líder entró en pánico. Datos inconsistentes detectados.${NC}"
 fi
 sleep 2
 
@@ -64,7 +64,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}   * VICTORIA: El Capitolio ha caído. La transacción fue atómica.${NC}"
     SCORE=$((SCORE + 1))
 else
-    echo -e "${RED}   ☠ CAÑÓN: La rebelión fue aplastada. Estado inconsistente (Zombie Transaction).${NC}"
+    echo -e "${RED}   CAÑÓN: La rebelión fue aplastada. Estado inconsistente (Zombie Transaction).${NC}"
 fi
 
 # ----------------------------------------------------------------
