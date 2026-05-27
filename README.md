@@ -43,6 +43,16 @@ El sistema está completamente orquestado con Docker Compose.
     * `monitor`, `unicast`, etc.: Otros suscriptores de ejemplo.
 * **Frontend (Centro de Mando):** Nginx (servidor web) + HTML/CSS/JavaScript (con MQTT.js).
 
+## Contrato MQTT
+
+Los tópicos activos, payloads esperados, publicadores, suscriptores e inconsistencias conocidas están documentados en [`docs/TOPICS.md`](docs/TOPICS.md). Para servicios Node.js, la fuente central del contrato es `config/index.js`.
+
+La sincronización de reloj, el umbral de RTT de Cristian y la compuerta temporal de persistencia están documentados en [`docs/SYNCHRONIZATION.md`](docs/SYNCHRONIZATION.md).
+
+El mapeo de identidad causal, las reglas Lamport/vectoriales y el rescate temporal acotado están documentados en [`docs/CAUSALITY.md`](docs/CAUSALITY.md).
+
+El rediseño de elección de líder, lease, quórum y prevención de split-brain está implementado hasta Phase 4.5 y documentado en [`docs/ELECTION_DESIGN.md`](docs/ELECTION_DESIGN.md). La prueba de stress split-brain de Phase 4.6 sigue pendiente.
+
 ## Puesta en Marcha
 
 Se requiere tener **Docker** y **Docker Compose** instalados.
@@ -60,10 +70,10 @@ Se requiere tener **Docker** y **Docker Compose** instalados.
 
 3.  **Acceder a InfluxDB (Opcional):**
     Puedes explorar los datos almacenados en InfluxDB en `http://localhost:8086`.
-    * **Usuario:** `admin`
-    * **Contraseña:** `password123`
-    * **Organización (Org):** `utp`
-    * **Bucket:** `sensors`
+    * **Usuario:** `INFLUXDB_INIT_USERNAME` en `.env` o `admin` por defecto.
+    * **Contraseña:** `INFLUXDB_INIT_PASSWORD` en `.env` o el valor local de ejemplo.
+    * **Organización (Org):** `INFLUXDB_INIT_ORG` en `.env` o `utp` por defecto.
+    * **Bucket:** `INFLUXDB_INIT_BUCKET` en `.env` o `sensors` por defecto.
 
 4.  **Detener el Sistema:**
     Para detener y eliminar todos los contenedores y volúmenes, presiona `Ctrl+C` en la terminal y luego ejecuta:
