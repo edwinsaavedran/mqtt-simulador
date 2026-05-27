@@ -43,6 +43,76 @@
         </div>
     </section>
 
+    <section class="panel observability-panel">
+        <div class="observability-header">
+            <div>
+                <h2>Timeline Observable</h2>
+                <p>Eventos MQTT de algoritmos distribuidos en tiempo real</p>
+            </div>
+            <span id="observability-live-badge" class="live-badge is-idle">EN ESPERA</span>
+        </div>
+
+        <div class="observability-metrics" aria-label="Resumen de eventos observables">
+            <div class="metric-tile">
+                <span id="obs-total-count">0</span>
+                <small>Total</small>
+            </div>
+            <div class="metric-tile">
+                <span id="obs-visible-count">0</span>
+                <small>Visibles</small>
+            </div>
+            <div class="metric-tile metric-alert">
+                <span id="obs-alert-count">0</span>
+                <small>Alertas</small>
+            </div>
+            <div class="metric-tile">
+                <span id="obs-node-count">0</span>
+                <small>Nodos</small>
+            </div>
+        </div>
+
+        <div class="observability-controls" aria-label="Filtros de timeline observable">
+            <label>
+                Algoritmo
+                <select id="filter-algorithm">
+                    <option value="all">Todos</option>
+                </select>
+            </label>
+            <label>
+                Severidad
+                <select id="filter-severity">
+                    <option value="all">Todas</option>
+                    <option value="debug">Debug</option>
+                    <option value="info">Info</option>
+                    <option value="warn">Warn</option>
+                    <option value="error">Error</option>
+                    <option value="critical">Critical</option>
+                </select>
+            </label>
+            <label>
+                Nodo
+                <select id="filter-node">
+                    <option value="all">Todos</option>
+                </select>
+            </label>
+            <label>
+                Límite
+                <select id="filter-limit">
+                    <option value="20">20</option>
+                    <option value="40" selected>40</option>
+                    <option value="80">80</option>
+                </select>
+            </label>
+            <button id="clear-observability" type="button">Limpiar</button>
+        </div>
+
+        <div id="algorithm-legend" class="algorithm-legend" aria-label="Contexto visual por algoritmo"></div>
+
+        <ul id="observability-timeline" class="observability-timeline">
+            <li class="empty-state">Esperando eventos observables...</li>
+        </ul>
+    </section>
+
     <section class="panel sensors-panel">
         <h2> Matriz de Sensores (Telemetría & Vectores)</h2>
         <div id="sensor-grid"></div>

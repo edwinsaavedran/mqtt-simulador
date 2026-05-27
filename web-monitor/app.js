@@ -7,6 +7,7 @@ const MQTT_TOPICS = {
   chaosControl: `${MQTT_TOPIC_BASE}/chaos/control`,
   electionCoordinator: `${MQTT_TOPIC_BASE}/election/coordinator`,
   mutexStatus: `${MQTT_TOPIC_BASE}/mutex/status`,
+  observabilityEvents: `${MQTT_TOPIC_BASE}/observability/events/`,
 };
 
 // --- ESTADO GLOBAL ---
@@ -16,6 +17,24 @@ const devices = {};
 let network;
 let nodesDataSet, edgesDataSet;
 const packets = [];
+const observableEvents = [];
+const MAX_OBSERVABLE_EVENTS = 80;
+const DEFAULT_OBSERVABLE_LIMIT = 40;
+const OBSERVABILITY_FILTERS = {
+  algorithm: 'all',
+  severity: 'all',
+  node: 'all',
+  limit: DEFAULT_OBSERVABLE_LIMIT,
+};
+const ALGORITHM_META = {
+  'physical-clock': { label: 'Clock Sync', description: 'Cristian / reloj físico', icon: 'CLK', color: '#58a6ff' },
+  election: { label: 'Election', description: 'Coordinador y líder', icon: 'LEAD', color: '#d29922' },
+  'lease-quorum': { label: 'Lease', description: 'Quorum y expiración', icon: 'LEASE', color: '#a371f7' },
+  mutex: { label: 'Mutex', description: 'Sección crítica', icon: 'LOCK', color: '#f0883e' },
+  'wal-recovery': { label: 'WAL / Recovery', description: 'Persistencia y reinicio', icon: 'WAL', color: '#3fb950' },
+  recovery: { label: 'Recovery', description: 'Recuperación de nodo', icon: 'REC', color: '#3fb950' },
+  system: { label: 'System', description: 'Infraestructura', icon: 'SYS', color: '#8b949e' },
+};
 let selectedNodeId = null;
 
 // ============================================================================
@@ -118,6 +137,11 @@ function connectToMqtt() {
   client.on('message', (topic, message) => {
     try {
       const payload = JSON.parse(message.toString());
+      if (topic.startsWith(MQTT_TOPICS.observabilityEvents)) {
+        handleObservableEvent(payload);
+        return;
+      }
+
       const sensorId = payload.deviceId || payload.coordinatorId || payload.candidateId;
 
       // 1. Auto-Descubrimiento
@@ -310,22 +334,48 @@ function updateSensorCard(id, data) {
   }
 
   const isLeader = (id === currentLeader);
-  if (isLeader) card.classList.add('leader');
+  card.classList.toggle('leader', isLeader);
 
   const delta = (Date.now() - new Date(data.timestamp).getTime()) / 1000;
   const deltaColor = Math.abs(delta) > 2 ? '#da3633' : '#8b949e';
 
-  card.innerHTML = `
-        <div style="border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between;">
-            <strong>${id}</strong>
-            <small style="color:${isLeader ? '#d29922' : '#8b949e'}">${isLeader ? '[*] LÍDER' : 'SEGUIDOR'}</small>
-        </div>
-        <div class="metric-row"><span class="metric-label">Temp:</span> <span class="metric-val">${Number(data.temperatura).toFixed(1)}°C</span></div>
-        <div class="metric-row"><span class="metric-label">Lag:</span> <span class="metric-val" style="color:${deltaColor}">${delta.toFixed(2)}s</span></div>
-        <div style="margin-top:8px; font-size:0.8em; color:#58a6ff; text-align:center;">
-            L:${data.lamport_ts} | V:[${data.vector_clock.slice(0, 3).join(',')}]
-        </div>
-    `;
+  const header = document.createElement('div');
+  header.style.cssText = 'border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between;';
+
+  const title = document.createElement('strong');
+  title.textContent = id;
+
+  const role = document.createElement('small');
+  role.style.color = isLeader ? '#d29922' : '#8b949e';
+  role.textContent = isLeader ? '[*] LÍDER' : 'SEGUIDOR';
+
+  const temperature = document.createElement('div');
+  temperature.className = 'metric-row';
+  const temperatureLabel = document.createElement('span');
+  temperatureLabel.className = 'metric-label';
+  temperatureLabel.textContent = 'Temp:';
+  const temperatureValue = document.createElement('span');
+  temperatureValue.className = 'metric-val';
+  temperatureValue.textContent = `${Number(data.temperatura).toFixed(1)}°C`;
+
+  const lag = document.createElement('div');
+  lag.className = 'metric-row';
+  const lagLabel = document.createElement('span');
+  lagLabel.className = 'metric-label';
+  lagLabel.textContent = 'Lag:';
+  const lagValue = document.createElement('span');
+  lagValue.className = 'metric-val';
+  lagValue.style.color = deltaColor;
+  lagValue.textContent = `${delta.toFixed(2)}s`;
+
+  const vector = document.createElement('div');
+  vector.style.cssText = 'margin-top:8px; font-size:0.8em; color:#58a6ff; text-align:center;';
+  vector.textContent = `L:${data.lamport_ts} | V:[${data.vector_clock.slice(0, 3).join(',')}]`;
+
+  header.append(title, role);
+  temperature.append(temperatureLabel, document.createTextNode(' '), temperatureValue);
+  lag.append(lagLabel, document.createTextNode(' '), lagValue);
+  card.replaceChildren(header, temperature, lag, vector);
 
   card.classList.remove('flash-update');
   void card.offsetWidth;
@@ -335,16 +385,29 @@ function updateSensorCard(id, data) {
 function updateVisualQueue(queue, holder) {
   const track = document.getElementById('mutex-queue-track');
   if (!track) return;
-  track.innerHTML = '';
+  track.replaceChildren();
 
   if (holder) {
-    track.innerHTML += `<div class="queue-node active-lock">[@] ${holder}</div>`;
-    track.innerHTML += `<div style="color:#58a6ff; font-size:1.5em;">←</div>`;
+    const activeHolder = document.createElement('div');
+    activeHolder.className = 'queue-node active-lock';
+    activeHolder.textContent = `[@] ${holder}`;
+    const arrow = document.createElement('div');
+    arrow.style.cssText = 'color:#58a6ff; font-size:1.5em;';
+    arrow.textContent = '←';
+    track.append(activeHolder, arrow);
   }
   if (queue && queue.length > 0) {
-    queue.forEach(id => { track.innerHTML += `<div class="queue-node"> ${id}</div>`; });
+    queue.forEach(id => {
+      const node = document.createElement('div');
+      node.className = 'queue-node';
+      node.textContent = ` ${id}`;
+      track.appendChild(node);
+    });
   } else if (!holder) {
-    track.innerHTML = `<div class="empty-state">Recurso libre</div>`;
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = 'Recurso libre';
+    track.appendChild(empty);
   }
 }
 
@@ -352,12 +415,205 @@ function logEvent(type, msg) {
   const list = document.getElementById('messages');
   if (!list) return;
   const li = document.createElement('li');
-  li.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> <strong style="color:var(--accent)">${type}:</strong> ${msg}`;
+  const time = document.createElement('span');
+  time.className = 'log-time';
+  time.textContent = `[${new Date().toLocaleTimeString()}]`;
+  const label = document.createElement('strong');
+  label.style.color = 'var(--accent)';
+  label.textContent = `${type}:`;
+
+  li.append(time, document.createTextNode(' '), label, document.createTextNode(` ${msg}`));
   list.prepend(li);
   if (list.children.length > 12) list.removeChild(list.lastChild);
 }
 
+function handleObservableEvent(event) {
+  if (!event || typeof event !== 'object') return;
+
+  observableEvents.unshift(event);
+  if (observableEvents.length > MAX_OBSERVABLE_EVENTS) observableEvents.pop();
+
+  updateLiveBadge(true);
+  renderObservableTimeline();
+}
+
+function initObservabilityControls() {
+  const algorithmFilter = document.getElementById('filter-algorithm');
+  const severityFilter = document.getElementById('filter-severity');
+  const nodeFilter = document.getElementById('filter-node');
+  const limitFilter = document.getElementById('filter-limit');
+  const clearButton = document.getElementById('clear-observability');
+
+  renderAlgorithmOptions();
+  renderAlgorithmLegend();
+
+  algorithmFilter?.addEventListener('change', event => {
+    OBSERVABILITY_FILTERS.algorithm = event.target.value;
+    renderObservableTimeline();
+  });
+  severityFilter?.addEventListener('change', event => {
+    OBSERVABILITY_FILTERS.severity = event.target.value;
+    renderObservableTimeline();
+  });
+  nodeFilter?.addEventListener('change', event => {
+    OBSERVABILITY_FILTERS.node = event.target.value;
+    renderObservableTimeline();
+  });
+  limitFilter?.addEventListener('change', event => {
+    OBSERVABILITY_FILTERS.limit = Number(event.target.value) || DEFAULT_OBSERVABLE_LIMIT;
+    renderObservableTimeline();
+  });
+  clearButton?.addEventListener('click', () => {
+    observableEvents.length = 0;
+    updateLiveBadge(false);
+    renderObservableTimeline();
+  });
+}
+
+function renderAlgorithmOptions() {
+  const select = document.getElementById('filter-algorithm');
+  if (!select) return;
+
+  Object.entries(ALGORITHM_META).forEach(([algorithm, meta]) => {
+    const option = document.createElement('option');
+    option.value = algorithm;
+    option.textContent = meta.label;
+    select.appendChild(option);
+  });
+}
+
+function renderAlgorithmLegend() {
+  const legend = document.getElementById('algorithm-legend');
+  if (!legend) return;
+
+  legend.innerHTML = '';
+  Object.entries(ALGORITHM_META).forEach(([algorithm, meta]) => {
+    const item = document.createElement('span');
+    item.className = `legend-pill algo-${algorithm}`;
+    item.style.setProperty('--algo-color', meta.color);
+    item.textContent = `${meta.icon} ${meta.label}`;
+    item.title = meta.description;
+    legend.appendChild(item);
+  });
+}
+
+function updateNodeFilterOptions() {
+  const select = document.getElementById('filter-node');
+  if (!select) return;
+
+  const currentValue = select.value;
+  const nodeIds = Array.from(new Set(observableEvents.map(event => getObservableNode(event)))).sort();
+  select.innerHTML = '<option value="all">Todos</option>';
+  nodeIds.forEach(nodeId => {
+    const option = document.createElement('option');
+    option.value = nodeId;
+    option.textContent = nodeId;
+    select.appendChild(option);
+  });
+  select.value = nodeIds.includes(currentValue) ? currentValue : 'all';
+  OBSERVABILITY_FILTERS.node = select.value;
+}
+
+function updateLiveBadge(hasEvents) {
+  const badge = document.getElementById('observability-live-badge');
+  if (!badge) return;
+
+  badge.textContent = hasEvents ? 'RECIBIENDO MQTT' : 'EN ESPERA';
+  badge.className = hasEvents ? 'live-badge is-live' : 'live-badge is-idle';
+}
+
+function renderObservableTimeline() {
+  const list = document.getElementById('observability-timeline');
+  if (!list) return;
+
+  updateNodeFilterOptions();
+  list.innerHTML = '';
+
+  if (observableEvents.length === 0) {
+    list.innerHTML = '<li class="empty-state">Esperando eventos observables...</li>';
+    updateObservabilityMetrics([]);
+    return;
+  }
+
+  const filteredEvents = observableEvents
+    .filter(event => OBSERVABILITY_FILTERS.algorithm === 'all' || getObservableAlgorithm(event) === OBSERVABILITY_FILTERS.algorithm)
+    .filter(event => OBSERVABILITY_FILTERS.severity === 'all' || getObservableSeverity(event) === OBSERVABILITY_FILTERS.severity)
+    .filter(event => OBSERVABILITY_FILTERS.node === 'all' || getObservableNode(event) === OBSERVABILITY_FILTERS.node)
+    .slice(0, OBSERVABILITY_FILTERS.limit);
+
+  updateObservabilityMetrics(filteredEvents);
+
+  if (filteredEvents.length === 0) {
+    list.innerHTML = '<li class="empty-state">No hay eventos para los filtros actuales.</li>';
+    return;
+  }
+
+  filteredEvents.forEach(event => {
+    const item = document.createElement('li');
+    const severity = getObservableSeverity(event);
+    const emittedAt = event.emittedAt || event.timestamp || new Date().toISOString();
+    const eventType = event.eventType || event.type || 'unknown-event';
+    const algorithm = getObservableAlgorithm(event);
+    const algorithmMeta = ALGORITHM_META[algorithm] || { label: algorithm, description: 'Evento observable', icon: 'EVT', color: '#58a6ff' };
+    const nodeId = getObservableNode(event);
+    const summary = event.summary || event.message || eventType;
+    const main = document.createElement('div');
+    const time = document.createElement('span');
+    const algorithmEl = document.createElement('strong');
+    const eventTypeEl = document.createElement('span');
+    const nodeIdEl = document.createElement('small');
+    const summaryEl = document.createElement('div');
+
+    item.className = `observable-event severity-${severity} algo-${algorithm}`;
+    item.style.setProperty('--algo-color', algorithmMeta.color);
+    main.className = 'observable-event-main';
+    time.className = 'log-time';
+    time.textContent = `[${new Date(emittedAt).toLocaleTimeString()}]`;
+    algorithmEl.className = 'algorithm-chip';
+    algorithmEl.textContent = `${algorithmMeta.icon} ${algorithmMeta.label}`;
+    eventTypeEl.textContent = eventType;
+    eventTypeEl.className = 'event-type-chip';
+    nodeIdEl.textContent = nodeId;
+    summaryEl.className = 'observable-event-summary';
+    summaryEl.textContent = summary;
+
+    main.append(time, algorithmEl, eventTypeEl, nodeIdEl);
+    item.append(main, summaryEl);
+    item.title = JSON.stringify(event, null, 2);
+    list.appendChild(item);
+  });
+}
+
+function updateObservabilityMetrics(visibleEvents) {
+  const alertCount = observableEvents.filter(event => ['warn', 'error', 'critical'].includes(getObservableSeverity(event))).length;
+  const nodeCount = new Set(observableEvents.map(event => getObservableNode(event))).size;
+
+  setText('obs-total-count', observableEvents.length);
+  setText('obs-visible-count', visibleEvents.length);
+  setText('obs-alert-count', alertCount);
+  setText('obs-node-count', nodeCount);
+}
+
+function getObservableAlgorithm(event) {
+  return event.algorithm || 'system';
+}
+
+function getObservableNode(event) {
+  return event.nodeId || event.processId || 'system';
+}
+
+function getObservableSeverity(event) {
+  return ['debug', 'info', 'warn', 'error', 'critical'].includes(event.severity) ? event.severity : 'info';
+}
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNetworkGraph();
+  initObservabilityControls();
   connectToMqtt();
+  renderObservableTimeline();
 });
